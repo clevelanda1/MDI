@@ -172,7 +172,7 @@ const SignIn: React.FC = () => {
 
       {/* Left Side - Branding */}
       <motion.div 
-        className="hidden lg:flex lg:w-1/2 relative z-10 flex-col justify-center pl-6 pr-12 lg:pl-12 lg:pr-12 xl:pl-16 xl:pr-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900"
+        className="flex lg:w-1/2 relative z-10 flex-col justify-center pl-6 pr-12 lg:pl-12 lg:pr-12 xl:pl-16 xl:pr-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900"
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
