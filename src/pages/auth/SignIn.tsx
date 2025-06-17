@@ -170,51 +170,27 @@ const SignIn: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Left Side - Branding */}
-      <motion.div 
-        className="hidden lg:flex lg:w-1/2 relative z-10 flex-col justify-center pl-6 pr-12 lg:pl-12 lg:pr-12 xl:pl-16 xl:pr-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900"
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-      >
+      {/* Left Side - Branding (FRAMER MOTION REMOVED) */}
+      <div className="hidden lg:flex lg:w-1/2 relative z-10 flex-col justify-center pl-6 pr-12 lg:pl-12 lg:pr-12 xl:pl-16 xl:pr-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900">
         <div className="max-w-lg ml-auto text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
+          <div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6">
               <span className="text-sm font-medium">Welcome back to My Design Index</span>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.h1 
-            className="text-4xl xl:text-5xl font-light leading-tight mb-4"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-          >
+          <h1 className="text-4xl xl:text-5xl font-light leading-tight mb-4">
             Turning Inspiration Into
             <span className="block font-semibold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
               Shoppable Products
             </span>
-          </motion.h1>
+          </h1>
           
-          <motion.p 
-            className="text-lg text-slate-300 leading-relaxed mb-6 font-light"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
-          >
+          <p className="text-lg text-slate-300 leading-relaxed mb-6 font-light">
             Continue where you left off. Access your saved projects, vision boards, and curated product recommendations.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="flex items-center gap-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-          >
+          <div className="flex items-center gap-6">
             {[
               { metric: "Skip The Search", label: "We'll Shop For You" },
               { metric: "Instant Alternatives", label: "No Waiting Around" },
@@ -225,9 +201,9 @@ const SignIn: React.FC = () => {
                 <div className="text-sm text-slate-400 font-medium">{stat.label}</div>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Right Side - Form */}
       <motion.div 
