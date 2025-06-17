@@ -124,7 +124,7 @@ const Hero: React.FC = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex justify-center mb-8"
         >
-          <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-full shadow-sm hover:shadow-md transition-all duration-500 group cursor-pointer">
+          <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-full shadow-sm hover:shadow-md transition-all duration-500 group cursor-pointer mt-14">
             <div className="w-2 h-2 bg-emerald-500 rounded-full">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
             </div>
