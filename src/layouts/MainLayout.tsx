@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import Navbar from '../components/common/Navbar';
+import TransparentHeader from '../components/common/TransparentHeader';
 import Footer from '../components/common/Footer';
 import { Loader2 } from 'lucide-react';
 
@@ -23,7 +23,7 @@ const MainLayout: React.FC = () => {
 
   return (
     <div>
-      <Navbar />
+      <TransparentHeader />
       <main>
         <Suspense fallback={<ContentLoader />}>
           <Outlet />

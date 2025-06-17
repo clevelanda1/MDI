@@ -16,16 +16,6 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
 
-  // Debug logging
-  useEffect(() => {
-    console.log('Navbar state:', {
-      isScrolled,
-      isAuthenticated,
-      pathname: location.pathname,
-      user: user?.email
-    });
-  }, [isScrolled, isAuthenticated, location.pathname, user]);
-
   // Your original 4 color gradients
   const colorGradients = [
     { id: 'gradient1', colors: ['#8b5cf6', '#a855f7'] }, // Violet
