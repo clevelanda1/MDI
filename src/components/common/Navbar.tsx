@@ -16,6 +16,16 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
 
+  // Debug logging
+  useEffect(() => {
+    console.log('Navbar state:', {
+      isScrolled,
+      isAuthenticated,
+      pathname: location.pathname,
+      user: user?.email
+    });
+  }, [isScrolled, isAuthenticated, location.pathname, user]);
+
   // Your original 4 color gradients
   const colorGradients = [
     { id: 'gradient1', colors: ['#8b5cf6', '#a855f7'] }, // Violet
@@ -30,10 +40,14 @@ const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      const scrolled = window.scrollY > 30;
+      setIsScrolled(scrolled);
     };
 
     window.addEventListener('scroll', handleScroll);
+    // Check initial scroll position
+    handleScroll();
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -68,14 +82,14 @@ const Navbar: React.FC = () => {
 
   // Handle upgrade navigation
   const handleUpgradeClick = () => {
-    setIsUserMenuOpen(false); // Close the dropdown
-    navigate('/upgrade'); // Navigate to upgrade page
+    setIsUserMenuOpen(false);
+    navigate('/upgrade');
   };
 
   // Handle account settings navigation
   const handleAccountClick = () => {
-    setIsUserMenuOpen(false); // Close the dropdown
-    navigate('/account'); // Navigate to account page
+    setIsUserMenuOpen(false);
+    navigate('/account');
   };
 
   const navigationItems = [
@@ -142,6 +156,10 @@ const Navbar: React.FC = () => {
         WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
         borderBottom: '1px solid rgba(148, 163, 184, 0.2)',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        // Fallback for browsers that don't support backdrop-filter
+        backgroundColor: !CSS?.supports?.('backdrop-filter', 'blur(20px)') 
+          ? 'rgba(255, 255, 255, 0.98)' 
+          : undefined
       };
     }
     return {
@@ -189,28 +207,34 @@ const Navbar: React.FC = () => {
   // Split APP_NAME into individual letters for animation
   const letters = APP_NAME.split('');
 
+  // Simplified logo display logic
+  const shouldShowLogoDots = (isScrolled || needsSolidNavbar) && !isLogoHovered;
+
   return (
     <motion.nav 
       variants={navVariants}
       initial="hidden"
       animate="visible"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 transition-all duration-500 ${
         isScrolled || needsSolidNavbar ? 'py-3' : 'py-4'
       }`}
-      style={getNavbarStyle()}
+      style={{
+        ...getNavbarStyle(),
+        zIndex: 9999 // Increased z-index
+      }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex justify-between items-center relative">
         
-        {/* Logo - Updated with conditional dots display */}
+        {/* Logo - Updated with simplified conditional display */}
         <button 
           onClick={handleLogoClick} 
           className="flex items-center z-10 group gap-3 min-w-fit"
           onMouseEnter={() => setIsLogoHovered(true)}
           onMouseLeave={() => setIsLogoHovered(false)}
         >
-          {/* Four-Circle Logo - Only show when scrolled or on solid navbar pages AND not hovered */}
-          <AnimatePresence>
-            {(isScrolled || needsSolidNavbar) && !isLogoHovered && (
+          {/* Four-Circle Logo - Simplified condition */}
+          <AnimatePresence mode="wait" key={`logo-${shouldShowLogoDots}`}>
+            {shouldShowLogoDots && (
               <motion.div 
                 className="relative w-8 h-8 flex-shrink-0"
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -408,7 +432,7 @@ const Navbar: React.FC = () => {
             >
               {letters.map((letter, index) => (
                 <motion.span
-                  key={index}
+                  key={`${letter}-${index}`}
                   custom={index}
                   variants={letterVariants}
                   initial="initial"
@@ -496,14 +520,14 @@ const Navbar: React.FC = () => {
           ))}
         </div>
 
-        {/* Desktop Auth Section */}
+        {/* Desktop Auth Section - Always visible */}
         <div className="hidden md:flex items-center gap-3">
           {isAuthenticated ? (
             // Authenticated user menu
             <div className="relative">
               <motion.button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-full transition-all duration-300`}
+                className="flex items-center gap-3 px-4 py-2.5 rounded-full transition-all duration-300"
                 style={{
                   background: isUserMenuOpen ? getHoverBg() : 'transparent'
                 }}
@@ -625,8 +649,8 @@ const Navbar: React.FC = () => {
               </AnimatePresence>
             </div>
           ) : (
-            // Guest user CTAs
-            <>
+            // Guest user CTAs - Always render these buttons
+            <div className="flex items-center gap-3">
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -635,6 +659,7 @@ const Navbar: React.FC = () => {
                 <Link 
                   to="/signin" 
                   className={`px-5 py-2.5 font-medium text-sm transition-all duration-300 rounded-full ${getTextColorSecondary()} hover:${getTextColor()}`}
+                  style={{ minWidth: '80px', textAlign: 'center', display: 'inline-block' }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = getHoverBg();
                   }}
@@ -654,19 +679,22 @@ const Navbar: React.FC = () => {
                 <Link 
                   to="/signup" 
                   className="relative inline-flex items-center px-6 py-2.5 font-medium text-sm transition-all duration-300 rounded-full overflow-hidden text-white bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 shadow-lg hover:shadow-xl"
+                  style={{ minWidth: '120px', textAlign: 'center' }}
                 >
                   Get started
                 </Link>
               </motion.div>
-            </>
+            </div>
           )}
         </div>
 
-        {/* Mobile Navigation Toggle */}
+        {/* Mobile Navigation Toggle - Always visible */}
         <motion.button 
-          className={`md:hidden z-10 p-2.5 rounded-full transition-all duration-300`}
+          className="md:hidden z-10 p-2.5 rounded-full transition-all duration-300"
           style={{
             background: (needsSolidNavbar || isScrolled) ? 'rgba(148, 163, 184, 0.1)' : 'rgba(255, 255, 255, 0.1)',
+            minWidth: '44px',
+            minHeight: '44px'
           }}
           onClick={toggleMenu}
           aria-label="Toggle menu"
@@ -723,6 +751,10 @@ const Navbar: React.FC = () => {
               WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
               borderBottom: '1px solid rgba(148, 163, 184, 0.2)',
               boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+              // Fallback for browsers that don't support backdrop-filter
+              backgroundColor: !CSS?.supports?.('backdrop-filter', 'blur(20px)') 
+                ? 'rgba(255, 255, 255, 0.98)' 
+                : undefined
             }}
           >
             <div className="max-w-7xl mx-auto px-6 py-8">
