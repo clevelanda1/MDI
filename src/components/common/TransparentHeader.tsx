@@ -182,7 +182,7 @@ const TransparentHeader: React.FC = () => {
       <div 
         className={`absolute inset-0 transition-all duration-500 ${
           isScrolled || needsSolidHeader 
-            ? 'bg-white/40 backdrop-blur-[20px] saturate-[1.8] border-b border-slate-200/20 shadow-[0_4px_20px_rgba(0,0,0,0.08)]' 
+            ? 'bg-white/20 backdrop-blur-[20px] saturate-[1.8] border-b border-slate-200/20 shadow-[0_4px_20px_rgba(0,0,0,0.08)]' 
             : 'bg-transparent'
         }`}
         style={{
