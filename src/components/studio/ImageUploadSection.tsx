@@ -186,43 +186,6 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
     navigate('/upgrade');
   };
 
-  // Handle refresh button click to restore last uploaded image
-  const handleRefresh = () => {
-    if (lastUploadState) {
-      // Clear current state first
-      onClearImage();
-      
-      // Small delay to ensure state is cleared before restoring
-      setTimeout(() => {
-        // If we have a file in memory, use it directly
-        if (lastUploadState.file) {
-          onFileSelect({
-            target: {
-              files: [lastUploadState.file]
-            }
-          } as React.ChangeEvent<HTMLInputElement>);
-        } 
-        // Otherwise, try to use the stored state without the file
-        else if (lastUploadState.preview && lastUploadState.detectedElements.length > 0) {
-          // Create a dummy file from the preview URL
-          fetch(lastUploadState.preview)
-            .then(res => res.blob())
-            .then(blob => {
-              const file = new File([blob], "restored-image.jpg", { type: "image/jpeg" });
-              onFileSelect({
-                target: {
-                  files: [file]
-                }
-              } as React.ChangeEvent<HTMLInputElement>);
-            })
-            .catch(err => {
-              console.error("Error restoring image from preview:", err);
-            });
-        }
-      }, 100);
-    }
-  };
-
   // Render element status indicator
   const renderElementStatus = (element: DetectedElement) => {
     if (!element.selectedAmazonQuery && !element.selectedEtsyQuery) return null;
@@ -332,6 +295,43 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
     setShowUpgradeModal(false);
   };
 
+  // Handle refresh button click to restore last uploaded image
+  const handleRefresh = () => {
+    if (lastUploadState) {
+      // Clear current state first
+      onClearImage();
+      
+      // Small delay to ensure state is cleared before restoring
+      setTimeout(() => {
+        // If we have a file in memory, use it directly
+        if (lastUploadState.file) {
+          onFileSelect({
+            target: {
+              files: [lastUploadState.file]
+            }
+          } as React.ChangeEvent<HTMLInputElement>);
+        } 
+        // Otherwise, try to use the stored state without the file
+        else if (lastUploadState.preview && lastUploadState.detectedElements.length > 0) {
+          // Create a dummy file from the preview URL
+          fetch(lastUploadState.preview)
+            .then(res => res.blob())
+            .then(blob => {
+              const file = new File([blob], "restored-image.jpg", { type: "image/jpeg" });
+              onFileSelect({
+                target: {
+                  files: [file]
+                }
+              } as React.ChangeEvent<HTMLInputElement>);
+            })
+            .catch(err => {
+              console.error("Error restoring image from preview:", err);
+            });
+        }
+      }, 100);
+    }
+  };
+
   // Get Etsy limit based on subscription tier
   const getEtsyLimit = () => {
     if (subscription.tier === 'free') return 25;
@@ -358,7 +358,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
               <Trash2 size={18} />
             </motion.button>
           )}
-          {lastUploadState && (uploadState.status === 'idle' || uploadState.status === 'error') && (
+          {lastUploadState && lastUploadState.preview && (uploadState.status === 'idle' || uploadState.status === 'error') && (
             <motion.button
               onClick={handleRefresh}
               className="p-2.5 text-slate-400 hover:text-violet-500 hover:bg-violet-50/80 rounded-full transition-all duration-300"
@@ -413,7 +413,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
             
             {!canCreateProject ? (
               <>
-                <p className="text-amber-700 mb-4 font-medium">Project limit reached ({limits.projects}/{limits.projects})</p>
+                <p className="text-amber-700 mb-4 font-medium">Project limit reached ({subscription.limits.projects}/{subscription.limits.projects})</p>
                 <p className="text-amber-600 mb-6 text-sm">Upgrade to Pro for unlimited projects or delete an existing project</p>
               </>
             ) : (
@@ -720,7 +720,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                 <div>
                   <p className="text-amber-800 text-sm font-medium mb-1">Project Limit Reached</p>
                   <p className="text-amber-700 text-xs leading-relaxed">
-                    You've reached the limit of {limits.projects} projects for your free plan. 
+                    You've reached the limit of {subscription.limits.projects} projects for your free plan. 
                     Upgrade to Pro for unlimited projects.
                   </p>
                 </div>
