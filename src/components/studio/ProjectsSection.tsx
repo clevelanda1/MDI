@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, XCircle, Loader2, Edit2, Trash2, FolderOpen, X } from 'lucide-react';
 import { Project, ProjectFilters } from '../../types/studio';
@@ -37,6 +37,17 @@ const ProjectsSection: React.FC<ProjectsSectionProps & { projectsSectionRef: Rea
 }) => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
   
+  // Initialize AdSense when component mounts
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && window.adsbygoogle) {
+        (window.adsbygoogle as any).push({});
+      }
+    } catch (error) {
+      console.log('AdSense error:', error);
+    }
+  }, []);
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -268,6 +279,28 @@ const ProjectsSection: React.FC<ProjectsSectionProps & { projectsSectionRef: Rea
           )}
         </div>
       )}
+
+      {/* AdSense Advertisement */}
+      <div className="mt-12 mb-8">
+        <div 
+          className="w-full flex justify-center"
+          dangerouslySetInnerHTML={{
+            __html: `
+              <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8497089190565366" crossorigin="anonymous"></script>
+              <!-- Project (bottom) -->
+              <ins class="adsbygoogle"
+                   style="display:block"
+                   data-ad-client="ca-pub-8497089190565366"
+                   data-ad-slot="5620786867"
+                   data-ad-format="auto"
+                   data-full-width-responsive="true"></ins>
+              <script>
+                   (window.adsbygoogle = window.adsbygoogle || []).push({});
+              </script>
+            `
+          }}
+        />
+      </div>
     </motion.div>
   );
 };
