@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
@@ -12,10 +12,22 @@ const SignIn: React.FC = () => {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [errors, setErrors] = useState<{email?: string; password?: string; general?: string}>({});
   const [rememberMe, setRememberMe] = useState(false);
+  const [showLeftPanel, setShowLeftPanel] = useState(false);
 
   const { login, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Handle responsive display for left panel
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setShowLeftPanel(window.innerWidth >= 1024);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -170,8 +182,11 @@ const SignIn: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Left Side - Branding (FRAMER MOTION REMOVED) */}
-      <div className="hidden lg:flex lg:w-1/2 relative z-10 flex-col justify-center pl-6 pr-12 lg:pl-12 lg:pr-12 xl:pl-16 xl:pr-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900">
+      {/* Left Side - Branding (FIXED DISPLAY LOGIC) */}
+      <div 
+        className="lg:w-1/2 relative z-10 flex-col justify-center pl-6 pr-12 lg:pl-12 lg:pr-12 xl:pl-16 xl:pr-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900"
+        style={{ display: showLeftPanel ? 'flex' : 'none' }}
+      >
         <div className="max-w-lg ml-auto text-white">
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6">
@@ -205,9 +220,10 @@ const SignIn: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Side - Form */}
+      {/* Right Side - Form (ADJUSTED WIDTH BASED ON LEFT PANEL) */}
       <motion.div 
-        className="w-full lg:w-1/2 flex items-center justify-center px-6 lg:px-12 xl:px-16 relative z-10"
+        className="flex items-center justify-center px-6 lg:px-12 xl:px-16 relative z-10"
+        style={{ width: showLeftPanel ? '50%' : '100%' }}
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
