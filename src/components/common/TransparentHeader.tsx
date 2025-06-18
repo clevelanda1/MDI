@@ -602,6 +602,56 @@ const TransparentHeader: React.FC = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
+              </div>
+            ) : (
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Link 
+                  to="/signin" 
+                  className="relative inline-flex items-center justify-center px-6 py-2.5 font-medium text-sm transition-all duration-300 rounded-full overflow-hidden text-white bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 shadow-lg hover:shadow-xl"
+                  style={{ minWidth: '120px', textAlign: 'center' }}
+                >
+                  Get started
+                </Link>
+              </motion.div>
+            )}
+
+            {/* Mobile Menu Toggle */}
+            <div className="md:hidden">
+              <motion.button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className={`p-2 rounded-full transition-all duration-300`}
+                style={{
+                  background: isMobileMenuOpen ? getHoverBg() : 'transparent'
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <AnimatePresence mode="wait">
+                  {isMobileMenuOpen ? (
+                    <motion.div
+                      key="close"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <X className={`h-5 w-5 ${getTextColor()}`} />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="menu"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Menu className={`h-5 w-5 ${getTextColor()}`} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.button>
             </div>
           </div>
