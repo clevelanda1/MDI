@@ -105,6 +105,9 @@ ETSY:
 [query 1]
 [query 2]`;
     
+    // Create a minimal 1x1 transparent PNG as base64 to satisfy the imageData requirement
+    const transparentPng = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+    
     // Call the Gemini API through our Edge Function
     const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gemini-api`, {
       method: 'POST',
@@ -114,7 +117,10 @@ ETSY:
       },
       body: JSON.stringify({
         prompt,
-        imageData: null // No image needed for this request
+        imageData: {
+          mimeType: 'image/png',
+          data: transparentPng
+        }
       })
     });
 
