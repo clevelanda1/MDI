@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, ImageIcon, Trash2, ChevronDown, Sparkles, CheckCircle2, XCircle, Loader2, Crown } from 'lucide-react';
+import { Upload, ImageIcon, Trash2, ChevronDown, Sparkles, CheckCircle2, XCircle, Loader2, Crown, Edit2, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { UploadState, DetectedElement } from '../../types/studio';
 import Button from '../common/Button';
@@ -37,11 +37,18 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
   onCreateProject
 }) => {
   const navigate = useNavigate();
-  const { limits } = useSubscription();
+  const { subscription } = useSubscription();
   const [apiLimits, setApiLimits] = useState<{amazon: boolean, etsy: boolean}>({
     amazon: true,
     etsy: true
   });
+  const [editingQuery, setEditingQuery] = useState<{elementName: string, marketplace: 'amazon' | 'etsy', queryIndex: number} | null>(null);
+  const [customQuery, setCustomQuery] = useState('');
+  const [lastUploadState, setLastUploadState] = useState<UploadState | null>(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
+  // Check if user can edit queries (Pro or Studio plan only)
+  const canEditQueries = subscription.tier === 'pro' || subscription.tier === 'studio';
 
   // Check API limits on component mount
   useEffect(() => {
@@ -60,6 +67,37 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
     };
     
     checkApiLimits();
+  }, []);
+
+  // Save the last successful upload state when status changes to 'complete'
+  useEffect(() => {
+    if (uploadState.status === 'complete' && uploadState.file) {
+      // Store the last successful upload state in localStorage
+      const stateToStore = {
+        ...uploadState,
+        file: null, // Don't store the file object in localStorage
+        preview: uploadState.preview // Keep the preview URL
+      };
+      
+      // Store in localStorage
+      localStorage.setItem('lastUploadState', JSON.stringify(stateToStore));
+      
+      // Also keep in memory for immediate use
+      setLastUploadState({...uploadState});
+    }
+  }, [uploadState.status, uploadState.file]);
+
+  // Load the last upload state from localStorage on component mount
+  useEffect(() => {
+    try {
+      const savedState = localStorage.getItem('lastUploadState');
+      if (savedState) {
+        const parsedState = JSON.parse(savedState);
+        setLastUploadState(parsedState);
+      }
+    } catch (error) {
+      console.error('Error loading last upload state:', error);
+    }
   }, []);
 
   const renderUploadState = () => {
@@ -148,6 +186,43 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
     navigate('/upgrade');
   };
 
+  // Handle refresh button click to restore last uploaded image
+  const handleRefresh = () => {
+    if (lastUploadState) {
+      // Clear current state first
+      onClearImage();
+      
+      // Small delay to ensure state is cleared before restoring
+      setTimeout(() => {
+        // If we have a file in memory, use it directly
+        if (lastUploadState.file) {
+          onFileSelect({
+            target: {
+              files: [lastUploadState.file]
+            }
+          } as React.ChangeEvent<HTMLInputElement>);
+        } 
+        // Otherwise, try to use the stored state without the file
+        else if (lastUploadState.preview && lastUploadState.detectedElements.length > 0) {
+          // Create a dummy file from the preview URL
+          fetch(lastUploadState.preview)
+            .then(res => res.blob())
+            .then(blob => {
+              const file = new File([blob], "restored-image.jpg", { type: "image/jpeg" });
+              onFileSelect({
+                target: {
+                  files: [file]
+                }
+              } as React.ChangeEvent<HTMLInputElement>);
+            })
+            .catch(err => {
+              console.error("Error restoring image from preview:", err);
+            });
+        }
+      }, 100);
+    }
+  };
+
   // Render element status indicator
   const renderElementStatus = (element: DetectedElement) => {
     if (!element.selectedAmazonQuery && !element.selectedEtsyQuery) return null;
@@ -226,12 +301,42 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
     }
   };
 
+  // Handle edit query button click
+  const handleEditQueryClick = (elementName: string, marketplace: 'amazon' | 'etsy', queryIndex: number, currentQuery: string) => {
+    if (!canEditQueries) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    
+    setEditingQuery({ elementName, marketplace, queryIndex });
+    setCustomQuery(currentQuery);
+  };
+
+  // Handle save custom query
+  const handleSaveCustomQuery = () => {
+    if (editingQuery && customQuery.trim()) {
+      onUpdateSelectedQuery(editingQuery.elementName, customQuery.trim(), editingQuery.marketplace);
+      setEditingQuery(null);
+      setCustomQuery('');
+    }
+  };
+
+  // Handle cancel edit
+  const handleCancelEdit = () => {
+    setEditingQuery(null);
+    setCustomQuery('');
+  };
+
+  // Close upgrade modal
+  const handleCloseUpgradeModal = () => {
+    setShowUpgradeModal(false);
+  };
+
   // Get Etsy limit based on subscription tier
   const getEtsyLimit = () => {
-    if (limits.etsyCalls) {
-      return limits.etsyCalls;
-    }
-    return 25; // Default for free tier
+    if (subscription.tier === 'free') return 25;
+    if (subscription.tier === 'pro') return 125;
+    return 750; // studio tier
   };
 
   return (
@@ -241,17 +346,30 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
           <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
           New Project
         </h2>
-        {uploadState.status !== 'idle' && (
-          <motion.button
-            onClick={onClearImage}
-            className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50/80 rounded-full transition-all duration-300"
-            title="Clear image"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Trash2 size={18} />
-          </motion.button>
-        )}
+        <div className="flex items-center gap-2">
+          {uploadState.status !== 'idle' && (
+            <motion.button
+              onClick={onClearImage}
+              className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50/80 rounded-full transition-all duration-300"
+              title="Clear image"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Trash2 size={18} />
+            </motion.button>
+          )}
+          {lastUploadState && (uploadState.status === 'idle' || uploadState.status === 'error') && (
+            <motion.button
+              onClick={handleRefresh}
+              className="p-2.5 text-slate-400 hover:text-violet-500 hover:bg-violet-50/80 rounded-full transition-all duration-300"
+              title="Reload last image"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <RefreshCw size={18} />
+            </motion.button>
+          )}
+        </div>
       </div>
       
       <motion.div 
@@ -464,29 +582,39 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                                 </h4>
                                 <div className="space-y-2">
                                   {element.amazonQueries.map((query, queryIndex) => (
-                                    <motion.label 
+                                    <motion.div 
                                       key={`amazon-${queryIndex}`} 
-                                      className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white/60 transition-colors duration-200 cursor-pointer"
+                                      className="flex items-center justify-between p-2 rounded-lg hover:bg-white/60 transition-colors duration-200 group"
                                       initial={{ opacity: 0, x: -10 }}
                                       animate={{ opacity: 1, x: 0 }}
                                       transition={{ delay: queryIndex * 0.05 }}
                                     >
-                                      <input
-                                        type="checkbox"
-                                        name={`amazon-query-${element.name}`}
-                                        value={query}
-                                        checked={element.selectedAmazonQuery === query}
-                                        onChange={() => {
-                                          handleQuerySelection(
-                                            element.name, 
-                                            element.selectedAmazonQuery === query ? '' : query,
-                                            'amazon'
-                                          );
-                                        }}
-                                        className="form-checkbox h-4 w-4 text-orange-600 border-slate-300 focus:ring-orange-500"
-                                      />
-                                      <span className="text-sm text-slate-600 font-medium">{query}</span>
-                                    </motion.label>
+                                      <div className="flex items-center flex-1 min-w-0">
+                                        <input
+                                          type="checkbox"
+                                          name={`amazon-query-${element.name}`}
+                                          value={query}
+                                          checked={element.selectedAmazonQuery === query}
+                                          onChange={() => {
+                                            handleQuerySelection(
+                                              element.name, 
+                                              element.selectedAmazonQuery === query ? '' : query,
+                                              'amazon'
+                                            );
+                                          }}
+                                          className="form-checkbox h-4 w-4 text-orange-600 border-slate-300 focus:ring-orange-500"
+                                        />
+                                        <span className="ml-3 text-sm text-slate-600 font-medium">{query}</span>
+                                      </div>
+                                      <motion.button
+                                        onClick={() => handleEditQueryClick(element.name, 'amazon', queryIndex, query)}
+                                        className="p-1.5 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
+                                      >
+                                        <Edit2 size={14} />
+                                      </motion.button>
+                                    </motion.div>
                                   ))}
                                 </div>
                               </div>
@@ -501,29 +629,39 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                                 </h4>
                                 <div className="space-y-2">
                                   {element.etsyQueries.map((query, queryIndex) => (
-                                    <motion.label 
+                                    <motion.div 
                                       key={`etsy-${queryIndex}`} 
-                                      className="flex items-center space-x-3 p-2 rounded-lg hover:bg-white/60 transition-colors duration-200 cursor-pointer"
+                                      className="flex items-center justify-between p-2 rounded-lg hover:bg-white/60 transition-colors duration-200 group"
                                       initial={{ opacity: 0, x: -10 }}
                                       animate={{ opacity: 1, x: 0 }}
                                       transition={{ delay: queryIndex * 0.05 }}
                                     >
-                                      <input
-                                        type="checkbox"
-                                        name={`etsy-query-${element.name}`}
-                                        value={query}
-                                        checked={element.selectedEtsyQuery === query}
-                                        onChange={() => {
-                                          handleQuerySelection(
-                                            element.name, 
-                                            element.selectedEtsyQuery === query ? '' : query,
-                                            'etsy'
-                                          );
-                                        }}
-                                        className="form-checkbox h-4 w-4 text-teal-600 border-slate-300 focus:ring-teal-500"
-                                      />
-                                      <span className="text-sm text-slate-600 font-medium">{query}</span>
-                                    </motion.label>
+                                      <div className="flex items-center flex-1 min-w-0">
+                                        <input
+                                          type="checkbox"
+                                          name={`etsy-query-${element.name}`}
+                                          value={query}
+                                          checked={element.selectedEtsyQuery === query}
+                                          onChange={() => {
+                                            handleQuerySelection(
+                                              element.name, 
+                                              element.selectedEtsyQuery === query ? '' : query,
+                                              'etsy'
+                                            );
+                                          }}
+                                          className="form-checkbox h-4 w-4 text-teal-600 border-slate-300 focus:ring-teal-500"
+                                        />
+                                        <span className="ml-3 text-sm text-slate-600 font-medium">{query}</span>
+                                      </div>
+                                      <motion.button
+                                        onClick={() => handleEditQueryClick(element.name, 'etsy', queryIndex, query)}
+                                        className="p-1.5 text-slate-400 hover:text-teal-600 hover:bg-teal-50 rounded-full transition-all duration-200 opacity-0 group-hover:opacity-100"
+                                        whileHover={{ scale: 1.1 }}
+                                        whileTap={{ scale: 0.9 }}
+                                      >
+                                        <Edit2 size={14} />
+                                      </motion.button>
+                                    </motion.div>
                                   ))}
                                 </div>
                               </div>
@@ -623,6 +761,133 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
           </motion.div>
         </motion.div>
       )}
+
+      {/* Edit Query Modal */}
+      <AnimatePresence>
+        {editingQuery && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white rounded-2xl p-6 shadow-xl max-w-md w-full"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+            >
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                Edit {editingQuery.marketplace === 'amazon' ? 'Amazon' : 'Etsy'} Search Query
+              </h3>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
+                  Custom Query
+                </label>
+                <input
+                  type="text"
+                  value={customQuery}
+                  onChange={(e) => setCustomQuery(e.target.value)}
+                  className="w-full px-4 py-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500"
+                  placeholder="Enter your custom search query"
+                  autoFocus
+                />
+              </div>
+              <div className="flex justify-end space-x-3">
+                <motion.button
+                  onClick={handleCancelEdit}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  onClick={handleSaveCustomQuery}
+                  className="px-4 py-2 bg-violet-600 text-white rounded-xl hover:bg-violet-700"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  disabled={!customQuery.trim()}
+                >
+                  Save
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Upgrade Modal */}
+      <AnimatePresence>
+        {showUpgradeModal && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white rounded-2xl p-6 shadow-xl max-w-md w-full"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+            >
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Crown className="text-violet-600" size={24} />
+                </div>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                  Pro Feature
+                </h3>
+                <p className="text-slate-600">
+                  Custom search query editing is available on Pro and Studio plans.
+                </p>
+              </div>
+              
+              <div className="bg-violet-50 rounded-xl p-4 mb-6">
+                <h4 className="font-medium text-violet-800 mb-2">Pro Plan Benefits:</h4>
+                <ul className="space-y-2 text-sm text-violet-700">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 size={16} className="mt-0.5 flex-shrink-0" />
+                    <span>Custom search query editing</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 size={16} className="mt-0.5 flex-shrink-0" />
+                    <span>25 active projects</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 size={16} className="mt-0.5 flex-shrink-0" />
+                    <span>200 Amazon searches/month</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 size={16} className="mt-0.5 flex-shrink-0" />
+                    <span>125 Etsy searches/month</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="flex justify-end space-x-3">
+                <motion.button
+                  onClick={handleCloseUpgradeModal}
+                  className="px-4 py-2 border border-slate-300 rounded-xl text-slate-700 hover:bg-slate-50"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Maybe Later
+                </motion.button>
+                <motion.button
+                  onClick={handleUpgradeClick}
+                  className="px-4 py-2 bg-violet-600 text-white rounded-xl hover:bg-violet-700"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Upgrade Now
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
