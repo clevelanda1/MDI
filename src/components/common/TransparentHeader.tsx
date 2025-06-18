@@ -11,12 +11,22 @@ const TransparentHeader: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const [logoColorStates] = useState([0, 1, 2, 3]); // Static color states for each dot
   const userMenuRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
   const { subscription } = useSubscription();
+
+  // Your original 4 color gradients
+  const colorGradients = [
+    { id: 'gradient1', colors: ['#8b5cf6', '#a855f7'] }, // Violet
+    { id: 'gradient2', colors: ['#3b82f6', '#2563eb'] }, // Blue
+    { id: 'gradient3', colors: ['#7c3aed', '#6d28d9'] }, // Purple
+    { id: 'gradient4', colors: ['#475569', '#334155'] }, // Slate
+  ];
 
   // Pages that need solid header background
   const solidHeaderPages = ['/studio', '/curation', '/visionboard', '/upgrade', '/account'];
@@ -135,6 +145,37 @@ const TransparentHeader: React.FC = () => {
     return (isScrolled || needsSolidHeader) ? 'rgba(148, 163, 184, 0.1)' : 'rgba(255, 255, 255, 0.15)';
   };
 
+  // Animation variants for letter effects
+  const letterVariants = {
+    initial: { 
+      scale: 1,
+      rotateY: 0,
+      z: 0,
+      filter: 'none'
+    },
+    hover: (i: number) => ({
+      scale: [1, 1.2, 1],
+      rotateY: [0, 15, -15, 0],
+      z: [0, 20, 0],
+      filter: [
+        'none',
+        'drop-shadow(0 0 8px rgba(139, 92, 246, 0.6))',
+        'none'
+      ],
+      transition: {
+        duration: 0.6,
+        delay: i * 0.1,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      }
+    })
+  };
+
+  // Split APP_NAME into individual letters for animation
+  const letters = APP_NAME.split('');
+
+  // Simplified logo display logic
+  const shouldShowLogoDots = (isScrolled || needsSolidHeader) && !isLogoHovered;
+
   return (
     <header className="fixed top-0 left-0 right-0 z-[9999] transition-all duration-500">
       {/* Background with conditional styling */}
@@ -154,26 +195,265 @@ const TransparentHeader: React.FC = () => {
       
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center py-4">
-          {/* Logo with MDI text */}
+          {/* Logo with enhanced animations */}
           <button 
             onClick={handleLogoClick}
             className="flex items-center gap-3 group"
+            onMouseEnter={() => setIsLogoHovered(true)}
+            onMouseLeave={() => setIsLogoHovered(false)}
           >
-            {/* Logo SVG */}
-            <div className="relative w-8 h-8 flex-shrink-0">
-              <svg width="32" height="32" viewBox="0 0 32 32" className="w-full h-full">
-                {/* Main circles */}
-                <circle cx="10" cy="10" r="6" fill="#8b5cf6" />
-                <circle cx="22" cy="10" r="6" fill="#3b82f6" />
-                <circle cx="10" cy="22" r="6" fill="#7c3aed" />
-                <circle cx="22" cy="22" r="6" fill="#475569" />
-              </svg>
-            </div>
+            {/* Four-Circle Logo with animations */}
+            <AnimatePresence mode="wait" key={`logo-${shouldShowLogoDots}`}>
+              {shouldShowLogoDots && (
+                <motion.div 
+                  className="relative w-8 h-8 flex-shrink-0"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    transition: { type: "spring", stiffness: 400, damping: 17 }
+                  }}
+                >
+                  <svg width="32" height="32" viewBox="0 0 32 32" className="w-full h-full">
+                    {/* Glow effects behind each circle */}
+                    <motion.circle 
+                      cx="10" 
+                      cy="10" 
+                      r="8" 
+                      fill="rgba(139, 92, 246, 0.3)"
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: [0, 0.6, 0]
+                      }}
+                      transition={{ 
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 0 * 0.6
+                      }}
+                    />
+                    <motion.circle 
+                      cx="22" 
+                      cy="10" 
+                      r="8" 
+                      fill="rgba(59, 130, 246, 0.3)"
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: [0, 0.6, 0]
+                      }}
+                      transition={{ 
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1 * 0.6
+                      }}
+                    />
+                    <motion.circle 
+                      cx="10" 
+                      cy="22" 
+                      r="8" 
+                      fill="rgba(124, 58, 237, 0.3)"
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: [0, 0.6, 0]
+                      }}
+                      transition={{ 
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 2 * 0.6
+                      }}
+                    />
+                    <motion.circle 
+                      cx="22" 
+                      cy="22" 
+                      r="8" 
+                      fill="rgba(71, 85, 105, 0.3)"
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: [0, 0.6, 0]
+                      }}
+                      transition={{ 
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 3 * 0.6
+                      }}
+                    />
+
+                    {/* Main circles on top */}
+                    <motion.circle 
+                      cx="10" 
+                      cy="10" 
+                      r="6" 
+                      fill={`url(#${colorGradients[logoColorStates[0]].id})`}
+                      initial={{ scale: 0, opacity: 0.3 }}
+                      animate={{ 
+                        scale: 1,
+                        opacity: [0.3, 1, 0.3]
+                      }}
+                      transition={{ 
+                        scale: { delay: 0.1, type: "spring", stiffness: 400, damping: 17 },
+                        opacity: { 
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: 0 * 0.6
+                        }
+                      }}
+                    />
+                    <motion.circle 
+                      cx="22" 
+                      cy="10" 
+                      r="6" 
+                      fill={`url(#${colorGradients[logoColorStates[1]].id})`}
+                      initial={{ scale: 0, opacity: 0.3 }}
+                      animate={{ 
+                        scale: 1,
+                        opacity: [0.3, 1, 0.3]
+                      }}
+                      transition={{ 
+                        scale: { delay: 0.2, type: "spring", stiffness: 400, damping: 17 },
+                        opacity: { 
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: 1 * 0.6
+                        }
+                      }}
+                    />
+                    <motion.circle 
+                      cx="10" 
+                      cy="22" 
+                      r="6" 
+                      fill={`url(#${colorGradients[logoColorStates[2]].id})`}
+                      initial={{ scale: 0, opacity: 0.3 }}
+                      animate={{ 
+                        scale: 1,
+                        opacity: [0.3, 1, 0.3]
+                      }}
+                      transition={{ 
+                        scale: { delay: 0.3, type: "spring", stiffness: 400, damping: 17 },
+                        opacity: { 
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: 2 * 0.6
+                        }
+                      }}
+                    />
+                    <motion.circle 
+                      cx="22" 
+                      cy="22" 
+                      r="6" 
+                      fill={`url(#${colorGradients[logoColorStates[3]].id})`}
+                      initial={{ scale: 0, opacity: 0.3 }}
+                      animate={{ 
+                        scale: 1,
+                        opacity: [0.3, 1, 0.3]
+                      }}
+                      transition={{ 
+                        scale: { delay: 0.4, type: "spring", stiffness: 400, damping: 17 },
+                        opacity: { 
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: 3 * 0.6
+                        }
+                      }}
+                    />
+                    
+                    {/* All gradient definitions */}
+                    <defs>
+                      {colorGradients.map((gradient) => (
+                        <linearGradient 
+                          key={gradient.id}
+                          id={gradient.id} 
+                          x1="0%" 
+                          y1="0%" 
+                          x2="100%" 
+                          y2="100%"
+                        >
+                          <stop offset="0%" stopColor={gradient.colors[0]} />
+                          <stop offset="100%" stopColor={gradient.colors[1]} />
+                        </linearGradient>
+                      ))}
+                    </defs>
+                  </svg>
+                </motion.div>
+              )}
+            </AnimatePresence>
             
-            {/* MDI text with conditional color */}
-            <span className={`font-semibold text-2xl ${getTextColor()}`}>
-              MDI
-            </span>
+            {/* Enhanced APP_NAME with hide/show animation - Fixed width container */}
+            <div className={`font-semibold text-2xl transition-all duration-500 ${getTextColor()} relative flex items-center`} style={{ width: isLogoHovered ? '280px' : '60px', height: '32px' }}>
+              {/* MDI - Fade out on hover - Aligned with logo center */}
+              <motion.div
+                className="absolute left-0 flex perspective-1000 items-center h-full"
+                animate={{
+                  opacity: isLogoHovered ? 0 : 1,
+                  x: isLogoHovered ? -20 : 0
+                }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeOut"
+                }}
+              >
+                {letters.map((letter, index) => (
+                  <motion.span
+                    key={`${letter}-${index}`}
+                    custom={index}
+                    variants={letterVariants}
+                    initial="initial"
+                    animate={isLogoHovered ? "hover" : "initial"}
+                    className="inline-block transform-gpu"
+                    style={{
+                      transformStyle: 'preserve-3d',
+                      backfaceVisibility: 'hidden'
+                    }}
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
+              </motion.div>
+              
+              {/* "— My Design Index" with subtitle - Fade in on hover - Centered to match MDI alignment */}
+              <motion.div
+                className="absolute left-0 flex items-center h-full whitespace-nowrap"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{
+                  opacity: isLogoHovered ? 1 : 0,
+                  x: isLogoHovered ? 0 : 20
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                  delay: isLogoHovered ? 0.2 : 0
+                }}
+              >
+                <div className="flex flex-col">
+                  <span className={`font-normal text-xl leading-tight -ml-12 ${(isScrolled || needsSolidHeader) ? 'text-slate-600' : 'text-white/90'}`}>
+                    — My Design Index
+                  </span>
+                  <motion.span 
+                    className={`font-light text-xs leading-tight mt-0.5 ${(isScrolled || needsSolidHeader) ? 'text-slate-500' : 'text-white/70'}`}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{
+                      opacity: isLogoHovered ? 1 : 0,
+                      y: isLogoHovered ? 0 : 5
+                    }}
+                    transition={{
+                      duration: 0.3,
+                      ease: "easeOut",
+                      delay: isLogoHovered ? 0.4 : 0
+                    }}
+                  >
+                    Where Interior Design Meets Ecommerce
+                  </motion.span>
+                </div>
+              </motion.div>
+            </div>
           </button>
 
           {/* Desktop Navigation - Removed */}
@@ -213,19 +493,23 @@ const TransparentHeader: React.FC = () => {
                   </span>
                 </motion.button>
 
-                {/* User Dropdown Menu */}
+                {/* Enhanced User Dropdown Menu - Updated styling to match Navbar */}
                 <AnimatePresence>
                   {isUserMenuOpen && (
                     <motion.div
-                      className="absolute right-0 top-full mt-2 w-72 bg-white/95 backdrop-blur-xl border border-slate-200/60 rounded-2xl shadow-xl py-2 z-50"
+                      className="absolute right-0 top-full mt-2 w-80 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50"
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ 
+                        duration: 0.3, 
+                        ease: [0.22, 1, 0.36, 1] 
+                      }}
                     >
-                      {/* Header */}
+                      {/* Header section */}
                       <div className="px-4 py-3 border-b border-slate-200/50">
                         <div className="flex items-center gap-3">
+                          {/* Enhanced avatar */}
                           <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-semibold text-sm">
                             {user?.user_metadata?.first_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
                           </div>
@@ -250,42 +534,73 @@ const TransparentHeader: React.FC = () => {
                           </span>
                         </div>
                       </div>
-
-                      {/* Menu Items */}
-                      <div className="py-2">
-                        <Link 
-                          to="/account" 
-                          className="flex items-center gap-3 px-4 py-2.5 text-slate-700 hover:bg-slate-50 transition-colors"
-                          onClick={handleAccountClick}
-                        >
+                      
+                      {/* Account Settings button */}
+                      <motion.button 
+                        onClick={handleAccountClick}
+                        className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden"
+                        whileHover={{ x: 2 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                      >
+                        <motion.div
+                          className="absolute inset-0 bg-slate-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        />
+                        
+                        <div className="relative z-10 flex items-center gap-3">
                           <Settings size={16} />
-                          <span className="text-sm font-medium">Account Settings</span>
-                        </Link>
+                          <div>
+                            <span className="font-medium text-slate-700 group-hover:text-slate-800 transition-colors">
+                              Account Settings
+                            </span>
+                          </div>
+                        </div>
+                      </motion.button>
 
-                        {subscription.tier === 'free' && (
-                          <Link 
-                            to="/upgrade" 
-                            className="flex items-center gap-3 px-4 py-2.5 text-violet-600 hover:bg-violet-50 transition-colors"
-                            onClick={handleUpgradeClick}
-                          >
+                      {subscription.tier === 'free' && (
+                        <motion.button 
+                          onClick={handleUpgradeClick}
+                          className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden"
+                          whileHover={{ x: 2 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        >
+                          <motion.div
+                            className="absolute inset-0 bg-violet-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                          
+                          <div className="relative z-10 flex items-center gap-3">
                             <Crown size={16} />
                             <div>
-                              <span className="text-sm font-medium">Upgrade Plan</span>
+                              <span className="font-medium text-violet-600 group-hover:text-violet-700 transition-colors">
+                                Upgrade Plan
+                              </span>
                               <p className="text-xs text-slate-500">Want to remove ads?</p>
                             </div>
-                          </Link>
-                        )}
-
-                        <button 
+                          </div>
+                        </motion.button>
+                      )}
+                      
+                      {/* Divider */}
+                      <div className="border-t border-slate-200/50 mt-2 pt-2">
+                        {/* Enhanced Sign out button */}
+                        <motion.button 
                           onClick={handleLogout}
                           disabled={isLoggingOut}
-                          className="w-full flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                          className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden disabled:opacity-50"
+                          whileHover={{ x: 2 }}
+                          whileTap={{ scale: 0.98 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         >
-                          <LogOut size={16} />
-                          <span className="text-sm font-medium">
-                            {isLoggingOut ? 'Signing out...' : 'Sign out'}
-                          </span>
-                        </button>
+                          <motion.div
+                            className="absolute inset-0 bg-red-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                          
+                          <div className="relative z-10 flex items-center gap-3">
+                            <LogOut size={16} />
+                            <span className="text-red-600 group-hover:text-red-700 transition-colors font-medium">
+                              {isLoggingOut ? 'Signing out...' : 'Sign out'}
+                            </span>
+                          </div>
+                        </motion.button>
                       </div>
                     </motion.div>
                   )}
