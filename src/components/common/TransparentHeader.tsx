@@ -497,7 +497,7 @@ const TransparentHeader: React.FC = () => {
                 <AnimatePresence>
                   {isUserMenuOpen && (
                     <motion.div
-                      className="absolute right-0 top-full mt-2 w-80 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50"
+                      className="absolute right-0 top-full mt-5 w-72 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50"
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -526,7 +526,7 @@ const TransparentHeader: React.FC = () => {
                       <div className="px-4 py-3 border-b border-slate-200/50">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <User size={16} className="text-slate-500" />
+                            {/*<User size={16} className="text-slate-500" />*/}
                             <span className="text-sm font-medium text-slate-700">Subscription</span>
                           </div>
                           <span className={`text-xs font-medium px-2 py-1 rounded-full ${getPlanColor()}`}>
@@ -547,7 +547,7 @@ const TransparentHeader: React.FC = () => {
                         />
                         
                         <div className="relative z-10 flex items-center gap-3">
-                          <Settings size={16} />
+                          {/*<Settings size={16} />*/}
                           <div>
                             <span className="font-medium text-slate-700 group-hover:text-slate-800 transition-colors">
                               Account Settings
@@ -568,7 +568,7 @@ const TransparentHeader: React.FC = () => {
                           />
                           
                           <div className="relative z-10 flex items-center gap-3">
-                            <Crown size={16} />
+                            {/*<Crown size={16} />*/}
                             <div>
                               <span className="font-medium text-violet-600 group-hover:text-violet-700 transition-colors">
                                 Upgrade Plan
@@ -595,7 +595,7 @@ const TransparentHeader: React.FC = () => {
                           />
                           
                           <div className="relative z-10 flex items-center gap-3">
-                            <LogOut size={16} />
+                            {/*<LogOut size={16} />*/}
                             <span className="text-red-600 group-hover:text-red-700 transition-colors font-medium">
                               {isLoggingOut ? 'Signing out...' : 'Sign out'}
                             </span>
