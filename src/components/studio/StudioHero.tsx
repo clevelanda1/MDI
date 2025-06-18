@@ -73,7 +73,7 @@ const StudioHero: React.FC = () => {
         <div className="grid lg:grid-cols-12 gap-8 items-start">
           {/* Main Content - Left Side */}
           <motion.div 
-            className="lg:col-span-8"
+            className="lg:col-span-9"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -104,12 +104,19 @@ const StudioHero: React.FC = () => {
 
           {/* AdSense Ad - Right Side */}
           <motion.div 
-            className="lg:col-span-4"
+            className="lg:col-span-3"
             variants={itemVariants}
             initial="hidden"
             animate="visible"
           >
             <div className="bg-slate-800/30 backdrop-blur-sm rounded-lg p-4 border border-slate-700/50">
+              {/* Debug: Show placeholder when ad doesn't load */}
+              <div className="min-h-[250px] flex items-center justify-center text-slate-400 text-sm">
+                <div className="text-center">
+                  <div className="mb-2">Ad Space</div>
+                  <div className="text-xs opacity-60">Loading...</div>
+                </div>
+              </div>
               <ins 
                 className="adsbygoogle"
                 style={{ display: 'block' }}
