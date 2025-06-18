@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, User, Sparkles, CheckCircle, AlertCircle, Shield } from 'lucide-react';
@@ -18,9 +18,21 @@ const SignUp: React.FC = () => {
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [step, setStep] = useState(1);
+  const [showRightPanel, setShowRightPanel] = useState(false);
 
   const { register, loading } = useAuth();
   const navigate = useNavigate();
+
+  // Handle responsive display for right panel
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setShowRightPanel(window.innerWidth >= 1024);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -187,9 +199,10 @@ const SignUp: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Left Side - Form */}
+      {/* Left Side - Form (ADJUSTED WIDTH BASED ON RIGHT PANEL) */}
       <motion.div 
-        className="w-full lg:w-1/2 flex items-center justify-center px-6 lg:px-12 xl:px-16 relative z-10"
+        className="flex items-center justify-center px-6 lg:px-12 xl:px-16 relative z-10"
+        style={{ width: showRightPanel ? '50%' : '100%' }}
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
@@ -521,17 +534,18 @@ const SignUp: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Right Side - Benefits */}
+      {/* Right Side - Benefits (WITH ANIMATIONS) */}
       <motion.div 
-        className="hidden lg:flex lg:w-1/2 relative z-10 flex-col justify-center px-12 xl:px-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900"
+        className="lg:w-1/2 relative z-10 flex-col justify-center px-12 xl:px-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900"
+        style={{ display: showRightPanel ? 'flex' : 'none' }}
         initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
+        animate={{ opacity: showRightPanel ? 1 : 0, x: showRightPanel ? 0 : 50 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
         <div className="max-w-lg text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: showRightPanel ? 1 : 0, y: showRightPanel ? 0 : 20 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6">
@@ -542,7 +556,7 @@ const SignUp: React.FC = () => {
           <motion.h1 
             className="text-5xl xl:text-6xl font-light leading-tight mb-4"
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: showRightPanel ? 1 : 0, y: showRightPanel ? 0 : 30 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
             Upgrade Your
@@ -554,7 +568,7 @@ const SignUp: React.FC = () => {
           <motion.div
             className="space-y-4 mb-6"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: showRightPanel ? 1 : 0, y: showRightPanel ? 0 : 20 }}
             transition={{ delay: 0.7, duration: 0.8 }}
           >
             {[
@@ -571,7 +585,20 @@ const SignUp: React.FC = () => {
                 description: "Create beautiful mood boards to see your vision come to life"
               }
             ].map((benefit, index) => (
-              <div key={benefit.title} className="flex items-start gap-3">
+              <motion.div 
+                key={benefit.title} 
+                className="flex items-start gap-3"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ 
+                  opacity: showRightPanel ? 1 : 0, 
+                  x: showRightPanel ? 0 : 20 
+                }}
+                transition={{ 
+                  delay: 0.8 + (index * 0.1), 
+                  duration: 0.6,
+                  ease: "easeOut"
+                }}
+              >
                 <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                   <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -581,28 +608,39 @@ const SignUp: React.FC = () => {
                   <h3 className="font-semibold mb-1">{benefit.title}</h3>
                   <p className="text-slate-300 font-light text-sm">{benefit.description}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
 
           <motion.div
             className="flex items-center gap-6 pt-4 border-t border-white/10"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: showRightPanel ? 1 : 0, y: showRightPanel ? 0 : 20 }}
             transition={{ delay: 0.9, duration: 0.8 }}
           >
-            <div className="text-center">
-              <div className="text-xl font-semibold">Free Forever</div>
-              <div className="text-xs text-slate-400">No Creditcard Required</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xl font-semibold">Upgrade Anytime</div>
-              <div className="text-xs text-slate-400">When You're Ready</div>
-            </div>
-            <div className="text-center">
-              <div className="text-xl font-semibold">Best Selection</div>
-              <div className="text-xs text-slate-400">Top Retailers Included</div>
-            </div>
+            {[
+              { title: "Free Forever", subtitle: "No Creditcard Required" },
+              { title: "Upgrade Anytime", subtitle: "When You're Ready" },
+              { title: "Best Selection", subtitle: "Top Retailers Included" }
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.title}
+                className="text-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ 
+                  opacity: showRightPanel ? 1 : 0, 
+                  scale: showRightPanel ? 1 : 0.8 
+                }}
+                transition={{ 
+                  delay: 1.1 + (index * 0.1), 
+                  duration: 0.6,
+                  ease: "easeOut"
+                }}
+              >
+                <div className="text-xl font-semibold">{stat.title}</div>
+                <div className="text-xs text-slate-400">{stat.subtitle}</div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </motion.div>
