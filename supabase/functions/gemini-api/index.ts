@@ -14,6 +14,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
+// Cache for storing recent responses to avoid duplicate API calls
+const responseCache = new Map();
+const CACHE_TTL = 1000 * 60 * 10; // 10 minutes
+
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -48,8 +52,56 @@ Deno.serve(async (req) => {
     // Get the request body
     const requestData = await req.json();
     
-    if (!requestData.prompt || !requestData.imageData) {
-      throw new Error('Missing required parameters: prompt and imageData');
+    if (!requestData.prompt) {
+      throw new Error('Missing required parameter: prompt');
+    }
+
+    // Generate a cache key based on the request data
+    const cacheKey = JSON.stringify({
+      prompt: requestData.prompt,
+      imageData: requestData.imageData ? true : false, // Just store if image exists, not the full data
+      generationConfig: requestData.generationConfig
+    });
+
+    // Check if we have a cached response
+    const cachedResponse = responseCache.get(cacheKey);
+    if (cachedResponse && cachedResponse.timestamp > Date.now() - CACHE_TTL) {
+      console.log('Using cached Gemini API response');
+      return new Response(JSON.stringify(cachedResponse.data), {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+
+    // Prepare the request body with optimized parameters
+    const apiRequestBody = {
+      contents: [
+        {
+          parts: [
+            { text: requestData.prompt }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: 256,
+        topP: 0.8,
+        topK: 40,
+        ...requestData.generationConfig
+      },
+      safetySettings: requestData.safetySettings || []
+    };
+
+    // Add image data if provided
+    if (requestData.imageData) {
+      apiRequestBody.contents[0].parts.push({
+        inline_data: {
+          mime_type: requestData.imageData.mimeType,
+          data: requestData.imageData.data
+        }
+      });
     }
 
     // Forward the request to Google's Gemini API
@@ -59,23 +111,7 @@ Deno.serve(async (req) => {
         'Content-Type': 'application/json',
         'x-goog-api-key': GEMINI_API_KEY,
       },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              { text: requestData.prompt },
-              {
-                inline_data: {
-                  mime_type: requestData.imageData.mimeType,
-                  data: requestData.imageData.data
-                }
-              }
-            ]
-          }
-        ],
-        generationConfig: requestData.generationConfig || {},
-        safetySettings: requestData.safetySettings || []
-      }),
+      body: JSON.stringify(apiRequestBody),
     });
 
     if (!response.ok) {
@@ -84,6 +120,19 @@ Deno.serve(async (req) => {
     }
 
     const data = await response.json();
+
+    // Cache the response
+    responseCache.set(cacheKey, {
+      data,
+      timestamp: Date.now()
+    });
+
+    // Clean up old cache entries
+    for (const [key, value] of responseCache.entries()) {
+      if (value.timestamp <= Date.now() - CACHE_TTL) {
+        responseCache.delete(key);
+      }
+    }
 
     // Return the response
     return new Response(JSON.stringify(data), {

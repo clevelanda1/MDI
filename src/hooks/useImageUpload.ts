@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { UploadState, DetectedElement } from '../types/studio';
 import { analyzeImage, generateDualSearchQueries } from '../utils/imageAnalysis';
 import { ProjectService } from '../services/projectService';
@@ -16,6 +16,9 @@ export const useImageUpload = () => {
     amazon: true,
     etsy: true
   });
+  
+  // Add a ref to store the last successful upload
+  const lastSuccessfulUploadRef = useRef<{file: File, timestamp: number} | null>(null);
 
   // Check API limits on component mount
   useEffect(() => {
@@ -38,6 +41,7 @@ export const useImageUpload = () => {
 
   const processImage = async (file: File) => {
     try {
+      // Start with uploading state
       setUploadState({
         status: 'uploading',
         file,
@@ -45,26 +49,51 @@ export const useImageUpload = () => {
         detectedElements: [] // Ensure it's always an array
       });
 
+      // Move to analyzing state
       setUploadState(prev => ({ ...prev, status: 'analyzing' }));
-      const elements = await analyzeImage(file);
+      
+      // Store this file as the last successful upload (even before analysis completes)
+      lastSuccessfulUploadRef.current = {
+        file,
+        timestamp: Date.now()
+      };
 
+      // Process elements in parallel for speed
+      const elements = await analyzeImage(file);
       const detectedElements: DetectedElement[] = [];
       
-      for (const element of elements) {
-        const dualQueries = await generateDualSearchQueries(element);
-        detectedElements.push({
-          name: element,
-          amazonQueries: dualQueries.amazonQueries,
-          etsyQueries: dualQueries.etsyQueries,
-          status: 'idle' // Initialize with idle status
-        });
-      }
-
+      // Process all elements in parallel
+      const elementPromises = elements.map(async (element) => {
+        try {
+          const dualQueries = await generateDualSearchQueries(element);
+          return {
+            name: element,
+            amazonQueries: dualQueries.amazonQueries,
+            etsyQueries: dualQueries.etsyQueries,
+            status: 'idle' // Initialize with idle status
+          };
+        } catch (error) {
+          console.error(`Error generating queries for ${element}:`, error);
+          // Return a basic element with default queries if generation fails
+          return {
+            name: element,
+            amazonQueries: [`${element} furniture`, `modern ${element.toLowerCase()}`],
+            etsyQueries: [`handmade ${element.toLowerCase()}`, `custom ${element.toLowerCase()} decor`],
+            status: 'idle'
+          };
+        }
+      });
+      
+      // Wait for all element processing to complete
+      const processedElements = await Promise.all(elementPromises);
+      
+      // Update state with all processed elements
       setUploadState(prev => ({
         ...prev,
         status: 'complete',
-        detectedElements
+        detectedElements: processedElements
       }));
+      
     } catch (error) {
       console.error('Error processing image:', error);
       setUploadState(prev => ({ 
