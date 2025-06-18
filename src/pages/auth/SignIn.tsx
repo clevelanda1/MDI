@@ -182,43 +182,78 @@ const SignIn: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Left Side - Branding (FIXED DISPLAY LOGIC) */}
-      <div 
+      {/* Left Side - Branding (WITH ANIMATIONS) */}
+      <motion.div 
         className="lg:w-1/2 relative z-10 flex-col justify-center pl-6 pr-12 lg:pl-12 lg:pr-12 xl:pl-16 xl:pr-16 bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900"
         style={{ display: showLeftPanel ? 'flex' : 'none' }}
+        initial={{ opacity: 0, x: -50 }}
+        animate={{ opacity: showLeftPanel ? 1 : 0, x: showLeftPanel ? 0 : -50 }}
+        transition={{ duration: 1, ease: "easeOut" }}
       >
         <div className="max-w-lg ml-auto text-white">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: showLeftPanel ? 1 : 0, y: showLeftPanel ? 0 : 20 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6">
               <span className="text-sm font-medium">Welcome back to My Design Index</span>
             </div>
-          </div>
+          </motion.div>
 
-          <h1 className="text-4xl xl:text-5xl font-light leading-tight mb-4">
+          <motion.h1 
+            className="text-4xl xl:text-5xl font-light leading-tight mb-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: showLeftPanel ? 1 : 0, y: showLeftPanel ? 0 : 30 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
             Turning Inspiration Into
             <span className="block font-semibold bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
               Shoppable Products
             </span>
-          </h1>
+          </motion.h1>
           
-          <p className="text-lg text-slate-300 leading-relaxed mb-6 font-light">
+          <motion.p 
+            className="text-lg text-slate-300 leading-relaxed mb-6 font-light"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: showLeftPanel ? 1 : 0, y: showLeftPanel ? 0 : 20 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+          >
             Continue where you left off. Access your saved projects, vision boards, and curated product recommendations.
-          </p>
+          </motion.p>
 
-          <div className="flex items-center gap-6">
+          <motion.div
+            className="flex items-center gap-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: showLeftPanel ? 1 : 0, y: showLeftPanel ? 0 : 20 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
+          >
             {[
               { metric: "Skip The Search", label: "We'll Shop For You" },
               { metric: "Instant Alternatives", label: "No Waiting Around" },
               { metric: "Vision Boards", label: "Share Anywhere" }
             ].map((stat, index) => (
-              <div key={stat.label} className="text-center">
+              <motion.div 
+                key={stat.label} 
+                className="text-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ 
+                  opacity: showLeftPanel ? 1 : 0, 
+                  scale: showLeftPanel ? 1 : 0.8 
+                }}
+                transition={{ 
+                  delay: 1.1 + (index * 0.1), 
+                  duration: 0.6,
+                  ease: "easeOut"
+                }}
+              >
                 <div className="text-2xl font-semibold">{stat.metric}</div>
                 <div className="text-sm text-slate-400 font-medium">{stat.label}</div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Right Side - Form (ADJUSTED WIDTH BASED ON LEFT PANEL) */}
       <motion.div 
