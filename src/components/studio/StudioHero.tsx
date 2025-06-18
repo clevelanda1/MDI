@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
 
 const StudioHero: React.FC = () => {
   const containerVariants = {
@@ -22,6 +28,28 @@ const StudioHero: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    // Load AdSense script if not already loaded
+    if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8497089190565366';
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      document.head.appendChild(script);
+    }
+
+    // Initialize AdSense after component mounts
+    const timer = setTimeout(() => {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error('AdSense error:', e);
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <motion.div 
       className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-white py-16 lg:py-20 relative overflow-hidden"
@@ -42,35 +70,57 @@ const StudioHero: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <motion.div 
-          className="max-w-4xl"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div
-            variants={itemVariants}
-            className="w-16 h-1 bg-gradient-to-r from-violet-400 to-blue-400 mb-6 rounded-full"
-          />
-          
-          <motion.h1 
-            variants={itemVariants}
-            className="font-light text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight"
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          {/* Main Content - Left Side */}
+          <motion.div 
+            className="lg:col-span-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            Your AI-Powered
-            <span className="block font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-              Design Studio
-            </span>
-          </motion.h1>
-          
-          <motion.p 
+            <motion.div
+              variants={itemVariants}
+              className="w-16 h-1 bg-gradient-to-r from-violet-400 to-blue-400 mb-6 rounded-full"
+            />
+            
+            <motion.h1 
+              variants={itemVariants}
+              className="font-light text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight"
+            >
+              Your AI-Powered
+              <span className="block font-semibold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                Design Studio
+              </span>
+            </motion.h1>
+            
+            <motion.p 
+              variants={itemVariants}
+              className="text-xl text-slate-300 leading-relaxed max-w-3xl font-light"
+            >
+              Transform your space with intelligent design analysis. Upload any interior design and receive 
+              curated recommendations from both Amazon and Etsy, powered by My Design Index.
+            </motion.p>
+          </motion.div>
+
+          {/* AdSense Ad - Right Side */}
+          <motion.div 
+            className="lg:col-span-4"
             variants={itemVariants}
-            className="text-xl text-slate-300 leading-relaxed max-w-3xl font-light"
+            initial="hidden"
+            animate="visible"
           >
-            Transform your space with intelligent design analysis. Upload any interior design and receive 
-            curated recommendations from both Amazon and Etsy, powered by My Design Index.
-          </motion.p>
-        </motion.div>
+            <div className="bg-slate-800/30 backdrop-blur-sm rounded-lg p-4 border border-slate-700/50">
+              <ins 
+                className="adsbygoogle"
+                style={{ display: 'block' }}
+                data-ad-client="ca-pub-8497089190565366"
+                data-ad-slot="3152769148"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+              />
+            </div>
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );
