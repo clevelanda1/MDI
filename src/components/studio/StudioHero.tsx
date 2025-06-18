@@ -29,23 +29,19 @@ const StudioHero: React.FC = () => {
   };
 
   useEffect(() => {
-    // Load AdSense script if not already loaded
-    if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
-      const script = document.createElement('script');
-      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8497089190565366';
-      script.async = true;
-      script.crossOrigin = 'anonymous';
-      document.head.appendChild(script);
-    }
-
     // Initialize AdSense after component mounts
     const timer = setTimeout(() => {
       try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+        if (typeof window !== 'undefined' && window.adsbygoogle) {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          console.log('Hero AdSense initialized successfully');
+        } else {
+          console.log('AdSense not available yet in hero section');
+        }
       } catch (e) {
-        console.error('AdSense error:', e);
+        console.error('Hero AdSense error:', e);
       }
-    }, 100);
+    }, 200);
 
     return () => clearTimeout(timer);
   }, []);
@@ -112,7 +108,11 @@ const StudioHero: React.FC = () => {
             <div className="bg-slate-800/30 backdrop-blur-sm rounded-lg p-4 border border-slate-700/50">
               <ins 
                 className="adsbygoogle"
-                style={{ display: 'block' }}
+                style={{ 
+                  display: 'block',
+                  minHeight: '250px',
+                  width: '100%'
+                }}
                 data-ad-client="ca-pub-8497089190565366"
                 data-ad-slot="3152769148"
                 data-ad-format="auto"
