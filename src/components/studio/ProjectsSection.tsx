@@ -37,16 +37,27 @@ const ProjectsSection: React.FC<ProjectsSectionProps & { projectsSectionRef: Rea
 }) => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
   
-  // Initialize AdSense when component mounts
+  // Initialize AdSense when component mounts and when projects change
   useEffect(() => {
-    try {
-      if (typeof window !== 'undefined' && window.adsbygoogle) {
-        (window.adsbygoogle as any).push({});
+    const initializeAdSense = () => {
+      try {
+        if (typeof window !== 'undefined' && (window as any).adsbygoogle) {
+          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+          console.log('AdSense initialized successfully');
+        } else {
+          console.log('AdSense not yet available, will retry...');
+          // Retry after a short delay if AdSense script hasn't loaded yet
+          setTimeout(initializeAdSense, 1000);
+        }
+      } catch (error) {
+        console.log('AdSense initialization error:', error);
       }
-    } catch (error) {
-      console.log('AdSense error:', error);
-    }
-  }, []);
+    };
+
+    // Small delay to ensure the ad container is in the DOM
+    const timer = setTimeout(initializeAdSense, 100);
+    return () => clearTimeout(timer);
+  }, [filteredProjects]);
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -280,27 +291,26 @@ const ProjectsSection: React.FC<ProjectsSectionProps & { projectsSectionRef: Rea
         </div>
       )}
 
-      {/* AdSense Advertisement */}
-      <div className="mt-12 mb-8">
-        <div 
-          className="w-full flex justify-center"
-          dangerouslySetInnerHTML={{
-            __html: `
-              <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8497089190565366" crossorigin="anonymous"></script>
-              <!-- Project (bottom) -->
-              <ins class="adsbygoogle"
-                   style="display:block"
-                   data-ad-client="ca-pub-8497089190565366"
-                   data-ad-slot="5620786867"
-                   data-ad-format="auto"
-                   data-full-width-responsive="true"></ins>
-              <script>
-                   (window.adsbygoogle = window.adsbygoogle || []).push({});
-              </script>
-            `
+      {/* AdSense Advertisement - Positioned at the bottom */}
+      <motion.div 
+        className="mt-16 mb-8 w-full flex justify-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+      >
+        <ins 
+          className="adsbygoogle"
+          style={{ 
+            display: 'block',
+            minHeight: '100px', // Minimum height to reserve space
+            width: '100%'
           }}
+          data-ad-client="ca-pub-8497089190565366"
+          data-ad-slot="5620786867"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
         />
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
