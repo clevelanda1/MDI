@@ -79,16 +79,19 @@ Deno.serve(async (req) => {
       { api_name: 'etsy', user_id_param: user.id }
     );
 
+    // Construct the URL with query parameters
+    const searchParams = new URLSearchParams({
+      query,
+      page,
+    });
+    const apiUrl = `${BASE_URL}/product/search?${searchParams.toString()}`;
+
     // Make the request to RapidAPI
-    const response = await fetch(`${BASE_URL}/product/search`, {
+    const response = await fetch(apiUrl, {
       method: 'GET',
       headers: {
         'X-RapidAPI-Key': RAPIDAPI_KEY,
         'X-RapidAPI-Host': RAPIDAPI_HOST,
-      },
-      params: {
-        query,
-        page,
       },
     });
 
