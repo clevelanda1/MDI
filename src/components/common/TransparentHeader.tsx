@@ -493,11 +493,11 @@ const TransparentHeader: React.FC = () => {
                   </span>
                 </motion.button>
 
-                {/* Enhanced User Dropdown Menu - Updated styling to match Navbar */}
+                {/* Enhanced User Dropdown Menu - Fixed hover backgrounds */}
                 <AnimatePresence>
                   {isUserMenuOpen && (
                     <motion.div
-                      className="absolute right-0 top-full mt-5 w-80 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50"
+                      className="absolute right-0 top-full mt-5 w-80 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50 overflow-hidden"
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -526,7 +526,6 @@ const TransparentHeader: React.FC = () => {
                       <div className="px-4 py-3 border-b border-slate-200/50">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            {/*<User size={16} className="text-slate-500" />*/}
                             <span className="text-sm font-medium text-slate-700">Subscription</span>
                           </div>
                           <span className={`text-xs font-medium px-2 py-1 rounded-full ${getPlanColor()}`}>
@@ -535,19 +534,18 @@ const TransparentHeader: React.FC = () => {
                         </div>
                       </div>
                       
-                      {/* Account Settings button */}
+                      {/* Account Settings button - Fixed hover background */}
                       <motion.button 
                         onClick={handleAccountClick}
-                        className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden"
+                        className="group w-full px-4 py-3 text-left transition-all duration-300 relative"
                         whileHover={{ x: 2 }}
                         transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       >
                         <motion.div
-                          className="absolute inset-0 bg-slate-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          className="absolute inset-x-0 inset-y-0 bg-slate-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                         />
                         
                         <div className="relative z-10 flex items-center gap-3">
-                          {/*<Settings size={16} />*/}
                           <div>
                             <span className="font-medium text-slate-700 group-hover:text-slate-800 transition-colors">
                               Manage
@@ -560,16 +558,15 @@ const TransparentHeader: React.FC = () => {
                       {subscription.tier === 'free' && (
                         <motion.button 
                           onClick={handleUpgradeClick}
-                          className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden"
+                          className="group w-full px-4 py-3 text-left transition-all duration-300 relative"
                           whileHover={{ x: 2 }}
                           transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         >
                           <motion.div
-                            className="absolute inset-0 bg-violet-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            className="absolute inset-x-0 inset-y-0 bg-violet-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           />
                           
                           <div className="relative z-10 flex items-center gap-3">
-                            {/*<Crown size={16} />*/}
                             <div>
                               <span className="font-medium text-violet-600 group-hover:text-violet-700 transition-colors">
                                 Upgrade Plan
@@ -582,77 +579,26 @@ const TransparentHeader: React.FC = () => {
                       
                       {/* Divider */}
                       <div className="border-t border-slate-200/50 mt-2 pt-2">
-                        {/* Enhanced Sign out button */}
+                        {/* Enhanced Sign out button - Fixed hover background with proper rounding */}
                         <motion.button 
                           onClick={handleLogout}
                           disabled={isLoggingOut}
-                          className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden disabled:opacity-50"
+                          className="group w-full px-4 py-3 text-left transition-all duration-300 relative disabled:opacity-50 rounded-b-3xl"
                           whileHover={{ x: 2 }}
                           whileTap={{ scale: 0.98 }}
                           transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         >
                           <motion.div
-                            className="absolute inset-0 bg-red-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            className="absolute inset-x-0 inset-y-0 bg-red-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-3xl"
                           />
                           
                           <div className="relative z-10 flex items-center gap-3">
-                            {/*<LogOut size={16} />*/}
                             <span className="text-red-600 group-hover:text-red-700 transition-colors font-medium">
                               {isLoggingOut ? 'Signing out...' : 'Sign out'}
                             </span>
                           </div>
                         </motion.button>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ) : (
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Link 
-                  to="/signin" 
-                  className="relative inline-flex items-center justify-center px-6 py-2.5 font-medium text-sm transition-all duration-300 rounded-full overflow-hidden text-white bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 shadow-lg hover:shadow-xl"
-                  style={{ minWidth: '120px', textAlign: 'center' }}
-                >
-                  Get started
-                </Link>
-              </motion.div>
-            )}
-
-            {/* Mobile Menu Toggle */}
-            <div className="md:hidden">
-              <motion.button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`p-2 rounded-full transition-all duration-300`}
-                style={{
-                  background: isMobileMenuOpen ? getHoverBg() : 'transparent'
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <AnimatePresence mode="wait">
-                  {isMobileMenuOpen ? (
-                    <motion.div
-                      key="close"
-                      initial={{ rotate: -90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: 90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <X className={`h-5 w-5 ${getTextColor()}`} />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="menu"
-                      initial={{ rotate: 90, opacity: 0 }}
-                      animate={{ rotate: 0, opacity: 1 }}
-                      exit={{ rotate: -90, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Menu className={`h-5 w-5 ${getTextColor()}`} />
                     </motion.div>
                   )}
                 </AnimatePresence>
