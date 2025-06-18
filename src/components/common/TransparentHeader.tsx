@@ -552,6 +552,7 @@ const TransparentHeader: React.FC = () => {
                             <span className="font-medium text-slate-700 group-hover:text-slate-800 transition-colors">
                               Account Settings
                             </span>
+                            <p className="text-xs text-slate-500">Manage your account settings</p>
                           </div>
                         </div>
                       </motion.button>
