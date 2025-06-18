@@ -118,7 +118,7 @@ const Upgrade: React.FC = () => {
     '25 active projects',
     '200 Amazon searches/month',
     '125 Etsy searches/month',
-    'Custom seary queries',
+    'Custom search queries',
     '12 active vision boards',
     'Vision board sharing',
     'Ad-free experience'
