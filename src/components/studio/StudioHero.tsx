@@ -116,19 +116,18 @@ const StudioHero: React.FC = () => {
 
             {/* AdSense Ad - Right Side */}
             <motion.div 
-              className="lg:col-span-4"
+              className="lg:col-span-4 flex justify-center"
               variants={itemVariants}
               initial="hidden"
               animate="visible"
             >
-              <div className="bg-slate-800/30 backdrop-blur-sm rounded-lg p-4 border border-slate-700/50">
+              <div className="bg-slate-800/30 backdrop-blur-sm rounded-lg p-4 border border-slate-700/50 w-80 h-80 flex items-center justify-center">
                 <ins 
                   className="adsbygoogle"
-                  style={{ display: 'block' }}
+                  style={{ display: 'inline-block', width: '280px', height: '280px' }}
                   data-ad-client="ca-pub-8497089190565366"
                   data-ad-slot="3152769148"
-                  data-ad-format="auto"
-                  data-full-width-responsive="true"
+                  data-ad-format="rectangle"
                 />
               </div>
             </motion.div>
