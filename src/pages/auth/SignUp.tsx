@@ -528,8 +528,8 @@ const SignUp: React.FC = () => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.8 }}
           >
-            <Shield size={14} />
-            <p className="text-xs">Your data is encrypted and secure</p>
+            {/*<Shield size={14} />
+            <p className="text-xs">Your data is encrypted and secure</p>*/}
           </motion.div>
         </div>
       </motion.div>

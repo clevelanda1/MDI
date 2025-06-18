@@ -197,7 +197,7 @@ const SignIn: React.FC = () => {
             transition={{ delay: 0.3, duration: 0.8 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6">
-              <span className="text-sm font-medium">Welcome back to My Design Index</span>
+              <span className="text-sm font-medium">Welcome back to MDI Design Studio</span>
             </div>
           </motion.div>
 
@@ -450,7 +450,7 @@ const SignIn: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Trust Indicators */}
+          {/* Trust Indicators 
           <motion.div
             className="mt-4 text-center"
             initial={{ opacity: 0 }}
@@ -465,7 +465,7 @@ const SignIn: React.FC = () => {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </motion.div>*/}
         </div>
       </motion.div>
     </div>

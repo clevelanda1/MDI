@@ -497,7 +497,7 @@ const TransparentHeader: React.FC = () => {
                 <AnimatePresence>
                   {isUserMenuOpen && (
                     <motion.div
-                      className="absolute right-0 top-full mt-5 w-72 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50"
+                      className="absolute right-0 top-full mt-5 w-80 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50"
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -550,7 +550,7 @@ const TransparentHeader: React.FC = () => {
                           {/*<Settings size={16} />*/}
                           <div>
                             <span className="font-medium text-slate-700 group-hover:text-slate-800 transition-colors">
-                              Account Settings
+                              Manage
                             </span>
                             <p className="text-xs text-slate-500">Manage your account settings</p>
                           </div>
