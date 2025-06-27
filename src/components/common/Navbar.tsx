@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, Crown, Settings } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Crown, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -8,20 +8,18 @@ const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [logoColorStates] = useState([0, 1, 2, 3]); // Static color states for each dot
+  const [logoColorStates] = useState([0, 1, 2, 3]);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
 
-  // Your original 4 color gradients
   const colorGradients = [
-    { id: 'gradient1', colors: ['#8b5cf6', '#a855f7'] }, // Violet
-    { id: 'gradient2', colors: ['#3b82f6', '#2563eb'] }, // Blue
-    { id: 'gradient3', colors: ['#7c3aed', '#6d28d9'] }, // Purple
-    { id: 'gradient4', colors: ['#475569', '#334155'] }, // Slate
+    { id: 'gradient1', colors: ['#8b5cf6', '#a855f7'] },
+    { id: 'gradient2', colors: ['#3b82f6', '#2563eb'] },
+    { id: 'gradient3', colors: ['#7c3aed', '#6d28d9'] },
+    { id: 'gradient4', colors: ['#475569', '#334155'] },
   ];
 
-  // Pages that need solid navbar background
   const solidNavbarPages = ['/studio', '/curation', '/visionboard', '/upgrade', '/account'];
   const needsSolidNavbar = solidNavbarPages.includes(location.pathname);
 
@@ -30,23 +28,15 @@ const Navbar: React.FC = () => {
       const scrolled = window.scrollY > 30;
       setIsScrolled(scrolled);
     };
-
     window.addEventListener('scroll', handleScroll);
-    // Check initial scroll position
     handleScroll();
-    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close menus when route changes
   useEffect(() => {
     setIsMenuOpen(false);
     setIsUserMenuOpen(false);
   }, [location.pathname]);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const handleLogout = async () => {
     try {
@@ -57,7 +47,6 @@ const Navbar: React.FC = () => {
     }
   };
 
-  // Handle logo click based on authentication status
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (isAuthenticated) {
@@ -67,52 +56,16 @@ const Navbar: React.FC = () => {
     }
   };
 
-  // Handle upgrade navigation
   const handleUpgradeClick = () => {
     setIsUserMenuOpen(false);
     navigate('/upgrade');
   };
 
-  // Handle account settings navigation
   const handleAccountClick = () => {
     setIsUserMenuOpen(false);
     navigate('/account');
   };
 
-  const navVariants = {
-    hidden: { y: -100, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
-
-  const menuVariants = {
-    closed: { 
-      opacity: 0,
-      y: -20,
-      scale: 0.95,
-      transition: { duration: 0.2, ease: "easeIn" }
-    },
-    open: { 
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
-    }
-  };
-
-  const itemVariants = {
-    closed: { opacity: 0, x: -20 },
-    open: (i: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: { delay: i * 0.1, duration: 0.4, ease: "easeOut" }
-    })
-  };
-
-  // Determine navbar styling based on page and scroll state
   const getNavbarStyle = () => {
     if (needsSolidNavbar || isScrolled) {
       return {
@@ -121,15 +74,12 @@ const Navbar: React.FC = () => {
         WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
         borderBottom: '1px solid rgba(148, 163, 184, 0.2)',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-        // Fallback for browsers that don't support backdrop-filter
         backgroundColor: !CSS?.supports?.('backdrop-filter', 'blur(20px)') 
           ? 'rgba(255, 255, 255, 0.98)' 
           : undefined
       };
     }
-    return {
-      background: 'transparent'
-    };
+    return { background: 'transparent' };
   };
 
   const getTextColor = () => {
@@ -146,192 +96,95 @@ const Navbar: React.FC = () => {
 
   return (
     <motion.nav 
-      variants={navVariants}
-      initial="hidden"
-      animate="visible"
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 transition-all duration-500 ${
         isScrolled || needsSolidNavbar ? 'py-3' : 'py-4'
       }`}
-      style={{
-        ...getNavbarStyle(),
-        zIndex: 9999 // Increased z-index
-      }}
+      style={{ ...getNavbarStyle(), zIndex: 9999 }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex justify-between items-center relative">
         
-        {/* Logo - Simplified to just the 4-dot logo */}
-        <button 
-          onClick={handleLogoClick} 
-          className="flex items-center z-10 group"
-        >
-          {/* Four-Circle Logo */}
+        {/* LOGO ONLY - No text whatsoever */}
+        <button onClick={handleLogoClick} className="flex items-center z-10 group">
           <motion.div 
             className="relative w-8 h-8 flex-shrink-0"
-            whileHover={{ 
-              scale: 1.05,
-              transition: { type: "spring", stiffness: 400, damping: 17 }
-            }}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
             <svg width="32" height="32" viewBox="0 0 32 32" className="w-full h-full">
-              {/* Glow effects behind each circle */}
+              {/* Glow effects */}
               <motion.circle 
-                cx="10" 
-                cy="10" 
-                r="8" 
+                cx="10" cy="10" r="8" 
                 fill="rgba(139, 92, 246, 0.3)"
-                initial={{ opacity: 0 }}
-                animate={{ 
-                  opacity: [0, 0.6, 0]
-                }}
-                transition={{ 
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0 * 0.6
-                }}
+                animate={{ opacity: [0, 0.6, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0 }}
               />
               <motion.circle 
-                cx="22" 
-                cy="10" 
-                r="8" 
+                cx="22" cy="10" r="8" 
                 fill="rgba(59, 130, 246, 0.3)"
-                initial={{ opacity: 0 }}
-                animate={{ 
-                  opacity: [0, 0.6, 0]
-                }}
-                transition={{ 
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1 * 0.6
-                }}
+                animate={{ opacity: [0, 0.6, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
               />
               <motion.circle 
-                cx="10" 
-                cy="22" 
-                r="8" 
+                cx="10" cy="22" r="8" 
                 fill="rgba(124, 58, 237, 0.3)"
-                initial={{ opacity: 0 }}
-                animate={{ 
-                  opacity: [0, 0.6, 0]
-                }}
-                transition={{ 
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 2 * 0.6
-                }}
+                animate={{ opacity: [0, 0.6, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
               />
               <motion.circle 
-                cx="22" 
-                cy="22" 
-                r="8" 
+                cx="22" cy="22" r="8" 
                 fill="rgba(71, 85, 105, 0.3)"
-                initial={{ opacity: 0 }}
-                animate={{ 
-                  opacity: [0, 0.6, 0]
-                }}
-                transition={{ 
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 3 * 0.6
-                }}
+                animate={{ opacity: [0, 0.6, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
               />
 
-              {/* Main circles on top */}
+              {/* Main circles */}
               <motion.circle 
-                cx="10" 
-                cy="10" 
-                r="6" 
-                fill={`url(#${colorGradients[logoColorStates[0]].id})`}
+                cx="10" cy="10" r="6" 
+                fill={`url(#${colorGradients[0].id})`}
                 initial={{ scale: 0, opacity: 0.3 }}
-                animate={{ 
-                  scale: 1,
-                  opacity: [0.3, 1, 0.3]
-                }}
+                animate={{ scale: 1, opacity: [0.3, 1, 0.3] }}
                 transition={{ 
                   scale: { delay: 0.1, type: "spring", stiffness: 400, damping: 17 },
-                  opacity: { 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0 * 0.6
-                  }
+                  opacity: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0 }
                 }}
               />
               <motion.circle 
-                cx="22" 
-                cy="10" 
-                r="6" 
-                fill={`url(#${colorGradients[logoColorStates[1]].id})`}
+                cx="22" cy="10" r="6" 
+                fill={`url(#${colorGradients[1].id})`}
                 initial={{ scale: 0, opacity: 0.3 }}
-                animate={{ 
-                  scale: 1,
-                  opacity: [0.3, 1, 0.3]
-                }}
+                animate={{ scale: 1, opacity: [0.3, 1, 0.3] }}
                 transition={{ 
                   scale: { delay: 0.2, type: "spring", stiffness: 400, damping: 17 },
-                  opacity: { 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1 * 0.6
-                  }
+                  opacity: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }
                 }}
               />
               <motion.circle 
-                cx="10" 
-                cy="22" 
-                r="6" 
-                fill={`url(#${colorGradients[logoColorStates[2]].id})`}
+                cx="10" cy="22" r="6" 
+                fill={`url(#${colorGradients[2].id})`}
                 initial={{ scale: 0, opacity: 0.3 }}
-                animate={{ 
-                  scale: 1,
-                  opacity: [0.3, 1, 0.3]
-                }}
+                animate={{ scale: 1, opacity: [0.3, 1, 0.3] }}
                 transition={{ 
                   scale: { delay: 0.3, type: "spring", stiffness: 400, damping: 17 },
-                  opacity: { 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 2 * 0.6
-                  }
+                  opacity: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.2 }
                 }}
               />
               <motion.circle 
-                cx="22" 
-                cy="22" 
-                r="6" 
-                fill={`url(#${colorGradients[logoColorStates[3]].id})`}
+                cx="22" cy="22" r="6" 
+                fill={`url(#${colorGradients[3].id})`}
                 initial={{ scale: 0, opacity: 0.3 }}
-                animate={{ 
-                  scale: 1,
-                  opacity: [0.3, 1, 0.3]
-                }}
+                animate={{ scale: 1, opacity: [0.3, 1, 0.3] }}
                 transition={{ 
                   scale: { delay: 0.4, type: "spring", stiffness: 400, damping: 17 },
-                  opacity: { 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 3 * 0.6
-                  }
+                  opacity: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.8 }
                 }}
               />
               
-              {/* All gradient definitions */}
               <defs>
                 {colorGradients.map((gradient) => (
-                  <linearGradient 
-                    key={gradient.id}
-                    id={gradient.id} 
-                    x1="0%" 
-                    y1="0%" 
-                    x2="100%" 
-                    y2="100%"
-                  >
+                  <linearGradient key={gradient.id} id={gradient.id} x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor={gradient.colors[0]} />
                     <stop offset="100%" stopColor={gradient.colors[1]} />
                   </linearGradient>
@@ -341,34 +194,19 @@ const Navbar: React.FC = () => {
           </motion.div>
         </button>
 
-        {/* Desktop Navigation - Empty for clean look */}
-        <div className="hidden md:flex items-center justify-end flex-1">
-          {/* Navigation items removed as requested */}
-        </div>
+        {/* MIDDLE SECTION - COMPLETELY EMPTY */}
+        <div className="flex-1"></div>
 
-        {/* Desktop Auth Section - Only show user menu for authenticated users */}
-        <div className="hidden md:flex items-center gap-3">
-          {isAuthenticated ? (
-            // Authenticated user menu
+        {/* RIGHT SECTION - Only show user menu if authenticated */}
+        {isAuthenticated ? (
+          <div className="hidden md:flex items-center">
             <div className="relative">
               <motion.button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 className="flex items-center gap-3 px-4 py-2.5 rounded-full transition-all duration-300"
-                style={{
-                  background: isUserMenuOpen ? getHoverBg() : 'transparent'
-                }}
+                style={{ background: isUserMenuOpen ? getHoverBg() : 'transparent' }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onMouseEnter={(e) => {
-                  if (!isUserMenuOpen) {
-                    e.currentTarget.style.background = getHoverBg();
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isUserMenuOpen) {
-                    e.currentTarget.style.background = 'transparent';
-                  }
-                }}
               >
                 <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                   {user?.user_metadata?.first_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
@@ -378,23 +216,17 @@ const Navbar: React.FC = () => {
                 </span>
               </motion.button>
 
-              {/* Enhanced User Dropdown Menu */}
               <AnimatePresence>
                 {isUserMenuOpen && (
                   <motion.div
                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                    transition={{ 
-                      duration: 0.3, 
-                      ease: [0.22, 1, 0.36, 1] 
-                    }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     className="absolute right-0 top-full mt-5 w-80 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50"
                   >
-                    {/* Header section */}
                     <div className="px-4 py-3 border-b border-slate-200/50">
                       <div className="flex items-center gap-3">
-                        {/* Enhanced avatar */}
                         <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-semibold text-sm">
                           {user?.user_metadata?.first_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
                         </div>
@@ -407,66 +239,31 @@ const Navbar: React.FC = () => {
                       </div>
                     </div>
                     
-                    {/* Account Settings button */}
-                    <motion.button 
-                      onClick={handleAccountClick}
-                      className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden"
-                      whileHover={{ x: 2 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    >
-                      <motion.div
-                        className="absolute inset-0 bg-slate-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      />
-                      
+                    <motion.button onClick={handleAccountClick} className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden" whileHover={{ x: 2 }}>
+                      <motion.div className="absolute inset-0 bg-slate-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       <div className="relative z-10 flex items-center gap-3">
                         <div>
-                          <span className="font-medium text-slate-700 group-hover:text-slate-800 transition-colors">
-                            Account
-                          </span>
+                          <span className="font-medium text-slate-700 group-hover:text-slate-800 transition-colors">Account</span>
                           <p className="text-xs text-slate-500">Manage your account</p>
                         </div>
                       </div>
                     </motion.button>
                     
-                    {/* Enhanced Upgrade button */}
-                    <motion.button 
-                      onClick={handleUpgradeClick}
-                      className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden"
-                      whileHover={{ x: 2 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    >
-                      <motion.div
-                        className="absolute inset-0 bg-violet-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      />
-                      
+                    <motion.button onClick={handleUpgradeClick} className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden" whileHover={{ x: 2 }}>
+                      <motion.div className="absolute inset-0 bg-violet-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       <div className="relative z-10 flex items-center gap-3">
                         <div>
-                          <span className="font-medium text-violet-600 group-hover:text-violet-700 transition-colors">
-                            Upgrade
-                          </span>
+                          <span className="font-medium text-violet-600 group-hover:text-violet-700 transition-colors">Upgrade</span>
                           <p className="text-xs text-slate-500">Want to remove ads?</p>
                         </div>
                       </div>
                     </motion.button>
                     
-                    {/* Divider */}
                     <div className="border-t border-slate-200/50 mt-2 pt-2">
-                      {/* Enhanced Sign out button */}
-                      <motion.button 
-                        onClick={handleLogout}
-                        className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden"
-                        whileHover={{ x: 2 }}
-                        whileTap={{ scale: 0.98 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                      >
-                        <motion.div
-                          className="absolute inset-0 bg-red-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        />
-                        
+                      <motion.button onClick={handleLogout} className="group w-full px-4 py-3 text-left transition-all duration-300 relative overflow-hidden" whileHover={{ x: 2 }} whileTap={{ scale: 0.98 }}>
+                        <motion.div className="absolute inset-0 bg-red-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <div className="relative z-10 flex items-center gap-3">
-                          <span className="text-red-600 group-hover:text-red-700 transition-colors font-medium">
-                            Sign Out
-                          </span>
+                          <span className="text-red-600 group-hover:text-red-700 transition-colors font-medium">Sign Out</span>
                         </div>
                       </motion.button>
                     </div>
@@ -474,10 +271,10 @@ const Navbar: React.FC = () => {
                 )}
               </AnimatePresence>
             </div>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
 
-        {/* Mobile Navigation Toggle - Always visible */}
+        {/* Mobile menu button */}
         <motion.button 
           className="md:hidden z-10 p-2.5 rounded-full transition-all duration-300"
           style={{
@@ -485,39 +282,16 @@ const Navbar: React.FC = () => {
             minWidth: '44px',
             minHeight: '44px'
           }}
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
           whileTap={{ scale: 0.9 }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = (needsSolidNavbar || isScrolled) 
-              ? 'rgba(148, 163, 184, 0.2)' 
-              : 'rgba(255, 255, 255, 0.2)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = (needsSolidNavbar || isScrolled) 
-              ? 'rgba(148, 163, 184, 0.1)' 
-              : 'rgba(255, 255, 255, 0.1)';
-          }}
         >
           <AnimatePresence mode="wait">
             {isMenuOpen ? (
-              <motion.div
-                key="close"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
+              <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
                 <X className={`h-5 w-5 ${getTextColor()}`} />
               </motion.div>
             ) : (
-              <motion.div
-                key="menu"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
+              <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
                 <Menu className={`h-5 w-5 ${getTextColor()}`} />
               </motion.div>
             )}
@@ -529,33 +303,26 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            variants={menuVariants}
-            initial="closed"
-            animate="open"
-            exit="closed"
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="md:hidden absolute top-full left-0 right-0"
             style={{
               background: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(20px) saturate(1.8)',
               WebkitBackdropFilter: 'blur(20px) saturate(1.8)',
               borderBottom: '1px solid rgba(148, 163, 184, 0.2)',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-              // Fallback for browsers that don't support backdrop-filter
-              backgroundColor: !CSS?.supports?.('backdrop-filter', 'blur(20px)') 
-                ? 'rgba(255, 255, 255, 0.98)' 
-                : undefined
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)'
             }}
           >
             <div className="max-w-7xl mx-auto px-6 py-8">
               <div className="space-y-2">
-                
-                {/* User Info (if authenticated) */}
                 {isAuthenticated && user && (
                   <motion.div
-                    custom={0}
-                    variants={itemVariants}
-                    initial="closed"
-                    animate="open"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0, duration: 0.4, ease: "easeOut" }}
                     className="flex items-center gap-3 p-4 bg-slate-100/60 rounded-2xl mb-4"
                   >
                     <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
@@ -570,94 +337,39 @@ const Navbar: React.FC = () => {
                   </motion.div>
                 )}
 
-                {/* Account Settings for authenticated users */}
                 {isAuthenticated && (
-                  <motion.div
-                    custom={1}
-                    variants={itemVariants}
-                    initial="closed"
-                    animate="open"
-                  >
-                    <Link 
-                      to="/account"
-                      className="flex items-center justify-between font-medium text-slate-700 hover:text-slate-900 py-4 px-4 rounded-2xl transition-all duration-300 group bg-white/60 hover:bg-white/80"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Settings size={18} />
-                        <span className="text-lg">Account Settings</span>
-                      </div>
-                      <motion.div
-                        className="w-1.5 h-1.5 bg-slate-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-slate-600"
-                        initial={{ scale: 0.8 }}
-                        whileHover={{ scale: 1.2 }}
-                        transition={{ duration: 0.2 }}
-                      />
-                    </Link>
-                  </motion.div>
+                  <>
+                    <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }}>
+                      <button onClick={() => { setIsMenuOpen(false); navigate('/account'); }} className="flex items-center justify-between font-medium text-slate-700 hover:text-slate-900 py-4 px-4 rounded-2xl transition-all duration-300 group bg-white/60 hover:bg-white/80 w-full text-left">
+                        <div className="flex items-center gap-3">
+                          <Settings size={18} />
+                          <span className="text-lg">Account Settings</span>
+                        </div>
+                      </button>
+                    </motion.div>
+
+                    <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}>
+                      <button onClick={() => { setIsMenuOpen(false); navigate('/upgrade'); }} className="flex items-center justify-between font-medium text-violet-600 hover:text-violet-700 py-4 px-4 rounded-2xl transition-all duration-300 group bg-violet-50/60 hover:bg-violet-100/60 w-full text-left">
+                        <div className="flex items-center gap-3">
+                          <Crown size={18} />
+                          <span className="text-lg">Upgrade Plan</span>
+                        </div>
+                      </button>
+                    </motion.div>
+
+                    <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }} className="space-y-3 pt-4 border-t border-slate-200/50">
+                      <button onClick={() => { setIsMenuOpen(false); handleLogout(); }} className="block w-full text-center py-4 px-6 font-medium text-red-600 hover:text-red-700 rounded-2xl transition-all duration-300 bg-white/60 hover:bg-red-50/80">
+                        Sign out
+                      </button>
+                    </motion.div>
+                  </>
                 )}
 
-                {/* Upgrade option for authenticated users in mobile */}
-                {isAuthenticated && (
-                  <motion.div
-                    custom={2}
-                    variants={itemVariants}
-                    initial="closed"
-                    animate="open"
-                  >
-                    <Link 
-                      to="/upgrade"
-                      className="flex items-center justify-between font-medium text-violet-600 hover:text-violet-700 py-4 px-4 rounded-2xl transition-all duration-300 group bg-violet-50/60 hover:bg-violet-100/60 w-full"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Crown size={18} />
-                        <span className="text-lg">Upgrade Plan</span>
-                      </div>
-                      <motion.div
-                        className="w-1.5 h-1.5 bg-violet-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-violet-600"
-                        initial={{ scale: 0.8 }}
-                        whileHover={{ scale: 1.2 }}
-                        transition={{ duration: 0.2 }}
-                      />
-                    </Link>
-                  </motion.div>
-                )}
-                
-                {/* Mobile Auth CTAs */}
-                {isAuthenticated ? (
-                  <motion.div
-                    custom={3}
-                    variants={itemVariants}
-                    initial="closed"
-                    animate="open"
-                    className="space-y-3 pt-4 border-t border-slate-200/50"
-                  >
-                    <button 
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        handleLogout();
-                      }}
-                      className="block w-full text-center py-4 px-6 font-medium text-red-600 hover:text-red-700 rounded-2xl transition-all duration-300 bg-white/60 hover:bg-red-50/80"
-                    >
-                      Sign out
-                    </button>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    custom={1}
-                    variants={itemVariants}
-                    initial="closed"
-                    animate="open"
-                    className="space-y-3 pt-4"
-                  >
-                    <Link 
-                      to="/signin" 
-                      className="block w-full text-center py-4 px-6 font-medium text-slate-700 hover:text-slate-900 rounded-2xl transition-all duration-300 bg-white/60 hover:bg-white/80"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
+                {!isAuthenticated && (
+                  <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }} className="space-y-3 pt-4">
+                    <button onClick={() => { setIsMenuOpen(false); navigate('/signin'); }} className="block w-full text-center py-4 px-6 font-medium text-slate-700 hover:text-slate-900 rounded-2xl transition-all duration-300 bg-white/60 hover:bg-white/80">
                       Sign in
-                    </Link>
+                    </button>
                   </motion.div>
                 )}
               </div>
@@ -666,13 +378,7 @@ const Navbar: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Click outside to close user menu */}
-      {isUserMenuOpen && (
-        <div 
-          className="fixed inset-0 z-40" 
-          onClick={() => setIsUserMenuOpen(false)}
-        />
-      )}
+      {isUserMenuOpen && <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />}
     </motion.nav>
   );
 };
