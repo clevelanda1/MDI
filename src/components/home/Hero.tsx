@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { APP_NAME, APP_TAGLINE } from '../../utils/constants';
 
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -260,38 +259,6 @@ const Hero: React.FC = () => {
               >
                 Upload any room design and instantly discover similar products for every piece of furniture, decor, and accessory — transforming inspiration into actionable shopping lists.
               </motion.p>
-            </motion.div>
-
-            {/* CTAs Only - Centered */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 40 }}
-              transition={{ duration: 1.2, delay: 1.8 }}
-              className="flex justify-center items-center max-w-lg mx-auto"
-            >
-              {/* Primary CTA */}
-              <motion.button
-                onClick={handleGetStarted}
-                className="group relative px-8 py-4 text-xl font-bold rounded-full overflow-hidden w-full sm:w-auto"
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-blue-600"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                
-                <span className="relative text-white flex items-center justify-center gap-3 tracking-wide">
-                  Get Started For Free
-                  <motion.span
-                    className="inline-block text-2xl"
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    →
-                  </motion.span>
-                </span>
-              </motion.button>
             </motion.div>
           </div>
         </div>
