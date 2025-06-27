@@ -377,7 +377,7 @@ const Hero: React.FC = () => {
                 transition={{ duration: 1.2, delay: 0.7, ease: [0.165, 0.84, 0.44, 1] }}
                 className="text-xl md:text-2xl text-white/90 font-light leading-[1.4] mb-12 max-w-5xl mx-auto"
               >
-                Transform your interior design vision into reality with My Design Index — Turn any room design inspiration into an actionable, shoppable experience in moments, not months..
+                Transform your interior design vision into reality with My Design Index — Turn any room design inspiration into an actionable, shoppable experience in moments, not months.
               </motion.p>
             </motion.div>
 
