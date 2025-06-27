@@ -69,6 +69,10 @@ const Hero: React.FC = () => {
     navigate('/signup');
   };
 
+  const handleSignIn = () => {
+    navigate('/signin');
+  };
+
   return (
     <div 
       ref={containerRef}
@@ -79,7 +83,7 @@ const Hero: React.FC = () => {
       
       {/* Enhanced Animated Background */}
       <div className="absolute inset-0">
-        {/* Animated geometric pattern */}
+        {/* Animated geometric pattern with enhanced motion */}
         <div className="absolute inset-0 opacity-20">
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -93,8 +97,21 @@ const Hero: React.FC = () => {
                 >
                   <animate 
                     attributeName="opacity" 
-                    values="0.2;0.6;0.2" 
+                    values="0.1;0.8;0.1" 
+                    dur="3s" 
+                    repeatCount="indefinite"
+                  />
+                  <animate 
+                    attributeName="r" 
+                    values="1.5;3;1.5" 
                     dur="4s" 
+                    repeatCount="indefinite"
+                  />
+                  <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    values="0,0; 5,-3; -2,4; 0,0"
+                    dur="8s"
                     repeatCount="indefinite"
                   />
                 </circle>
@@ -107,10 +124,25 @@ const Hero: React.FC = () => {
                 >
                   <animate 
                     attributeName="opacity" 
-                    values="0.3;0.7;0.3" 
+                    values="0.2;0.9;0.2" 
+                    dur="5s" 
+                    repeatCount="indefinite"
+                    begin="1s"
+                  />
+                  <animate 
+                    attributeName="r" 
+                    values="0.8;2.2;0.8" 
                     dur="6s" 
                     repeatCount="indefinite"
-                    begin="2s"
+                    begin="1s"
+                  />
+                  <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    values="0,0; -3,2; 4,-1; 0,0"
+                    dur="10s"
+                    repeatCount="indefinite"
+                    begin="1s"
                   />
                 </circle>
                 <circle 
@@ -122,13 +154,96 @@ const Hero: React.FC = () => {
                 >
                   <animate 
                     attributeName="opacity" 
-                    values="0.2;0.5;0.2" 
+                    values="0.15;0.7;0.15" 
+                    dur="4s" 
+                    repeatCount="indefinite"
+                    begin="2s"
+                  />
+                  <animate 
+                    attributeName="r" 
+                    values="1;2.5;1" 
                     dur="5s" 
                     repeatCount="indefinite"
-                    begin="1s"
+                    begin="2s"
+                  />
+                  <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    values="0,0; 2,5; -4,-2; 0,0"
+                    dur="12s"
+                    repeatCount="indefinite"
+                    begin="2s"
                   />
                 </circle>
-                <path d="M0,40 L80,40 M40,0 L40,80" stroke="#475569" strokeWidth="0.5" opacity="0.1"/>
+                {/* Additional floating dots for more dynamic feel */}
+                <circle 
+                  cx="70" 
+                  cy="60" 
+                  r="1.2" 
+                  fill="#f59e0b"
+                  opacity="0.25"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.1;0.6;0.1" 
+                    dur="6s" 
+                    repeatCount="indefinite"
+                    begin="3s"
+                  />
+                  <animate 
+                    attributeName="r" 
+                    values="0.8;2.8;0.8" 
+                    dur="7s" 
+                    repeatCount="indefinite"
+                    begin="3s"
+                  />
+                  <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    values="0,0; -6,1; 3,-5; 0,0"
+                    dur="14s"
+                    repeatCount="indefinite"
+                    begin="3s"
+                  />
+                </circle>
+                <circle 
+                  cx="10" 
+                  cy="60" 
+                  r="0.8" 
+                  fill="#ec4899"
+                  opacity="0.35"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.2;0.8;0.2" 
+                    dur="4.5s" 
+                    repeatCount="indefinite"
+                    begin="1.5s"
+                  />
+                  <animate 
+                    attributeName="r" 
+                    values="0.5;2;0.5" 
+                    dur="5.5s" 
+                    repeatCount="indefinite"
+                    begin="1.5s"
+                  />
+                  <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    values="0,0; 4,3; -2,-4; 0,0"
+                    dur="9s"
+                    repeatCount="indefinite"
+                    begin="1.5s"
+                  />
+                </circle>
+                <path d="M0,40 L80,40 M40,0 L40,80" stroke="#475569" strokeWidth="0.5" opacity="0.1">
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.05;0.2;0.05" 
+                    dur="8s" 
+                    repeatCount="indefinite"
+                  />
+                </path>
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#premium-grid)" />
@@ -162,9 +277,9 @@ const Hero: React.FC = () => {
       <div className="relative z-10 min-h-screen">
         
         {/* TOP SECTION - Revolutionary Dark Design */}
-        <div className="relative pt-24 pb-20 px-8 lg:px-16 min-h-[90vh] flex flex-col justify-center">
+        <div className="relative pt-28 pb-28 px-8 lg:px-16 min-h-[90vh] flex flex-col justify-center">
           
-          {/* Premium Status Badge */}
+          {/* Premium Status Badge - Now clickable */}
           <motion.div
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -40 }}
@@ -174,7 +289,12 @@ const Hero: React.FC = () => {
             <div className="group relative">
               <div className="absolute -inset-3 bg-gradient-to-r from-violet-500/30 via-blue-500/30 to-emerald-500/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-all duration-1000"></div>
               
-              <div className="relative inline-flex items-center gap-5 px-8 py-4 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-700">
+              <motion.button
+                onClick={handleSignIn}
+                className="relative inline-flex items-center gap-5 px-8 py-4 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-700 cursor-pointer hover:bg-white/15"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
                 <div className="relative flex items-center">
                   <div className="w-3 h-3 bg-emerald-400 rounded-full shadow-lg"></div>
                   <div className="absolute inset-0 w-3 h-3 bg-emerald-300 rounded-full animate-ping"></div>
@@ -182,9 +302,9 @@ const Hero: React.FC = () => {
                 </div>
                 
                 <span className="text-white text-base font-black tracking-wide">
-                  Introducing MDI Design Studio v1.0
+                  Sign In to MDI Design Studio v1.0
                 </span>
-              </div>
+              </motion.button>
             </div>
           </motion.div>
 
@@ -255,10 +375,42 @@ const Hero: React.FC = () => {
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 40 }}
                 transition={{ duration: 1.2, delay: 0.7, ease: [0.165, 0.84, 0.44, 1] }}
-                className="text-xl md:text-2xl text-white/90 font-light leading-[1.4] mb-12 max-w-4xl mx-auto"
+                className="text-xl md:text-2xl text-white/90 font-light leading-[1.4] mb-12 max-w-5xl mx-auto"
               >
-                Upload any room design and instantly discover similar products for every piece of furniture, decor, and accessory — transforming inspiration into actionable shopping lists.
+                Transform your interior design vision into reality with My Design Index — Turn any room design inspiration into an actionable, shoppable experience in moments, not months..
               </motion.p>
+            </motion.div>
+
+            {/* CTAs - Centered */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 40 }}
+              transition={{ duration: 1.2, delay: 1.0 }}
+              className="flex justify-center items-center max-w-lg mx-auto"
+            >
+              {/* Primary CTA */}
+              <motion.button
+                onClick={handleGetStarted}
+                className="group relative px-8 py-4 text-xl font-bold rounded-full overflow-hidden w-full sm:w-auto"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-blue-600"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                
+                <span className="relative text-white flex items-center justify-center gap-3 tracking-wide">
+                  Get Started For Free
+                  <motion.span
+                    className="inline-block text-2xl"
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    →
+                  </motion.span>
+                </span>
+              </motion.button>
             </motion.div>
           </div>
         </div>

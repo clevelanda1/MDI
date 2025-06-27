@@ -13,8 +13,8 @@ const TrustedBrands: React.FC = () => {
     offset: ["start end", "end start"]
   });
 
-  // Subtle scroll transforms
-  const y = useTransform(scrollYProgress, [0, 1], [-10, 10]);
+  // Enhanced scroll transforms
+  const y = useTransform(scrollYProgress, [0, 1], [-30, 30]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   // Primary marketplace partners
@@ -66,20 +66,20 @@ const TrustedBrands: React.FC = () => {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        staggerChildren: 0.2,
+        delayChildren: 0.3
       }
     }
   };
 
   const item = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 40 },
     show: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1]
+        duration: 1,
+        ease: [0.165, 0.84, 0.44, 1]
       } 
     }
   };
@@ -139,76 +139,133 @@ const TrustedBrands: React.FC = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative py-24 lg:py-32 bg-gradient-to-b from-white via-slate-50/30 to-white overflow-hidden"
+      className="relative py-32 lg:py-40 bg-gradient-to-b from-white via-slate-50/50 to-slate-900/5 overflow-hidden"
     >
-      {/* Subtle Background Elements */}
+      {/* Premium Background Elements - Consistent with Hero */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Dynamic gradient orb that changes color based on current slide */}
-        <motion.div
-          className={`absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br ${
-            currentPartner.accentColor === 'orange' 
-              ? 'from-orange-100/40 to-amber-100/40' 
-              : 'from-teal-100/40 to-cyan-100/40'
-          } rounded-full blur-3xl`}
-          style={{ y }}
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        
-        {/* Clean geometric pattern */}
-        <div className="absolute inset-0 opacity-[0.02]">
+        {/* Animated geometric pattern */}
+        <div className="absolute inset-0 opacity-[0.03]">
           <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <pattern id="brands-dots" width="40" height="40" patternUnits="userSpaceOnUse">
-                <circle cx="20" cy="20" r="1" fill="currentColor"/>
+              <pattern id="brands-premium-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                <circle 
+                  cx="30" 
+                  cy="30" 
+                  r="1.5" 
+                  fill="#8b5cf6"
+                  opacity="0.4"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.2;0.6;0.2" 
+                    dur="6s" 
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle 
+                  cx="15" 
+                  cy="15" 
+                  r="1" 
+                  fill="#3b82f6"
+                  opacity="0.3"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.3;0.7;0.3" 
+                    dur="8s" 
+                    repeatCount="indefinite"
+                    begin="2s"
+                  />
+                </circle>
+                <path d="M0,30 L60,30 M30,0 L30,60" stroke="#475569" strokeWidth="0.5" opacity="0.1"/>
               </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#brands-dots)" className="text-slate-600" />
+            <rect width="100%" height="100%" fill="url(#brands-premium-grid)" />
           </svg>
         </div>
+
+        {/* Premium floating elements - matching Hero style */}
+        <motion.div
+          className="absolute top-1/4 right-1/6 w-[600px] h-[600px] bg-gradient-to-br from-violet-500/8 via-blue-500/4 to-purple-500/8 rounded-full blur-3xl"
+          style={{ y }}
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 40, 0],
+            y: [0, -30, 0],
+            rotate: [0, 120, 240, 360],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className={`absolute top-1/2 left-1/5 w-[500px] h-[500px] bg-gradient-to-br ${
+            currentPartner.accentColor === 'orange' 
+              ? 'from-orange-500/6 via-amber-500/3 to-orange-500/6' 
+              : 'from-emerald-500/6 via-teal-500/3 to-cyan-500/6'
+          } rounded-full blur-3xl`}
+          animate={{
+            scale: [1.1, 1, 1.1],
+            x: [0, -30, 0],
+            y: [0, 40, 0],
+            rotate: [360, 180, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
 
       <motion.div 
         className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10"
         style={{ opacity }}
       >
-        {/* Refined Header */}
+        {/* Premium Header - Matching Hero Style */}
         <motion.div 
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 30 }}
+          className="text-center mb-24"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 1.2, ease: [0.165, 0.84, 0.44, 1] }}
           viewport={{ once: true }}
         >
+          {/* Premium Status Badge */}
           <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="w-16 h-1 bg-gradient-to-r from-violet-500 to-blue-500 mx-auto mb-6 rounded-full"
-          />
-          
-          <h2 className="text-4xl md:text-5xl lg:text-6xl text-slate-900 mb-6 leading-tight">
-            <span className="font-thin text-slate-900">Powered by</span>
+            initial={{ opacity: 0, y: -40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.165, 0.84, 0.44, 1] }}
+            className="flex justify-center mb-8"
+          >
+            <div className="group relative">
+              <div className="absolute -inset-3 bg-gradient-to-r from-violet-500/20 via-blue-500/20 to-emerald-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-all duration-1000"></div>
+              
+              <div className="relative inline-flex items-center gap-4 px-6 py-3 bg-white/20 backdrop-blur-2xl border border-slate-200/40 rounded-full shadow-lg hover:shadow-xl transition-all duration-700">
+                <div className="relative flex items-center">
+                  <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full shadow-lg"></div>
+                  <div className="absolute inset-0 w-2.5 h-2.5 bg-emerald-300 rounded-full animate-ping"></div>
+                </div>
+                
+                <span className="text-slate-700 text-sm font-bold tracking-wide">
+                  Trusted Partners
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          <h2 className="text-[32px] md:text-[48px] lg:text-[56px] xl:text-[64px] leading-[0.9] tracking-[-0.03em] font-black mb-8">
+            <span className="text-slate-900 block mb-2">
+              Powered by
+            </span>
+            
             <motion.span 
-              className="block font-[800] bg-gradient-to-r from-slate-900 via-violet-600 via-blue-600 to-slate-900 bg-clip-text text-transparent bg-[length:200%_100%]"
+              className="font-[900] bg-gradient-to-r from-violet-600 via-blue-600 via-emerald-600 to-violet-600 bg-clip-text text-transparent bg-[length:400%_100%]"
               style={{
-                fontFamily: '"Inter", "Nunito", "Poppins", "Rubik", sans-serif',
-                fontWeight: 800,
-                letterSpacing: '-0.025em',
-                textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
-                backgroundPosition: "0% 50%"
+                WebkitTextStroke: '1px transparent',
+                textShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
               }}
               animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+                backgroundPosition: ["0% 50%", "100% 50%", "200% 50%"]
               }}
               transition={{
                 backgroundPosition: { 
-                  duration: 4, 
+                  duration: 8, 
                   repeat: Infinity, 
-                  ease: "easeInOut" 
+                  ease: "linear"
                 }
               }}
             >
@@ -216,38 +273,45 @@ const TrustedBrands: React.FC = () => {
             </motion.span>
           </h2>
           
-          <p className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-light">
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className="text-xl md:text-2xl text-slate-600/90 max-w-4xl mx-auto leading-[1.4] font-light"
+          >
             Access millions of curated design items through our partnerships with leading home retailers and artisan marketplaces. 
             Get instant recommendations for furniture, decor, and unique handmade accessories from trusted sources.
-          </p>
+          </motion.p>
         </motion.div>
         
-        {/* Slideshow Container */}
+        {/* Enhanced Slideshow Container */}
         <motion.div 
-          className="max-w-7xl mx-auto mb-20"
+          className="max-w-7xl mx-auto mb-24"
           variants={container}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="relative">
-            {/* Main Slideshow Card */}
+            {/* Main Slideshow Card with Premium Styling */}
             <motion.div 
-              className="relative overflow-hidden bg-white/90 backdrop-blur-xl border border-slate-200/60 rounded-[2.5rem] shadow-2xl"
+              className="relative overflow-hidden bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-2xl shadow-slate-900/10"
               variants={item}
+              whileHover={{ y: -4, scale: 1.01 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               {/* Dynamic Background Gradient */}
               <motion.div
-                className={`absolute inset-0 bg-gradient-to-br ${currentPartner.bgColor} opacity-40`}
+                className={`absolute inset-0 bg-gradient-to-br ${currentPartner.bgColor} opacity-30`}
                 key={currentSlide}
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.4 }}
+                animate={{ opacity: 0.3 }}
                 transition={{ duration: 0.8 }}
               />
               
               <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 min-h-[500px]">
-                {/* Left Side - Marketplace Image (wider) */}
-                <div className="lg:col-span-1 relative overflow-hidden rounded-l-[2.5rem]">
+                {/* Left Side - Marketplace Image */}
+                <div className="lg:col-span-1 relative overflow-hidden rounded-l-3xl">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={currentSlide}
@@ -261,13 +325,25 @@ const TrustedBrands: React.FC = () => {
                         src={currentPartner.image}
                         alt={`${currentPartner.name} marketplace`}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          // Fallback if image doesn't exist
+                          e.currentTarget.style.display = 'none';
+                          const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = 'flex';
+                        }}
                       />
+                      {/* Fallback gradient */}
+                      <div className={`hidden w-full h-full bg-gradient-to-br ${currentPartner.bgColor} items-center justify-center`}>
+                        <div className={`w-24 h-24 bg-gradient-to-br ${currentPartner.color} rounded-2xl flex items-center justify-center shadow-2xl`}>
+                          <span className="text-white text-4xl font-bold">{currentPartner.logo}</span>
+                        </div>
+                      </div>
                       
                       {/* Overlay with logo */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-start p-8">
                         <motion.div 
                           className={`w-16 h-16 bg-gradient-to-br ${currentPartner.color} rounded-2xl flex items-center justify-center shadow-xl`}
-                          whileHover={{ scale: 1.1 }}
+                          whileHover={{ scale: 1.1, rotateY: 10 }}
                           transition={{ type: "spring", stiffness: 400, damping: 10 }}
                         >
                           <span className="text-white text-2xl font-bold">{currentPartner.logo}</span>
@@ -277,7 +353,7 @@ const TrustedBrands: React.FC = () => {
                   </AnimatePresence>
                 </div>
 
-                {/* Right Side - Partner Information (2/3) */}
+                {/* Right Side - Partner Information */}
                 <div className="lg:col-span-2 p-12 flex flex-col justify-center">
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -312,15 +388,16 @@ const TrustedBrands: React.FC = () => {
                         </p>
                       </div>
 
-                      {/* Stats Grid */}
+                      {/* Enhanced Stats Grid */}
                       <div className="grid grid-cols-3 gap-6">
                         {Object.entries(currentPartner.stats).map(([key, value], index) => (
                           <motion.div
                             key={key}
-                            className="text-center p-4 bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/50"
+                            className="text-center p-4 bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/50 shadow-sm hover:shadow-md transition-all duration-300"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 + index * 0.1 }}
+                            whileHover={{ scale: 1.02, y: -2 }}
                           >
                             <div className={`w-3 h-3 bg-${currentPartner.accentColor}-500 rounded-full mx-auto mb-2`}></div>
                             <div className="font-bold text-slate-900 text-lg">{value}</div>
@@ -334,12 +411,12 @@ const TrustedBrands: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Slide Indicators */}
+            {/* Enhanced Slide Indicators */}
             <div className="flex justify-center mt-8 gap-3">
               {primaryPartners.map((_, index) => (
                 <motion.button
                   key={index}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
                     index === currentSlide 
                       ? `bg-${currentPartner.accentColor}-500 scale-125` 
                       : 'bg-slate-300 hover:bg-slate-400'
@@ -353,7 +430,7 @@ const TrustedBrands: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Trust Metrics - Updated for Amazon + Etsy */}
+        {/* Enhanced Trust Metrics */}
         <motion.div
           className="mt-24 grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
@@ -370,7 +447,7 @@ const TrustedBrands: React.FC = () => {
             <motion.div
               key={metric.label}
               className="text-center p-6 bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-lg hover:shadow-xl hover:shadow-slate-900/5 transition-all duration-500"
-              whileHover={{ y: -4, scale: 1.02 }}
+              whileHover={{ y: -6, scale: 1.02 }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 + index * 0.1, ease: "easeOut" }}
@@ -385,48 +462,57 @@ const TrustedBrands: React.FC = () => {
           ))}
         </motion.div>
 
-        {/* Elegant CTA */}
+        {/* Premium CTA */}
         <motion.div
-          className="text-center mt-24"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-center mt-24 mb-20"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+          transition={{ duration: 1, delay: 0.5, ease: [0.165, 0.84, 0.44, 1] }}
           viewport={{ once: true }}
         >
           <motion.button
             onClick={handleStartShopping}
-            className="group relative inline-flex items-center gap-3 px-10 py-4 bg-slate-900 text-white font-medium rounded-full shadow-lg hover:shadow-xl hover:bg-slate-800 transition-all duration-300"
-            whileHover={{ scale: 1.02, y: -2 }}
+            className="group relative px-12 py-5 text-xl font-bold rounded-full overflow-hidden"
+            whileHover={{ scale: 1.02, y: -3 }}
             whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
-            <span>Start Shopping with AI</span>
-            <motion.div
-              className="group-hover:translate-x-1 transition-transform duration-200"
-            >
-              →
-            </motion.div>
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-blue-600"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+            
+            <span className="relative text-white flex items-center justify-center gap-4 tracking-wide">
+              Start Shopping with AI
+              <motion.span
+                className="inline-block text-2xl"
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                →
+              </motion.span>
+            </span>
           </motion.button>
         </motion.div>
 
-        {/* Vision Board Interface Preview */}
+        {/* Premium Vision Board Interface Preview - Matching Hero Design Studio */}
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
+          transition={{ duration: 1.2, delay: 0.3, ease: [0.165, 0.84, 0.44, 1] }}
           viewport={{ once: true }}
-          className="relative mx-auto max-w-6xl mt-24"
+          className="relative mx-auto max-w-6xl"
         >
           <motion.div
+            style={{
+              transformPerspective: 1200,
+            }}
             className="relative"
-            whileHover={{ y: -4 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            {/* Main Vision Board Interface Card */}
+            {/* Main Vision Board Interface Card - Exact Hero Styling */}
             <div className="bg-white/60 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-2xl shadow-slate-900/10 p-1 overflow-hidden">
               <div className="bg-gradient-to-br from-slate-50/50 to-white/50 rounded-[20px] p-8">
                 
-                {/* Header Bar */}
+                {/* Header Bar - Exact Hero Styling */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
                     <div className="flex gap-1.5">
@@ -442,14 +528,14 @@ const TrustedBrands: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Vision Board Interface Layout */}
+                {/* Vision Board Interface Layout - Matching Hero Styling */}
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                   
-                  {/* Product Sidebar */}
+                  {/* Product Sidebar - Matching Hero Upload Section */}
                   <div className="lg:col-span-1">
                     <div className="bg-white/80 rounded-2xl p-6 border border-slate-200/60">
                       <div className="flex items-center gap-2 mb-4">
-                        <div className="w-4 h-4 text-red-500">❤️</div>
+                        <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
                         <h3 className="font-semibold text-slate-900 text-sm">Liked Products</h3>
                       </div>
                       
@@ -458,7 +544,7 @@ const TrustedBrands: React.FC = () => {
                         <input 
                           type="text" 
                           placeholder="Search products..." 
-                          className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-white/60 text-xs"
+                          className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-slate-50 text-xs"
                           disabled
                         />
                         <div className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs">🔍</div>
@@ -466,14 +552,14 @@ const TrustedBrands: React.FC = () => {
 
                       {/* Project Filter */}
                       <div className="relative mb-4">
-                        <select className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-white/60 text-xs appearance-none" disabled>
+                        <select className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-slate-50 text-xs appearance-none" disabled>
                           <option>Living Room</option>
                         </select>
                         <div className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs">📁</div>
                       </div>
 
-                      {/* Marketplace Toggle - Updated for Amazon/Etsy */}
-                      <div className="flex items-center gap-1 mb-4 p-1 bg-slate-100/60 rounded-lg">
+                      {/* Marketplace Toggle */}
+                      <div className="flex items-center gap-1 mb-4 p-1 bg-slate-100 rounded-lg">
                         <button className="flex-1 py-1 px-2 text-xs font-medium bg-white rounded-md shadow-sm text-slate-900">
                           Amazon
                         </button>
@@ -482,16 +568,16 @@ const TrustedBrands: React.FC = () => {
                         </button>
                       </div>
                       
-                      {/* Product Grid - First 4 products */}
+                      {/* Product Grid */}
                       <div className="grid grid-cols-2 gap-3">
                         {interiorProducts.slice(0, 4).map((product, i) => (
                           <motion.div 
                             key={product.name}
-                            className="group bg-white/60 rounded-xl p-3 border border-slate-200/60 cursor-grab relative"
+                            className="group bg-slate-50 rounded-xl p-3 border border-slate-200/60 cursor-grab relative"
                             whileHover={{ scale: 1.05 }}
                             transition={{ type: "spring", stiffness: 400, damping: 17 }}
                           >
-                            {/* Source indicator - Updated colors for Amazon/Etsy */}
+                            {/* Source indicator */}
                             <div className={`absolute top-1 right-1 w-3 h-3 rounded-full ${
                               product.source === 'amazon' ? 'bg-orange-500' : 'bg-teal-500'
                             }`}></div>
@@ -501,7 +587,16 @@ const TrustedBrands: React.FC = () => {
                                 src={product.image}
                                 alt={product.name}
                                 className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
                               />
+                              {/* Fallback */}
+                              <div className="hidden w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 items-center justify-center">
+                                <div className="w-8 h-6 bg-slate-400 rounded"></div>
+                              </div>
                             </div>
                             <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
                               {product.name}
@@ -518,7 +613,7 @@ const TrustedBrands: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* Vision Board Canvas */}
+                  {/* Vision Board Canvas - Matching Hero Projects Gallery */}
                   <div className="lg:col-span-3">
                     <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-lg overflow-hidden h-full">
                       <div className="p-6 border-b border-slate-200/60">
@@ -527,7 +622,7 @@ const TrustedBrands: React.FC = () => {
                             <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                             Your Vision Board
                           </h2>
-                            <div className="flex items-center gap-4 text-sm text-slate-600">
+                          <div className="flex items-center gap-4 text-sm text-slate-600">
                             <div className="flex items-center gap-2">
                               <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
                               <span className="text-xs">Amazon</span>
@@ -541,9 +636,9 @@ const TrustedBrands: React.FC = () => {
                         </div>
                       </div>
                       
-                      {/* Canvas Area with matching height to sidebar */}
+                      {/* Canvas Area */}
                       <div className="relative bg-gradient-to-br from-slate-50/50 to-white/50 overflow-hidden" style={{ height: '500px' }}>
-                        {/* Grid Pattern - More prominent */}
+                        {/* Grid Pattern */}
                         <div 
                           className="absolute inset-0 opacity-20"
                           style={{ 
@@ -565,15 +660,15 @@ const TrustedBrands: React.FC = () => {
                           ))}
                         </div>
                         
-                        {/* Vision Board Items - Updated with Amazon/Etsy products - MOVED UP 20PX AND LEFT 20PX */}
+                        {/* Vision Board Items */}
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="relative">
                             
-                            {/* Row 1 - Top row with proper spacing and centered */}
-                            {/* Modern Sectional Sofa - Top Left (Amazon) - MOVED UP 20PX AND LEFT 20PX */}
+                            {/* Row 1 - Top row */}
+                            {/* Modern Sectional Sofa - Top Left (Amazon) */}
                             <motion.div 
                               className="absolute w-40 h-32 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-orange-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '-140px', top: '-80px' }}
+                              style={{ left: '-160px', top: '-100px' }}
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
@@ -591,16 +686,25 @@ const TrustedBrands: React.FC = () => {
                                 src={interiorProducts[0].image}
                                 alt={interiorProducts[0].name}
                                 className="w-full h-full object-cover pointer-events-none"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
                               />
+                              {/* Fallback */}
+                              <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
+                                <div className="w-12 h-8 bg-orange-400 rounded-lg"></div>
+                              </div>
                               <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
                                 ${interiorProducts[0].price}
                               </div>
                             </motion.div>
                             
-                            {/* Handwoven Wall Art - Top Center (Etsy) - MOVED UP 20PX AND LEFT 20PX */}
+                            {/* Handwoven Wall Art - Top Center (Etsy) */}
                             <motion.div 
                               className="absolute w-32 h-28 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-teal-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '-36px', top: '-80px' }}
+                              style={{ left: '-56px', top: '-100px' }}
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
@@ -613,16 +717,25 @@ const TrustedBrands: React.FC = () => {
                                 src={interiorProducts[1].image}
                                 alt={interiorProducts[1].name}
                                 className="w-full h-full object-cover pointer-events-none"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
                               />
+                              {/* Fallback */}
+                              <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
+                                <div className="w-8 h-6 bg-teal-400 rounded-lg"></div>
+                              </div>
                               <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
                                 ${interiorProducts[1].price}
                               </div>
                             </motion.div>
                             
-                            {/* Floor Lamp - Top Right (Amazon) - MOVED UP 20PX AND LEFT 20PX */}
+                            {/* Floor Lamp - Top Right (Amazon) */}
                             <motion.div 
                               className="absolute w-28 h-36 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-orange-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '68px', top: '-80px' }}
+                              style={{ left: '48px', top: '-100px' }}
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
@@ -635,17 +748,26 @@ const TrustedBrands: React.FC = () => {
                                 src={interiorProducts[2].image}
                                 alt={interiorProducts[2].name}
                                 className="w-full h-full object-cover pointer-events-none"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
                               />
+                              {/* Fallback */}
+                              <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
+                                <div className="w-6 h-10 bg-orange-400 rounded-lg"></div>
+                              </div>
                               <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
                                 ${interiorProducts[2].price}
                               </div>
                             </motion.div>
 
-                            {/* Row 2 - Bottom row with proper spacing and centered */}
-                            {/* Vintage Ceramic Vase - Bottom Left (Etsy) - MOVED UP 20PX AND LEFT 20PX */}
+                            {/* Row 2 - Bottom row */}
+                            {/* Vintage Ceramic Vase - Bottom Left (Etsy) */}
                             <motion.div 
                               className="absolute w-44 h-32 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-teal-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '-162px', top: '30px' }}
+                              style={{ left: '-182px', top: '10px' }}
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
@@ -658,16 +780,25 @@ const TrustedBrands: React.FC = () => {
                                 src={interiorProducts[3].image}
                                 alt={interiorProducts[3].name}
                                 className="w-full h-full object-cover pointer-events-none"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
                               />
+                              {/* Fallback */}
+                              <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
+                                <div className="w-8 h-10 bg-teal-400 rounded-lg"></div>
+                              </div>
                               <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
                                 ${interiorProducts[3].price}
                               </div>
                             </motion.div>
 
-                            {/* Console Table - Bottom Center (Amazon) - MOVED UP 20PX AND LEFT 20PX */}
+                            {/* Console Table - Bottom Center (Amazon) */}
                             <motion.div 
                               className="absolute w-36 h-28 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-orange-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '-38px', top: '30px' }}
+                              style={{ left: '-58px', top: '10px' }}
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
@@ -680,16 +811,25 @@ const TrustedBrands: React.FC = () => {
                                 src={interiorProducts[4].image}
                                 alt={interiorProducts[4].name}
                                 className="w-full h-full object-cover pointer-events-none"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
                               />
+                              {/* Fallback */}
+                              <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
+                                <div className="w-10 h-6 bg-orange-400 rounded-lg"></div>
+                              </div>
                               <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
                                 ${interiorProducts[4].price}
                               </div>
                             </motion.div>
 
-                            {/* Macrame Plant Hanger - Bottom Right (Etsy) - MOVED UP 20PX AND LEFT 20PX */}
+                            {/* Macrame Plant Hanger - Bottom Right (Etsy) */}
                             <motion.div 
                               className="absolute w-28 h-32 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-teal-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '68px', top: '30px' }}
+                              style={{ left: '48px', top: '10px' }}
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
@@ -702,7 +842,16 @@ const TrustedBrands: React.FC = () => {
                                 src={interiorProducts[5].image}
                                 alt={interiorProducts[5].name}
                                 className="w-full h-full object-cover pointer-events-none"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (fallback) fallback.style.display = 'flex';
+                                }}
                               />
+                              {/* Fallback */}
+                              <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
+                                <div className="w-6 h-8 bg-teal-400 rounded-lg"></div>
+                              </div>
                               <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
                                 ${interiorProducts[5].price}
                               </div>
@@ -728,19 +877,13 @@ const TrustedBrands: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Bottom Action Bar - Updated for Amazon/Etsy */}
+                {/* Bottom Action Bar - Exact Hero Styling */}
                 <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/60">
                   <div className="flex items-center gap-3 text-slate-600">
-                    <div className="bg-slate-100/60 px-4 py-2 rounded-full">
-                      <span className="text-sm">Total Budget: </span>
-                      <span className="font-semibold text-slate-900">$2,190</span>
+                    <div className="w-8 h-8 bg-slate-200/60 rounded-full flex items-center justify-center">
+                      <span className="text-sm">👤</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                      <span className="text-xs text-slate-500">Amazon</span>
-                      <div className="w-2 h-2 bg-teal-500 rounded-full ml-2"></div>
-                      <span className="text-xs text-slate-500">Etsy</span>
-                    </div>
+                    <span className="text-sm font-medium">AI Curated</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <button className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 transition-colors duration-200 rounded-lg hover:bg-slate-100/60">

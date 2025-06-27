@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, Twitter, Facebook, Mail, ArrowRight, MapPin, Phone } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Instagram, Mail, ArrowRight } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { APP_NAME } from '../../utils/constants';
 
 const Footer: React.FC = () => {
   const [logoColorStates] = useState([0, 1, 2, 3]); // Static color states for each dot
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Enhanced scroll transforms
+  const y = useTransform(scrollYProgress, [0, 1], [-30, 30]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   // Your original 4 color gradients
   const colorGradients = [
@@ -21,25 +30,26 @@ const Footer: React.FC = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        staggerChildren: 0.2,
+        delayChildren: 0.3
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 40 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] }
+      transition: { 
+        duration: 1,
+        ease: [0.165, 0.84, 0.44, 1]
+      }
     }
   };
 
   const socialIcons = [
     { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Facebook, href: "#", label: "Facebook" },
     { icon: Mail, href: "#", label: "Email" }
   ];
 
@@ -52,50 +62,131 @@ const Footer: React.FC = () => {
   return (
     <footer 
       ref={containerRef}
-      className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 text-white overflow-hidden"
+      className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden"
     >
-      {/* Hero Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="footer-hero-dots" width="60" height="60" patternUnits="userSpaceOnUse">
-              <circle cx="30" cy="30" r="2" fill="currentColor"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#footer-hero-dots)" className="text-white" />
-        </svg>
+      {/* Premium Background Elements - Consistent with Hero */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Animated geometric pattern */}
+        <div className="absolute inset-0 opacity-[0.08]">
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="footer-premium-grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                <circle 
+                  cx="30" 
+                  cy="30" 
+                  r="1.5" 
+                  fill="#8b5cf6"
+                  opacity="0.4"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.2;0.6;0.2" 
+                    dur="6s" 
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle 
+                  cx="15" 
+                  cy="15" 
+                  r="1" 
+                  fill="#3b82f6"
+                  opacity="0.3"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.3;0.7;0.3" 
+                    dur="8s" 
+                    repeatCount="indefinite"
+                    begin="2s"
+                  />
+                </circle>
+                <path d="M0,30 L60,30 M30,0 L30,60" stroke="#475569" strokeWidth="0.5" opacity="0.1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#footer-premium-grid)" />
+          </svg>
+        </div>
+
+        {/* Premium floating elements - matching Hero style */}
+        <motion.div
+          className="absolute top-1/4 right-1/6 w-[500px] h-[500px] bg-gradient-to-br from-violet-500/6 via-blue-500/3 to-purple-500/6 rounded-full blur-3xl"
+          style={{ y }}
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 40, 0],
+            y: [0, -30, 0],
+            rotate: [0, 120, 240, 360],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/5 w-[400px] h-[400px] bg-gradient-to-br from-emerald-500/5 via-teal-500/2 to-cyan-500/5 rounded-full blur-3xl"
+          animate={{
+            scale: [1.1, 1, 1.1],
+            x: [0, -30, 0],
+            y: [0, 40, 0],
+            rotate: [360, 180, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
 
-      <div className="relative z-10 py-20">
+      <motion.div 
+        className="relative z-10 py-24"
+        style={{ opacity }}
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16"
+            className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-20"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
           >
-            {/* Brand Column - With Animated Logo */}
+            {/* Brand Column - With Enhanced Animated Logo */}
             <motion.div variants={itemVariants}>
-              {/* Logo with 4 dots */}
-              <div className="flex items-center gap-3 mb-6">
+              {/* Premium Status Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.2, ease: [0.165, 0.84, 0.44, 1] }}
+                className="flex justify-start mb-8"
+              >
+                <div className="group relative">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-violet-500/20 via-blue-500/20 to-emerald-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-all duration-1000"></div>
+                  
+                  <div className="relative inline-flex items-center gap-3 px-4 py-2 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-full shadow-lg hover:shadow-xl transition-all duration-700">
+                    <div className="relative flex items-center">
+                      <div className="w-2 h-2 bg-emerald-400 rounded-full shadow-lg"></div>
+                      <div className="absolute inset-0 w-2 h-2 bg-emerald-300 rounded-full animate-ping"></div>
+                    </div>
+                    
+                    <span className="text-white/90 text-xs font-bold tracking-wide">
+                      Powered by AI
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Logo with 4 dots - Enhanced */}
+              <div className="flex items-center gap-4 mb-8">
                 <motion.div 
-                  className="relative w-8 h-8"
+                  className="relative w-10 h-10"
                   whileHover={{ 
                     scale: 1.05,
                     transition: { type: "spring", stiffness: 400, damping: 17 }
                   }}
                 >
-                  <svg width="32" height="32" viewBox="0 0 32 32" className="w-full h-full">
-                    {/* Glow effects behind each circle */}
+                  <svg width="40" height="40" viewBox="0 0 32 32" className="w-full h-full">
+                    {/* Enhanced Glow effects behind each circle */}
                     <motion.circle 
                       cx="10" 
                       cy="10" 
-                      r="8" 
-                      fill="rgba(139, 92, 246, 0.3)"
+                      r="10" 
+                      fill="rgba(139, 92, 246, 0.2)"
                       initial={{ opacity: 0 }}
                       animate={{ 
-                        opacity: [0, 0.6, 0]
+                        opacity: [0, 0.4, 0]
                       }}
                       transition={{ 
                         duration: 4,
@@ -107,11 +198,11 @@ const Footer: React.FC = () => {
                     <motion.circle 
                       cx="22" 
                       cy="10" 
-                      r="8" 
-                      fill="rgba(59, 130, 246, 0.3)"
+                      r="10" 
+                      fill="rgba(59, 130, 246, 0.2)"
                       initial={{ opacity: 0 }}
                       animate={{ 
-                        opacity: [0, 0.6, 0]
+                        opacity: [0, 0.4, 0]
                       }}
                       transition={{ 
                         duration: 4,
@@ -123,11 +214,11 @@ const Footer: React.FC = () => {
                     <motion.circle 
                       cx="10" 
                       cy="22" 
-                      r="8" 
-                      fill="rgba(124, 58, 237, 0.3)"
+                      r="10" 
+                      fill="rgba(124, 58, 237, 0.2)"
                       initial={{ opacity: 0 }}
                       animate={{ 
-                        opacity: [0, 0.6, 0]
+                        opacity: [0, 0.4, 0]
                       }}
                       transition={{ 
                         duration: 4,
@@ -139,11 +230,11 @@ const Footer: React.FC = () => {
                     <motion.circle 
                       cx="22" 
                       cy="22" 
-                      r="8" 
-                      fill="rgba(71, 85, 105, 0.3)"
+                      r="10" 
+                      fill="rgba(71, 85, 105, 0.2)"
                       initial={{ opacity: 0 }}
                       animate={{ 
-                        opacity: [0, 0.6, 0]
+                        opacity: [0, 0.4, 0]
                       }}
                       transition={{ 
                         duration: 4,
@@ -153,7 +244,7 @@ const Footer: React.FC = () => {
                       }}
                     />
 
-                    {/* Main circles on top */}
+                    {/* Main circles on top - Enhanced */}
                     <motion.circle 
                       cx="10" 
                       cy="10" 
@@ -162,7 +253,7 @@ const Footer: React.FC = () => {
                       initial={{ scale: 0, opacity: 0.3 }}
                       animate={{ 
                         scale: 1,
-                        opacity: [0.3, 1, 0.3]
+                        opacity: [0.6, 1, 0.6]
                       }}
                       transition={{ 
                         scale: { delay: 0.1, type: "spring", stiffness: 400, damping: 17 },
@@ -182,7 +273,7 @@ const Footer: React.FC = () => {
                       initial={{ scale: 0, opacity: 0.3 }}
                       animate={{ 
                         scale: 1,
-                        opacity: [0.3, 1, 0.3]
+                        opacity: [0.6, 1, 0.6]
                       }}
                       transition={{ 
                         scale: { delay: 0.2, type: "spring", stiffness: 400, damping: 17 },
@@ -202,7 +293,7 @@ const Footer: React.FC = () => {
                       initial={{ scale: 0, opacity: 0.3 }}
                       animate={{ 
                         scale: 1,
-                        opacity: [0.3, 1, 0.3]
+                        opacity: [0.6, 1, 0.6]
                       }}
                       transition={{ 
                         scale: { delay: 0.3, type: "spring", stiffness: 400, damping: 17 },
@@ -222,7 +313,7 @@ const Footer: React.FC = () => {
                       initial={{ scale: 0, opacity: 0.3 }}
                       animate={{ 
                         scale: 1,
-                        opacity: [0.3, 1, 0.3]
+                        opacity: [0.6, 1, 0.6]
                       }}
                       transition={{ 
                         scale: { delay: 0.4, type: "spring", stiffness: 400, damping: 17 },
@@ -255,13 +346,20 @@ const Footer: React.FC = () => {
                 </motion.div>
                 
                 <motion.h2 
-                  className="font-semibold text-2xl text-white"
-                  whileHover={{
-                    background: "linear-gradient(to right, #a855f7, #3b82f6)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    transition: { duration: 0.3 }
+                  className="font-[900] text-3xl text-white bg-gradient-to-r from-violet-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent bg-[length:200%_100%]"
+                  animate={{
+                    backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+                  }}
+                  transition={{
+                    backgroundPosition: { 
+                      duration: 6, 
+                      repeat: Infinity, 
+                      ease: "easeInOut" 
+                    }
+                  }}
+                  style={{
+                    WebkitTextStroke: '1px transparent',
+                    textShadow: '0 4px 16px rgba(139, 92, 246, 0.3)',
                   }}
                 >
                   {APP_NAME}
@@ -269,170 +367,163 @@ const Footer: React.FC = () => {
               </div>
               
               <motion.div
-                className="w-16 h-1 bg-gradient-to-r from-violet-400 to-blue-400 mb-6 rounded-full"
+                className="w-20 h-1 bg-gradient-to-r from-violet-500 via-blue-500 to-emerald-500 mb-8 rounded-full"
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
-                transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                transition={{ duration: 1.2, delay: 0.5, ease: [0.165, 0.84, 0.44, 1] }}
                 viewport={{ once: true }}
               />
               
-              <p className="text-slate-300 leading-relaxed mb-8 text-lg font-light max-w-xl">
+              <p className="text-white/80 leading-relaxed mb-10 text-xl font-light max-w-xl">
                 Turn any room photo into your perfect space. Get smart product recommendations and create beautiful vision boards in seconds.
               </p>
               
-              <div className="flex space-x-3">
+              <div className="flex space-x-4">
                 {socialIcons.map(({ icon: Icon, href, label }, index) => (
                   <motion.a 
                     key={label}
                     href={href} 
-                    className="p-3 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-all duration-300 group"
-                    whileHover={{ scale: 1.05, y: -2 }}
+                    className="p-4 text-white/60 hover:text-white bg-white/5 hover:bg-white/10 rounded-2xl transition-all duration-300 group border border-white/10 hover:border-white/20"
+                    whileHover={{ scale: 1.05, y: -3 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    style={{ transitionDelay: `${0.5 + index * 0.1}s` }}
+                    style={{ transitionDelay: `${0.7 + index * 0.1}s` }}
                   >
-                    <Icon size={18} />
+                    <Icon size={20} />
                   </motion.a>
                 ))}
               </div>
             </motion.div>
 
-            {/* Right Column - Resources & Contact Combined */}
-            <motion.div variants={itemVariants} className="space-y-8">
-              {/* Design Stories Blog Link */}
-              <div>
-                <h3 className="font-semibold text-white mb-6 flex items-center gap-3">
-                  <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
-                  Resources
-                </h3>
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ ease: "easeOut" }}
-                  viewport={{ once: true }}
-                >
-                  <Link 
-                    to="/blog" 
-                    className="text-slate-300 hover:text-white transition-all duration-300 flex items-center group font-medium text-lg"
-                  >
-                    <motion.span
-                      className="group-hover:translate-x-1 transition-transform duration-200"
-                    >
-                      Design Blogs
-                    </motion.span>
-                    <ArrowRight 
-                      size={16} 
-                      className="ml-2 opacity-0 group-hover:opacity-100 transition-all duration-200 transform -translate-x-2 group-hover:translate-x-0" 
-                    />
-                  </Link>
-                  <p className="text-slate-400 text-sm mt-2 font-light">
-                    Get inspired by real transformations and discover products that make the difference.
-                  </p>
-                </motion.div>
-              </div>
-
-              {/* Contact Info */}
-              <div>
-                <h3 className="font-semibold text-white mb-6 flex items-center gap-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  Get in Touch
-                </h3>
-                <div className="space-y-4">
-                  <motion.div 
-                    className="flex items-center gap-3"
-                    whileHover={{ x: 2 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Mail size={18} className="text-blue-400 flex-shrink-0" />
-                    <a 
-                      href="mailto:hello@mydesignindex.com" 
-                      className="text-slate-300 hover:text-white transition-colors duration-300 font-medium"
-                    >
-                      hello@mydesignindex.com
-                    </a>
-                  </motion.div>
+            {/* Right Column - Resources */}
+            <motion.div variants={itemVariants} className="space-y-10">
+              {/* Resources Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.4, ease: [0.165, 0.84, 0.44, 1] }}
+                className="flex justify-start mb-8"
+              >
+                <div className="group relative">
+                  <div className="absolute -inset-2 bg-gradient-to-r from-violet-500/20 via-blue-500/20 to-emerald-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-all duration-1000"></div>
                   
-                  <motion.div 
-                    className="flex items-center gap-3"
-                    whileHover={{ x: 2 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Phone size={18} className="text-slate-400 flex-shrink-0" />
-                    <span className="text-slate-300 font-medium">
-                      Support available 24/7
+                  <div className="relative inline-flex items-center gap-3 px-4 py-2 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-full shadow-lg hover:shadow-xl transition-all duration-700">
+                    <div className="relative flex items-center">
+                      <div className="w-2 h-2 bg-violet-500 rounded-full shadow-lg"></div>
+                      <div className="absolute inset-0 w-2 h-2 bg-violet-400 rounded-full animate-ping"></div>
+                    </div>
+                    
+                    <span className="text-white/90 text-xs font-bold tracking-wide">
+                      Resources
                     </span>
-                  </motion.div>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
+
+              {/* Design Stories Blog Link */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ ease: [0.165, 0.84, 0.44, 1], duration: 0.8, delay: 0.6 }}
+                viewport={{ once: true }}
+              >
+                <Link 
+                  to="/blog" 
+                  className="text-white/70 hover:text-white transition-all duration-300 flex items-center group font-medium text-xl"
+                >
+                  <motion.span
+                    className="group-hover:translate-x-1 transition-transform duration-200"
+                  >
+                    Design Blogs
+                  </motion.span>
+                  <ArrowRight 
+                    size={18} 
+                    className="ml-3 opacity-0 group-hover:opacity-100 transition-all duration-200 transform -translate-x-2 group-hover:translate-x-0" 
+                  />
+                </Link>
+                <p className="text-white/50 text-base mt-3 font-light leading-relaxed">
+                  Get inspired by real transformations and discover products that make the difference.
+                </p>
+              </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Newsletter Signup */}
+          {/* Enhanced Newsletter Signup - Matching Hero Interface Style */}
           <motion.div 
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 mb-16 shadow-2xl shadow-slate-900/20"
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1, ease: [0.165, 0.84, 0.44, 1] }}
             viewport={{ once: true }}
-            whileHover={{ y: -2 }}
+            whileHover={{ y: -4, scale: 1.01 }}
           >
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
               <div>
-                <h3 className="font-semibold text-2xl text-white mb-2">Stay Inspired</h3>
-                <p className="text-slate-300 font-light">Get design tips, product recommendations, and room makeover ideas delivered weekly.</p>
+                <h3 className="font-bold text-3xl text-white mb-3 bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+                  Stay Inspired
+                </h3>
+                <p className="text-white/70 font-light text-lg leading-relaxed">
+                  Get design tips, product recommendations, and room makeover ideas delivered weekly.
+                </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+              <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition-all duration-300 lg:w-64"
+                  className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition-all duration-300 lg:w-72 text-base"
                 />
                 <motion.button
-                  className="px-8 py-3 bg-slate-900 text-white font-medium rounded-full hover:bg-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
-                  whileHover={{ scale: 1.02 }}
+                  className="group relative px-10 py-4 text-lg font-bold rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                  whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
-                  Subscribe
-                  <ArrowRight size={16} />
+                  <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-blue-600"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                  
+                  <span className="relative text-white flex items-center justify-center gap-3 tracking-wide">
+                    Subscribe
+                    <motion.span
+                      className="inline-block"
+                      animate={{ x: [0, 3, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <ArrowRight size={18} />
+                    </motion.span>
+                  </span>
                 </motion.button>
               </div>
             </div>
           </motion.div>
 
-          {/* Bottom Bar */}
+          {/* Enhanced Bottom Bar */}
           <motion.div 
-            className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+            className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.165, 0.84, 0.44, 1] }}
             viewport={{ once: true }}
           >
-            <p className="text-slate-400 text-sm font-medium">
+            <p className="text-white/50 text-base font-medium">
               &copy; {new Date().getFullYear()} {APP_NAME}. All rights reserved.
             </p>
-            {/*<div className="flex space-x-8 text-sm">
-              {legalLinks.map((link, index) => (
-                <motion.a 
-                  key={link.label}
-                  href={link.href} 
-                  className="text-slate-400 hover:text-white transition-colors duration-300 font-medium"
-                  whileHover={{ y: -1 }}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index, ease: "easeOut" }}
-                  viewport={{ once: true }}
-                >
-                  {link.label}
-                </motion.a>
-              ))}
-            </div>*/}
+            <motion.div
+              className="flex items-center gap-2 text-white/40 text-sm"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, ease: "easeOut" }}
+              viewport={{ once: true }}
+            >
+              <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+              <span>AI-Powered Design Platform</span>
+            </motion.div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </footer>
   );
 };

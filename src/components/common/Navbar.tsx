@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Crown, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
+import { APP_NAME } from '../../utils/constants';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,15 +24,29 @@ const Navbar: React.FC = () => {
   const solidNavbarPages = ['/studio', '/curation', '/visionboard', '/upgrade', '/account'];
   const needsSolidNavbar = solidNavbarPages.includes(location.pathname);
 
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
   useEffect(() => {
     const handleScroll = () => {
-      const scrolled = window.scrollY > 30;
+      const currentScrollY = window.scrollY;
+      const scrolled = currentScrollY > 30;
       setIsScrolled(scrolled);
+
+      // Hide navbar when scrolling down, show when scrolling up or at top
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
+    
     window.addEventListener('scroll', handleScroll);
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -94,11 +109,38 @@ const Navbar: React.FC = () => {
     return (needsSolidNavbar || isScrolled) ? 'rgba(148, 163, 184, 0.1)' : 'rgba(255, 255, 255, 0.15)';
   };
 
+  // Updated app name styling to match footer
+  const getAppNameStyle = () => {
+    if (needsSolidNavbar || isScrolled) {
+      // Solid/scrolled state - use slate gradient
+      return {
+        background: 'linear-gradient(to right, #475569, #334155)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+      };
+    } else {
+      // Transparent state - use premium gradient like footer
+      return {
+        background: 'linear-gradient(to right, #a855f7, #3b82f6, #06d6a0)',
+        backgroundSize: '200% 100%',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+        WebkitTextStroke: '1px transparent',
+        textShadow: '0 4px 16px rgba(139, 92, 246, 0.3)',
+      };
+    }
+  };
+
   return (
     <motion.nav 
       initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      animate={{ 
+        y: isVisible ? 0 : -100, 
+        opacity: isVisible ? 1 : 0 
+      }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 transition-all duration-500 ${
         isScrolled || needsSolidNavbar ? 'py-3' : 'py-4'
       }`}
@@ -106,8 +148,8 @@ const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex justify-between items-center relative">
         
-        {/* LOGO ONLY - No text whatsoever */}
-        <button onClick={handleLogoClick} className="flex items-center z-10 group">
+        {/* LOGO WITH APP NAME - Footer Style Typography */}
+        <button onClick={handleLogoClick} className="flex items-center gap-4 z-10 group">
           <motion.div 
             className="relative w-8 h-8 flex-shrink-0"
             whileHover={{ scale: 1.05 }}
@@ -192,6 +234,28 @@ const Navbar: React.FC = () => {
               </defs>
             </svg>
           </motion.div>
+          
+          {/* App Name with Footer-Style Typography - Updated */}
+          <motion.h2 
+            className="font-[900] text-5xl"
+            style={getAppNameStyle()}
+            animate={
+              !(needsSolidNavbar || isScrolled) ? {
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
+              } : {}
+            }
+            transition={
+              !(needsSolidNavbar || isScrolled) ? {
+                backgroundPosition: { 
+                  duration: 6, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }
+              } : {}
+            }
+          >
+            {/*{APP_NAME}*/}
+          </motion.h2>
         </button>
 
         {/* MIDDLE SECTION - COMPLETELY EMPTY */}
