@@ -3,14 +3,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, LogOut, Crown, Settings } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
-import { APP_NAME } from '../../utils/constants';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const [isLogoHovered, setIsLogoHovered] = useState(false);
   const [logoColorStates] = useState([0, 1, 2, 3]); // Static color states for each dot
   const location = useLocation();
   const navigate = useNavigate();
@@ -82,28 +79,6 @@ const Navbar: React.FC = () => {
     navigate('/account');
   };
 
-  const navigationItems = [
-    // Commented out Design Studio button as requested
-    // { name: 'Design Studio', path: '/studio', protected: true },
-    // Only show Pricing when user is NOT authenticated
-    // { name: 'Pricing', path: '/', protected: false, hideWhenAuthenticated: true },
-  ];
-
-  // Filter navigation items based on authentication status
-  const filteredNavigationItems = navigationItems.filter(item => {
-    // Hide if protected and user not authenticated
-    if (item.protected && !isAuthenticated) {
-      return false;
-    }
-    
-    // Hide if hideWhenAuthenticated is true and user is authenticated
-    if (item.hideWhenAuthenticated && isAuthenticated) {
-      return false;
-    }
-    
-    return true;
-  });
-
   const navVariants = {
     hidden: { y: -100, opacity: 0 },
     visible: { 
@@ -169,37 +144,6 @@ const Navbar: React.FC = () => {
     return (needsSolidNavbar || isScrolled) ? 'rgba(148, 163, 184, 0.1)' : 'rgba(255, 255, 255, 0.15)';
   };
 
-  // Animation variants for letter effects
-  const letterVariants = {
-    initial: { 
-      scale: 1,
-      rotateY: 0,
-      z: 0,
-      filter: 'none'
-    },
-    hover: (i: number) => ({
-      scale: [1, 1.2, 1],
-      rotateY: [0, 15, -15, 0],
-      z: [0, 20, 0],
-      filter: [
-        'none',
-        'drop-shadow(0 0 8px rgba(139, 92, 246, 0.6))',
-        'none'
-      ],
-      transition: {
-        duration: 0.6,
-        delay: i * 0.1,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    })
-  };
-
-  // Split APP_NAME into individual letters for animation
-  const letters = APP_NAME.split('');
-
-  // Simplified logo display logic
-  const shouldShowLogoDots = (isScrolled || needsSolidNavbar) && !isLogoHovered;
-
   return (
     <motion.nav 
       variants={navVariants}
@@ -215,302 +159,194 @@ const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex justify-between items-center relative">
         
-        {/* Logo - Updated with simplified conditional display */}
+        {/* Logo - Simplified to just the 4-dot logo */}
         <button 
           onClick={handleLogoClick} 
-          className="flex items-center z-10 group gap-3 min-w-fit"
-          onMouseEnter={() => setIsLogoHovered(true)}
-          onMouseLeave={() => setIsLogoHovered(false)}
+          className="flex items-center z-10 group"
         >
-          {/* Four-Circle Logo - Simplified condition */}
-          <AnimatePresence mode="wait" key={`logo-${shouldShowLogoDots}`}>
-            {shouldShowLogoDots && (
-              <motion.div 
-                className="relative w-8 h-8 flex-shrink-0"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                whileHover={{ 
-                  scale: 1.05,
-                  transition: { type: "spring", stiffness: 400, damping: 17 }
+          {/* Four-Circle Logo */}
+          <motion.div 
+            className="relative w-8 h-8 flex-shrink-0"
+            whileHover={{ 
+              scale: 1.05,
+              transition: { type: "spring", stiffness: 400, damping: 17 }
+            }}
+          >
+            <svg width="32" height="32" viewBox="0 0 32 32" className="w-full h-full">
+              {/* Glow effects behind each circle */}
+              <motion.circle 
+                cx="10" 
+                cy="10" 
+                r="8" 
+                fill="rgba(139, 92, 246, 0.3)"
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: [0, 0.6, 0]
                 }}
-              >
-                <svg width="32" height="32" viewBox="0 0 32 32" className="w-full h-full">
-                  {/* Glow effects behind each circle */}
-                  <motion.circle 
-                    cx="10" 
-                    cy="10" 
-                    r="8" 
-                    fill="rgba(139, 92, 246, 0.3)"
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: [0, 0.6, 0]
-                    }}
-                    transition={{ 
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 0 * 0.6
-                    }}
-                  />
-                  <motion.circle 
-                    cx="22" 
-                    cy="10" 
-                    r="8" 
-                    fill="rgba(59, 130, 246, 0.3)"
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: [0, 0.6, 0]
-                    }}
-                    transition={{ 
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 1 * 0.6
-                    }}
-                  />
-                  <motion.circle 
-                    cx="10" 
-                    cy="22" 
-                    r="8" 
-                    fill="rgba(124, 58, 237, 0.3)"
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: [0, 0.6, 0]
-                    }}
-                    transition={{ 
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 2 * 0.6
-                    }}
-                  />
-                  <motion.circle 
-                    cx="22" 
-                    cy="22" 
-                    r="8" 
-                    fill="rgba(71, 85, 105, 0.3)"
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: [0, 0.6, 0]
-                    }}
-                    transition={{ 
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 3 * 0.6
-                    }}
-                  />
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0 * 0.6
+                }}
+              />
+              <motion.circle 
+                cx="22" 
+                cy="10" 
+                r="8" 
+                fill="rgba(59, 130, 246, 0.3)"
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: [0, 0.6, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1 * 0.6
+                }}
+              />
+              <motion.circle 
+                cx="10" 
+                cy="22" 
+                r="8" 
+                fill="rgba(124, 58, 237, 0.3)"
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: [0, 0.6, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 2 * 0.6
+                }}
+              />
+              <motion.circle 
+                cx="22" 
+                cy="22" 
+                r="8" 
+                fill="rgba(71, 85, 105, 0.3)"
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: [0, 0.6, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 3 * 0.6
+                }}
+              />
 
-                  {/* Main circles on top */}
-                  <motion.circle 
-                    cx="10" 
-                    cy="10" 
-                    r="6" 
-                    fill={`url(#${colorGradients[logoColorStates[0]].id})`}
-                    initial={{ scale: 0, opacity: 0.3 }}
-                    animate={{ 
-                      scale: 1,
-                      opacity: [0.3, 1, 0.3]
-                    }}
-                    transition={{ 
-                      scale: { delay: 0.1, type: "spring", stiffness: 400, damping: 17 },
-                      opacity: { 
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 0 * 0.6
-                      }
-                    }}
-                  />
-                  <motion.circle 
-                    cx="22" 
-                    cy="10" 
-                    r="6" 
-                    fill={`url(#${colorGradients[logoColorStates[1]].id})`}
-                    initial={{ scale: 0, opacity: 0.3 }}
-                    animate={{ 
-                      scale: 1,
-                      opacity: [0.3, 1, 0.3]
-                    }}
-                    transition={{ 
-                      scale: { delay: 0.2, type: "spring", stiffness: 400, damping: 17 },
-                      opacity: { 
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 1 * 0.6
-                      }
-                    }}
-                  />
-                  <motion.circle 
-                    cx="10" 
-                    cy="22" 
-                    r="6" 
-                    fill={`url(#${colorGradients[logoColorStates[2]].id})`}
-                    initial={{ scale: 0, opacity: 0.3 }}
-                    animate={{ 
-                      scale: 1,
-                      opacity: [0.3, 1, 0.3]
-                    }}
-                    transition={{ 
-                      scale: { delay: 0.3, type: "spring", stiffness: 400, damping: 17 },
-                      opacity: { 
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 2 * 0.6
-                      }
-                    }}
-                  />
-                  <motion.circle 
-                    cx="22" 
-                    cy="22" 
-                    r="6" 
-                    fill={`url(#${colorGradients[logoColorStates[3]].id})`}
-                    initial={{ scale: 0, opacity: 0.3 }}
-                    animate={{ 
-                      scale: 1,
-                      opacity: [0.3, 1, 0.3]
-                    }}
-                    transition={{ 
-                      scale: { delay: 0.4, type: "spring", stiffness: 400, damping: 17 },
-                      opacity: { 
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 3 * 0.6
-                      }
-                    }}
-                  />
-                  
-                  {/* All gradient definitions */}
-                  <defs>
-                    {colorGradients.map((gradient) => (
-                      <linearGradient 
-                        key={gradient.id}
-                        id={gradient.id} 
-                        x1="0%" 
-                        y1="0%" 
-                        x2="100%" 
-                        y2="100%"
-                      >
-                        <stop offset="0%" stopColor={gradient.colors[0]} />
-                        <stop offset="100%" stopColor={gradient.colors[1]} />
-                      </linearGradient>
-                    ))}
-                  </defs>
-                </svg>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
-          {/* Enhanced APP_NAME with hide/show animation - Fixed width container */}
-          <div className={`font-semibold text-2xl transition-all duration-500 ${getTextColor()} relative flex items-center`} style={{ width: isLogoHovered ? '280px' : '60px', height: '32px' }}>
-            {/* MDI - Fade out on hover - Aligned with logo center */}
-            <motion.div
-              className="absolute left-0 flex perspective-1000 items-center h-full"
-              animate={{
-                opacity: isLogoHovered ? 0 : 1,
-                x: isLogoHovered ? -20 : 0
-              }}
-              transition={{
-                duration: 0.3,
-                ease: "easeOut"
-              }}
-            >
-              {letters.map((letter, index) => (
-                <motion.span
-                  key={`${letter}-${index}`}
-                  custom={index}
-                  variants={letterVariants}
-                  initial="initial"
-                  animate={isLogoHovered ? "hover" : "initial"}
-                  className="inline-block transform-gpu"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                    backfaceVisibility: 'hidden'
-                  }}
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </motion.div>
-            
-            {/* "— My Design Index" with subtitle - Fade in on hover - Centered to match MDI alignment */}
-            <motion.div
-              className="absolute left-0 flex items-center h-full whitespace-nowrap"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{
-                opacity: isLogoHovered ? 1 : 0,
-                x: isLogoHovered ? 0 : 20
-              }}
-              transition={{
-                duration: 0.4,
-                ease: [0.25, 0.46, 0.45, 0.94],
-                delay: isLogoHovered ? 0.2 : 0
-              }}
-            >
-              <div className="flex flex-col">
-                <span className="text-slate-600 font-normal text-xl leading-tight -ml-12">
-                  — My Design Index
-                </span>
-                <motion.span 
-                  className="text-slate-500 font-light text-xs leading-tight mt-0.5"
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{
-                    opacity: isLogoHovered ? 1 : 0,
-                    y: isLogoHovered ? 0 : 5
-                  }}
-                  transition={{
-                    duration: 0.3,
-                    ease: "easeOut",
-                    delay: isLogoHovered ? 0.4 : 0
-                  }}
-                >
-                  Where Interior Design Meets Ecommerce
-                </motion.span>
-              </div>
-            </motion.div>
-          </div>
+              {/* Main circles on top */}
+              <motion.circle 
+                cx="10" 
+                cy="10" 
+                r="6" 
+                fill={`url(#${colorGradients[logoColorStates[0]].id})`}
+                initial={{ scale: 0, opacity: 0.3 }}
+                animate={{ 
+                  scale: 1,
+                  opacity: [0.3, 1, 0.3]
+                }}
+                transition={{ 
+                  scale: { delay: 0.1, type: "spring", stiffness: 400, damping: 17 },
+                  opacity: { 
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0 * 0.6
+                  }
+                }}
+              />
+              <motion.circle 
+                cx="22" 
+                cy="10" 
+                r="6" 
+                fill={`url(#${colorGradients[logoColorStates[1]].id})`}
+                initial={{ scale: 0, opacity: 0.3 }}
+                animate={{ 
+                  scale: 1,
+                  opacity: [0.3, 1, 0.3]
+                }}
+                transition={{ 
+                  scale: { delay: 0.2, type: "spring", stiffness: 400, damping: 17 },
+                  opacity: { 
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1 * 0.6
+                  }
+                }}
+              />
+              <motion.circle 
+                cx="10" 
+                cy="22" 
+                r="6" 
+                fill={`url(#${colorGradients[logoColorStates[2]].id})`}
+                initial={{ scale: 0, opacity: 0.3 }}
+                animate={{ 
+                  scale: 1,
+                  opacity: [0.3, 1, 0.3]
+                }}
+                transition={{ 
+                  scale: { delay: 0.3, type: "spring", stiffness: 400, damping: 17 },
+                  opacity: { 
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 2 * 0.6
+                  }
+                }}
+              />
+              <motion.circle 
+                cx="22" 
+                cy="22" 
+                r="6" 
+                fill={`url(#${colorGradients[logoColorStates[3]].id})`}
+                initial={{ scale: 0, opacity: 0.3 }}
+                animate={{ 
+                  scale: 1,
+                  opacity: [0.3, 1, 0.3]
+                }}
+                transition={{ 
+                  scale: { delay: 0.4, type: "spring", stiffness: 400, damping: 17 },
+                  opacity: { 
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 3 * 0.6
+                  }
+                }}
+              />
+              
+              {/* All gradient definitions */}
+              <defs>
+                {colorGradients.map((gradient) => (
+                  <linearGradient 
+                    key={gradient.id}
+                    id={gradient.id} 
+                    x1="0%" 
+                    y1="0%" 
+                    x2="100%" 
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor={gradient.colors[0]} />
+                    <stop offset="100%" stopColor={gradient.colors[1]} />
+                  </linearGradient>
+                ))}
+              </defs>
+            </svg>
+          </motion.div>
         </button>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center justify-end flex-1 space-x-1">
-          {filteredNavigationItems.map((item, index) => (
-            <motion.div
-              key={item.name}
-              className="relative"
-              onMouseEnter={() => setHoveredItem(item.name)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <Link 
-                to={item.path}
-                className={`relative px-4 py-2.5 font-medium text-sm tracking-wide transition-all duration-300 rounded-full ${getTextColorSecondary()} hover:${getTextColor()}`}
-              >
-                {item.name}
-                
-                {/* Hover effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-full"
-                  style={{
-                    background: hoveredItem === item.name ? getHoverBg() : 'transparent',
-                    boxShadow: 'none'
-                  }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ 
-                    opacity: hoveredItem === item.name ? 1 : 0,
-                    scale: hoveredItem === item.name ? 1 : 0.8
-                  }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                />
-              </Link>
-            </motion.div>
-          ))}
+        {/* Desktop Navigation - Empty for clean look */}
+        <div className="hidden md:flex items-center justify-end flex-1">
+          {/* Navigation items removed as requested */}
         </div>
 
-        {/* Desktop Auth Section - Always visible */}
+        {/* Desktop Auth Section - Only show user menu for authenticated users */}
         <div className="hidden md:flex items-center gap-3">
           {isAuthenticated ? (
             // Authenticated user menu
@@ -638,44 +474,7 @@ const Navbar: React.FC = () => {
                 )}
               </AnimatePresence>
             </div>
-          ) : (
-            // Guest user CTAs - Always render these buttons
-            <div className="flex items-center gap-3">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Link 
-                  to="/signin" 
-                  className={`px-5 py-2.5 font-medium text-sm transition-all duration-300 rounded-full ${getTextColorSecondary()} hover:${getTextColor()}`}
-                  style={{ minWidth: '80px', textAlign: 'center', display: 'inline-block' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = getHoverBg();
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                  }}
-                >
-                  Sign in
-                </Link>
-              </motion.div>
-              
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Link 
-                  to="/signup" 
-                  className="relative inline-flex items-center px-6 py-2.5 font-medium text-sm transition-all duration-300 rounded-full overflow-hidden text-white bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 shadow-lg hover:shadow-xl"
-                  style={{ minWidth: '120px', textAlign: 'center' }}
-                >
-                  Get started
-                </Link>
-              </motion.div>
-            </div>
-          )}
+          ) : null}
         </div>
 
         {/* Mobile Navigation Toggle - Always visible */}
@@ -770,31 +569,6 @@ const Navbar: React.FC = () => {
                     </div>
                   </motion.div>
                 )}
-                
-                {/* Navigation Items */}
-                {filteredNavigationItems.map((item, index) => (
-                  <motion.div
-                    key={item.name}
-                    custom={index + (isAuthenticated ? 1 : 0)}
-                    variants={itemVariants}
-                    initial="closed"
-                    animate="open"
-                  >
-                    <Link 
-                      to={item.path}
-                      className="flex items-center justify-between font-medium text-slate-700 hover:text-slate-900 py-4 px-4 rounded-2xl transition-all duration-300 group bg-white/60 hover:bg-white/80"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <span className="text-lg">{item.name}</span>
-                      <motion.div
-                        className="w-1.5 h-1.5 bg-slate-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-slate-600"
-                        initial={{ scale: 0.8 }}
-                        whileHover={{ scale: 1.2 }}
-                        transition={{ duration: 0.2 }}
-                      />
-                    </Link>
-                  </motion.div>
-                ))}
 
                 {/* Account Settings for authenticated users */}
                 {isAuthenticated && (
@@ -850,26 +624,15 @@ const Navbar: React.FC = () => {
                   </motion.div>
                 )}
                 
-                {/* Divider */}
-                <motion.div
-                  custom={filteredNavigationItems.length + (isAuthenticated ? 3 : 1)}
-                  variants={itemVariants}
-                  initial="closed"
-                  animate="open"
-                  className="py-4"
-                >
-                  <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
-                </motion.div>
-
                 {/* Mobile Auth CTAs */}
-                <motion.div
-                  custom={filteredNavigationItems.length + (isAuthenticated ? 4 : 2)}
-                  variants={itemVariants}
-                  initial="closed"
-                  animate="open"
-                  className="space-y-3"
-                >
-                  {isAuthenticated ? (
+                {isAuthenticated ? (
+                  <motion.div
+                    custom={3}
+                    variants={itemVariants}
+                    initial="closed"
+                    animate="open"
+                    className="space-y-3 pt-4 border-t border-slate-200/50"
+                  >
                     <button 
                       onClick={() => {
                         setIsMenuOpen(false);
@@ -879,26 +642,24 @@ const Navbar: React.FC = () => {
                     >
                       Sign out
                     </button>
-                  ) : (
-                    <>
-                      <Link 
-                        to="/signin" 
-                        className="block w-full text-center py-4 px-6 font-medium text-slate-700 hover:text-slate-900 rounded-2xl transition-all duration-300 bg-white/60 hover:bg-white/80"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        Sign in
-                      </Link>
-                      
-                      <Link 
-                        to="/signup" 
-                        className="block w-full text-center py-4 px-6 font-medium rounded-2xl transition-all duration-300 text-white bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-700 hover:to-blue-700 shadow-lg hover:shadow-xl"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        Get started
-                      </Link>
-                    </>
-                  )}
-                </motion.div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    custom={1}
+                    variants={itemVariants}
+                    initial="closed"
+                    animate="open"
+                    className="space-y-3 pt-4"
+                  >
+                    <Link 
+                      to="/signin" 
+                      className="block w-full text-center py-4 px-6 font-medium text-slate-700 hover:text-slate-900 rounded-2xl transition-all duration-300 bg-white/60 hover:bg-white/80"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Sign in
+                    </Link>
+                  </motion.div>
+                )}
               </div>
             </div>
           </motion.div>

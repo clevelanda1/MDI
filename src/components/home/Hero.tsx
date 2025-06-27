@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { APP_NAME, APP_TAGLINE } from '../../utils/constants';
-import Button from '../common/Button';
 
 const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,7 +11,7 @@ const Hero: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const navigate = useNavigate();
 
-  // Enhanced text options with more strategic messaging
+  // Enhanced text options
   const textOptions = [
     "With Zero Effort",
     "And Shop The Look", 
@@ -28,28 +27,23 @@ const Hero: React.FC = () => {
   useEffect(() => {
     setIsLoaded(true);
     
-    // Professional text cycling with improved UX
     const startTextCycle = () => {
       let currentIndex = 0;
       
       const cycleText = () => {
         setIsTransitioning(true);
         
-        // Wait for exit animation to complete before changing text
         setTimeout(() => {
           currentIndex = (currentIndex + 1) % textOptions.length;
           setCurrentTextIndex(currentIndex);
           setIsTransitioning(false);
-        }, 400); // Half of transition duration for smooth overlap
+        }, 400);
       };
       
-      // Start cycling after initial display time
       const initialDelay = setTimeout(() => {
-        const interval = setInterval(cycleText, 3500); // Slower, more readable pace
-        
-        // Clean up interval
+        const interval = setInterval(cycleText, 3500);
         return () => clearInterval(interval);
-      }, 4000); // Longer initial display time
+      }, 4000);
       
       return () => clearTimeout(initialDelay);
     };
@@ -79,189 +73,235 @@ const Hero: React.FC = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative min-h-screen w-full bg-gradient-to-b from-white via-slate-50/30 to-white overflow-hidden"
+      className="relative min-h-screen w-full overflow-hidden"
     >
-      {/* Enhanced Background Elements - Matching Upgrade Page */}
+      {/* Dark Premium Background for Top Section */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-800 to-white"></div>
+      
+      {/* Enhanced Animated Background */}
       <div className="absolute inset-0">
-        {/* Animated gradient orbs similar to Upgrade page */}
-        <motion.div
-          className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-violet-200/40 to-purple-200/40 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-indigo-200/40 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.5, 0.3, 0.5],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </div>
-
-      {/* Clean geometric pattern */}
-      <div className="absolute inset-0 opacity-[0.25]">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
-              <circle cx="20" cy="20" r="1" fill="currentColor"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#dots)" className="text-slate-600" />
-        </svg>
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10 flex flex-col justify-center min-h-screen px-8 lg:px-12 max-w-none mx-auto pt-16">
-        
-        {/* Status Badge - Reduced margin */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -20 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex justify-center mb-8"
-        >
-          <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-full shadow-sm hover:shadow-md transition-all duration-500 group cursor-pointer mt-12">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
-            </div>
-            <span className="text-slate-700 text-sm font-medium">
-              Introducing MDI Design Studio v1.0
-            </span>
-            <svg className="w-4 h-4 text-slate-400 group-hover:text-slate-600 group-hover:translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        </motion.div>
-
-        {/* Hero Text - Reduced spacing */}
-        <div className="text-center space-y-6 mb-12 max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 30 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="relative"
-          >
-            <h1 className="text-[58px] md:text-[72px] lg:text-[84px] leading-[1.05] tracking-tight">
-              {/* Ultra-thin first line */}
-              <span className="font-thin text-slate-900">
-                Design Your Dream Space,
-              </span>
-              
-              {/* Professional animated second line with enhanced transitions */}
-              <div className="relative block overflow-hidden" style={{ height: '1.05em' }}>
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={currentTextIndex}
-                    className="font-[800] bg-gradient-to-r from-slate-900 via-violet-600 via-blue-600 to-slate-900 bg-clip-text text-transparent bg-[length:200%_100%] absolute inset-0 flex items-center justify-center"
-                    style={{
-                      fontFamily: '"Inter", "Nunito", "Poppins", "Rubik", sans-serif',
-                      fontWeight: 800,
-                      letterSpacing: '-0.025em',
-                      textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
-                      backgroundPosition: "0% 50%"
-                    }}
-                    initial={{ 
-                      opacity: 0,
-                      y: 60,
-                      scale: 0.8,
-                      rotateX: -15,
-                      filter: "blur(8px)"
-                    }}
-                    animate={{ 
-                      opacity: 1,
-                      y: 0,
-                      scale: 1,
-                      rotateX: 0,
-                      filter: "blur(0px)",
-                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-                    }}
-                    exit={{ 
-                      opacity: 0,
-                      y: -60,
-                      scale: 0.8,
-                      rotateX: 15,
-                      filter: "blur(8px)"
-                    }}
-                    transition={{
-                      duration: 0.8,
-                      ease: [0.25, 0.46, 0.45, 0.94], // Professional easing curve
-                      backgroundPosition: {
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  >
-                    {textOptions[currentTextIndex]}
-                  </motion.span>
-                </AnimatePresence>
-                
-                {/* Subtle transition indicator */}
-                <motion.div
-                  className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-violet-400 to-transparent rounded-full"
-                  initial={{ opacity: 0, scaleX: 0 }}
-                  animate={{ 
-                    opacity: isTransitioning ? [0, 1, 0] : 0,
-                    scaleX: isTransitioning ? [0, 1, 0] : 0
-                  }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                />
-              </div>
-            </h1>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed"
-          >
-            {APP_TAGLINE}
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-            className="text-lg text-slate-500 max-w-4xl mx-auto leading-relaxed"
-          >
-            Transform your interior design vision into reality with My Design Index — Turn any room design inspiration into an actionable, shoppable experience in moments, not months.
-          </motion.p>
+        {/* Animated geometric pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="premium-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                <circle 
+                  cx="40" 
+                  cy="40" 
+                  r="2" 
+                  fill="#8b5cf6"
+                  opacity="0.3"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.2;0.6;0.2" 
+                    dur="4s" 
+                    repeatCount="indefinite"
+                  />
+                </circle>
+                <circle 
+                  cx="20" 
+                  cy="20" 
+                  r="1" 
+                  fill="#3b82f6"
+                  opacity="0.4"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.3;0.7;0.3" 
+                    dur="6s" 
+                    repeatCount="indefinite"
+                    begin="2s"
+                  />
+                </circle>
+                <circle 
+                  cx="60" 
+                  cy="20" 
+                  r="1.5" 
+                  fill="#06d6a0"
+                  opacity="0.3"
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.2;0.5;0.2" 
+                    dur="5s" 
+                    repeatCount="indefinite"
+                    begin="1s"
+                  />
+                </circle>
+                <path d="M0,40 L80,40 M40,0 L40,80" stroke="#475569" strokeWidth="0.5" opacity="0.1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#premium-grid)" />
+          </svg>
         </div>
 
-        {/* CTA Section - Reduced margin */}
+        {/* Premium floating elements */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
-          transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20"
-        >
-          <motion.button
-            onClick={handleGetStarted}
-            className="bg-slate-900 text-white hover:bg-slate-800 px-10 py-4 text-lg font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group border-0"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            Start creating for free
-            <motion.span
-              className="inline-block ml-2 group-hover:translate-x-1 transition-transform duration-200"
-            >
-              →
-            </motion.span>
-          </motion.button>
-        </motion.div>
+          className="absolute top-1/4 right-1/5 w-[500px] h-[500px] bg-gradient-to-br from-violet-500/10 via-blue-500/5 to-purple-500/10 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, 60, 0],
+            y: [0, -40, 0],
+            rotate: [0, 180, 360],
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-1/3 left-1/6 w-[400px] h-[400px] bg-gradient-to-br from-emerald-500/8 via-teal-500/4 to-cyan-500/8 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            x: [0, -50, 0],
+            y: [0, 50, 0],
+            rotate: [360, 180, 0],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
 
-        {/* Studio Interface Preview - Interactive Demo - WIDER */}
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen">
+        
+        {/* TOP SECTION - Revolutionary Dark Design */}
+        <div className="relative pt-24 pb-20 px-8 lg:px-16 min-h-[90vh] flex flex-col justify-center">
+          
+          {/* Premium Status Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: -40 }}
+            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : -40 }}
+            transition={{ duration: 1.2, ease: [0.165, 0.84, 0.44, 1] }}
+            className="flex justify-center mb-12"
+          >
+            <div className="group relative">
+              <div className="absolute -inset-3 bg-gradient-to-r from-violet-500/30 via-blue-500/30 to-emerald-500/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-all duration-1000"></div>
+              
+              <div className="relative inline-flex items-center gap-5 px-8 py-4 bg-white/10 backdrop-blur-2xl border border-white/20 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-700">
+                <div className="relative flex items-center">
+                  <div className="w-3 h-3 bg-emerald-400 rounded-full shadow-lg"></div>
+                  <div className="absolute inset-0 w-3 h-3 bg-emerald-300 rounded-full animate-ping"></div>
+                  <div className="absolute inset-0 w-3 h-3 bg-emerald-200 rounded-full animate-ping" style={{ animationDelay: '0.5s' }}></div>
+                </div>
+                
+                <span className="text-white text-base font-black tracking-wide">
+                  Introducing MDI Design Studio v1.0
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Revolutionary Hero Layout - Product Focus */}
+          <div className="max-w-8xl mx-auto">
+            
+            {/* Main Headline - Centered */}
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 60 }}
+              transition={{ duration: 1.5, delay: 0.3, ease: [0.165, 0.84, 0.44, 1] }}
+              className="text-center mb-16"
+            >
+              <h1 className="text-[32px] md:text-[48px] lg:text-[64px] xl:text-[80px] leading-[0.9] tracking-[-0.04em] font-black mb-8">
+                <span className="text-white block mb-2">
+                  Design Your Dream Space,
+                </span>
+                
+                {/* Dynamic animated text with room focus */}
+                <div className="relative overflow-hidden" style={{ height: '1.5em' }}>
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={currentTextIndex}
+                      className="font-[900] bg-gradient-to-r from-violet-400 via-blue-400 via-emerald-400 to-violet-400 bg-clip-text text-transparent bg-[length:400%_100%] absolute inset-0 flex items-center justify-center"
+                      style={{
+                        WebkitTextStroke: '1px transparent',
+                        textShadow: '0 8px 32px rgba(139, 92, 246, 0.4)',
+                      }}
+                      initial={{ 
+                        opacity: 0,
+                        y: 100,
+                        scale: 0.8,
+                        rotateX: -30,
+                        filter: "blur(20px)"
+                      }}
+                      animate={{ 
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        rotateX: 0,
+                        filter: "blur(0px)",
+                        backgroundPosition: ["0% 50%", "100% 50%", "200% 50%"]
+                      }}
+                      exit={{ 
+                        opacity: 0,
+                        y: -100,
+                        scale: 0.8,
+                        rotateX: 30,
+                        filter: "blur(20px)"
+                      }}
+                      transition={{
+                        duration: 1.4,
+                        ease: [0.165, 0.84, 0.44, 1],
+                        backgroundPosition: {
+                          duration: 8,
+                          repeat: Infinity,
+                          ease: "linear"
+                        }
+                      }}
+                    >
+                      {textOptions[currentTextIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
+              </h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 40 }}
+                transition={{ duration: 1.2, delay: 0.7, ease: [0.165, 0.84, 0.44, 1] }}
+                className="text-xl md:text-2xl text-white/90 font-light leading-[1.4] mb-12 max-w-4xl mx-auto"
+              >
+                Upload any room design and instantly discover similar products for every piece of furniture, decor, and accessory — transforming inspiration into actionable shopping lists.
+              </motion.p>
+            </motion.div>
+
+            {/* CTAs Only - Centered */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 40 }}
+              transition={{ duration: 1.2, delay: 1.8 }}
+              className="flex justify-center items-center max-w-lg mx-auto"
+            >
+              {/* Primary CTA */}
+              <motion.button
+                onClick={handleGetStarted}
+                className="group relative px-8 py-4 text-xl font-bold rounded-full overflow-hidden w-full sm:w-auto"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-blue-600"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                
+                <span className="relative text-white flex items-center justify-center gap-3 tracking-wide">
+                  Get Started For Free
+                  <motion.span
+                    className="inline-block text-2xl"
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    →
+                  </motion.span>
+                </span>
+              </motion.button>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* MIDDLE SECTION - Studio Interface Preview */}
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 40, scale: isLoaded ? 1 : 0.95 }}
-          transition={{ duration: 1, delay: 1, ease: "easeOut" }}
-          className="relative mx-auto max-w-6xl"
+          initial={{ opacity: 0, y: 60, scale: 0.95 }}
+          animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 60, scale: isLoaded ? 1 : 0.95 }}
+          transition={{ duration: 1.2, delay: 1.2 }}
+          className="relative mx-auto max-w-6xl px-8 lg:px-16 pb-16"
         >
           <motion.div
             style={{
@@ -302,9 +342,8 @@ const Hero: React.FC = () => {
                         <h3 className="font-semibold text-slate-900 text-sm">New Project</h3>
                       </div>
                       
-                      {/* Upload Area with Local Image */}
+                      {/* Upload Area */}
                       <div className="border-2 border-dashed border-slate-300/60 rounded-xl p-4 text-center mb-4 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
-                        {/* Local uploaded interior image */}
                         <div className="w-full h-32 rounded-lg mb-3 relative overflow-hidden">
                           <img 
                             src="/images/upload-room.jpg" 
@@ -313,7 +352,8 @@ const Hero: React.FC = () => {
                             onError={(e) => {
                               // Fallback if image doesn't exist
                               e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextElementSibling.style.display = 'flex';
+                              const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = 'flex';
                             }}
                           />
                           {/* Fallback placeholder */}
@@ -356,7 +396,7 @@ const Hero: React.FC = () => {
                     
                     {/* Project Cards Grid */}
                     <div className="grid grid-cols-2 gap-4">
-                      {/* Project 1 - Modern Living Room with Local Image */}
+                      {/* Project 1 - Modern Living Room */}
                       <motion.div 
                         className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60 shadow-sm"
                         animate={{ 
@@ -376,7 +416,8 @@ const Hero: React.FC = () => {
                             onError={(e) => {
                               // Fallback if image doesn't exist
                               e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextElementSibling.style.display = 'block';
+                              const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = 'block';
                             }}
                           />
                           {/* Fallback gradient */}
@@ -398,7 +439,7 @@ const Hero: React.FC = () => {
                         </div>
                       </motion.div>
                       
-                      {/* Project 2 - Cozy Bedroom with Local Image */}
+                      {/* Project 2 - Cozy Bedroom */}
                       <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
@@ -407,7 +448,8 @@ const Hero: React.FC = () => {
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextElementSibling.style.display = 'block';
+                              const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = 'block';
                             }}
                           />
                           {/* Fallback gradient */}
@@ -422,7 +464,7 @@ const Hero: React.FC = () => {
                         </div>
                       </div>
                       
-                      {/* Project 3 - Kitchen Space with Local Image */}
+                      {/* Project 3 - Kitchen Space */}
                       <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
@@ -431,7 +473,8 @@ const Hero: React.FC = () => {
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextElementSibling.style.display = 'block';
+                              const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = 'block';
                             }}
                           />
                           {/* Fallback gradient */}
@@ -446,7 +489,7 @@ const Hero: React.FC = () => {
                         </div>
                       </div>
                       
-                      {/* Project 4 - Bathroom Design with Local Image */}
+                      {/* Project 4 - Bathroom Design */}
                       <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
@@ -455,7 +498,8 @@ const Hero: React.FC = () => {
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextElementSibling.style.display = 'block';
+                              const fallback = e.currentTarget.nextElementSibling as HTMLElement;
+                              if (fallback) fallback.style.display = 'block';
                             }}
                           />
                           {/* Fallback gradient */}
@@ -495,28 +539,30 @@ const Hero: React.FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Social Proof - Reduced top margin */}
+        {/* BOTTOM SECTION - Social Proof */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isLoaded ? 1 : 0 }}
-          transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
-          className="mt-12 text-center"
+          transition={{ duration: 1, delay: 1.6 }}
+          className="text-center pb-20 px-8"
         >
-          <p className="text-slate-500 text-sm font-medium mb-6 mt-4">Trusted by design professionals worldwide</p>
-          <div className="flex items-center justify-center gap-12 text-slate-400">
+          <p className="text-slate-500 text-sm font-bold mb-8 tracking-wide uppercase">
+            Trusted by design professionals worldwide
+          </p>
+          <div className="flex items-center justify-center gap-16 text-slate-400">
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-slate-600">10K+</span>
-              <span className="text-sm">Inspirations Uploaded</span>
+              <span className="text-3xl font-black text-slate-700">10K+</span>
+              <span className="text-sm font-medium">Inspirations Uploaded</span>
             </div>
             <div className="w-px h-8 bg-slate-200"></div>
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-slate-600">1M+</span>
-              <span className="text-sm">Products Matched</span>
+              <span className="text-3xl font-black text-slate-700">1M+</span>
+              <span className="text-sm font-medium">Products Matched</span>
             </div>
             <div className="w-px h-8 bg-slate-200"></div>
             <div className="flex items-center gap-2">
-              <div className="text-yellow-500">★★★★★</div>
-              <span className="text-sm text-slate-600">4.9/5</span>
+              <div className="text-amber-500 text-xl">★★★★★</div>
+              <span className="text-sm text-slate-700 font-bold">4.9/5</span>
             </div>
           </div>
         </motion.div>
