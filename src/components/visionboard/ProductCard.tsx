@@ -16,12 +16,25 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onDragStart,
   onDoubleClick
 }) => {
+  // Get source-specific border colors
+  const getHoverBorderColor = (source: string) => {
+    switch (source?.toLowerCase()) {
+      case 'amazon':
+        return 'hover:border-orange-400';
+      case 'etsy':
+        return 'hover:border-teal-400';
+      default:
+        return 'hover:border-slate-400';
+    }
+  };
+
+  const hoverBorderColor = getHoverBorderColor(product.source);
   return (
     <motion.div
       draggable
       onDragStart={(e) => onDragStart(e, product)}
       onDoubleClick={() => onDoubleClick(product)}
-      className="group bg-white/60 rounded-xl p-3 border border-slate-200/60 cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-300 hover:scale-105 hover:border-violet-300"
+      className={`group bg-white/60 rounded-xl p-3 border border-slate-200/60 cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-300 hover:scale-105 ${hoverBorderColor}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
@@ -39,9 +52,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
           }}
         />
         {/* Drag indicator */}
-        <div className="absolute inset-0 bg-violet-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+        <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
           <div className="bg-white/90 rounded-full p-1">
-            <Plus size={12} className="text-violet-600" />
+            <Plus size={12} className="text-slate-600" />
           </div>
         </div>
       </div>

@@ -44,6 +44,7 @@ const Studio: React.FC = () => {
     editingProjectId,
     deleteModal,
     editInputRef,
+    likedProductCounts,
     startEditingProject,
     handleProjectNameChange,
     handleProjectNameKeyDown,
@@ -232,6 +233,7 @@ const Studio: React.FC = () => {
             onProjectNameKeyDown={handleProjectNameKeyDown}
             onDeleteProject={openDeleteModal}
             projectsSectionRef={projectsSectionRef}
+            likedProductCounts={likedProductCounts}
           />
         </div>
       </motion.div>

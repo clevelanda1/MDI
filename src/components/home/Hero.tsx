@@ -419,8 +419,9 @@ const Hero: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 60, scale: isLoaded ? 1 : 0.95 }}
-          transition={{ duration: 1.2, delay: 1.2 }}
-          className="relative mx-auto max-w-6xl px-8 lg:px-16 pb-16"
+          transition={{ duration: 1.2, delay: 0.3, ease: [0.165, 0.84, 0.44, 1] }}
+          viewport={{ once: true }}
+          className="relative mx-auto max-w-7xl px-6 lg:px-8 pb-16"
         >
           <motion.div
             style={{
@@ -431,7 +432,7 @@ const Hero: React.FC = () => {
             className="relative"
           >
             {/* Main Studio Interface Card */}
-            <div className="bg-white/60 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-2xl shadow-slate-900/10 p-1 overflow-hidden">
+            <div className="bg-white/60 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-2xl shadow-slate-900/10 p-1 overflow-hidden">
               <div className="bg-gradient-to-br from-slate-50/50 to-white/50 rounded-[20px] p-8">
                 
                 {/* Header Bar */}
@@ -455,7 +456,7 @@ const Hero: React.FC = () => {
                   
                   {/* Upload Section */}
                   <div className="lg:col-span-1">
-                    <div className="bg-white/80 rounded-2xl p-6 border border-slate-200/60">
+                    <div className="bg-white/80 rounded-2xl p-6 border border-slate-200/20">
                       <div className="flex items-center gap-2 mb-4">
                         <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
                         <h3 className="font-semibold text-slate-900 text-sm">New Project</h3>
@@ -517,7 +518,7 @@ const Hero: React.FC = () => {
                     <div className="grid grid-cols-2 gap-4">
                       {/* Project 1 - Modern Living Room */}
                       <motion.div 
-                        className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60 shadow-sm"
+                        className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/20 shadow-sm"
                         animate={{ 
                           boxShadow: [
                             "0 4px 6px -1px rgba(139, 92, 246, 0.1)",
@@ -559,7 +560,7 @@ const Hero: React.FC = () => {
                       </motion.div>
                       
                       {/* Project 2 - Cozy Bedroom */}
-                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
+                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/20">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
                             src="/images/cozy-bedroom.jpg" 
@@ -584,7 +585,7 @@ const Hero: React.FC = () => {
                       </div>
                       
                       {/* Project 3 - Kitchen Space */}
-                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
+                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/20">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
                             src="/images/kitchen-space.jpg" 
@@ -609,7 +610,7 @@ const Hero: React.FC = () => {
                       </div>
                       
                       {/* Project 4 - Bathroom Design */}
-                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
+                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/20">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
                             src="/images/bathroom-design.jpg" 
@@ -637,7 +638,7 @@ const Hero: React.FC = () => {
                 </div>
 
                 {/* Bottom Action Bar */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/60">
+                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/20">
                   <div className="flex items-center gap-3 text-slate-600">
                     <div className="w-8 h-8 bg-slate-200/60 rounded-full flex items-center justify-center">
                       <span className="text-sm">👤</span>

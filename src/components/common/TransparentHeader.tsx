@@ -13,7 +13,7 @@ const TransparentHeader: React.FC = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [logoColorStates] = useState([0, 1, 2, 3]); // Static color states for each dot
+  const [logoColorStates] = useState([0, 1, 2, 3]);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -21,27 +21,27 @@ const TransparentHeader: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { subscription } = useSubscription();
 
-  // Your original 4 color gradients
+  // Updated color gradients
   const colorGradients = [
     { id: 'gradient1', colors: ['#8b5cf6', '#a855f7'] }, // Violet
     { id: 'gradient2', colors: ['#3b82f6', '#2563eb'] }, // Blue
     { id: 'gradient3', colors: ['#7c3aed', '#6d28d9'] }, // Purple
-    { id: 'gradient4', colors: ['#475569', '#334155'] }, // Slate
+    { id: 'gradient4', colors: ['#10b981', '#059669'] }, // Green
   ];
 
   // Pages that need solid header background
   const solidHeaderPages = ['/studio', '/curation', '/visionboard', '/upgrade', '/account'];
   const needsSolidHeader = solidHeaderPages.some(path => location.pathname.startsWith(path));
 
-  // Check scroll position on mount and add scroll listener
+  // Enhanced scroll handler with hiding functionality
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       const scrolled = currentScrollY > 30;
       setIsScrolled(scrolled);
 
-      // Hide header when scrolling down, show when scrolling up or at top
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      // Hide header when scrolling down beyond 50px, show when scrolling up or at top
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
@@ -52,7 +52,7 @@ const TransparentHeader: React.FC = () => {
 
     // Check initial scroll position
     handleScroll();
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
@@ -134,11 +134,11 @@ const TransparentHeader: React.FC = () => {
   const getPlanColor = () => {
     switch (subscription.tier) {
       case 'studio':
-        return 'bg-blue-100 text-blue-700';
+        return 'bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-blue-500/20 text-blue-700';
       case 'pro':
-        return 'bg-violet-100 text-violet-700';
+        return 'bg-gradient-to-r from-violet-500/10 to-purple-500/10 border-violet-500/20 text-violet-700';
       default:
-        return 'bg-slate-100 text-slate-700';
+        return 'bg-gradient-to-r from-slate-500/10 to-gray-500/10 border-slate-500/20 text-slate-700';
     }
   };
 
@@ -159,7 +159,7 @@ const TransparentHeader: React.FC = () => {
 
   return (
     <header 
-      className="fixed top-0 left-0 right-0 z-[9999] transition-all duration-500"
+      className="fixed top-0 left-0 right-0 z-[9999] transition-all duration-700 ease-out"
       style={{
         transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
         opacity: isVisible ? 1 : 0,
@@ -188,7 +188,7 @@ const TransparentHeader: React.FC = () => {
               onClick={handleLogoClick}
               className="flex items-center gap-4 group"
             >
-              {/* Four-Circle Logo with animations - matching footer size */}
+              {/* Four-Circle Logo with animations */}
               <motion.div 
                 className="relative w-10 h-10 flex-shrink-0"
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -201,7 +201,7 @@ const TransparentHeader: React.FC = () => {
                 }}
               >
                 <svg width="40" height="40" viewBox="0 0 32 32" className="w-full h-full">
-                  {/* Enhanced Glow effects behind each circle - matching footer */}
+                  {/* Enhanced Glow effects behind each circle */}
                   <motion.circle 
                     cx="10" 
                     cy="10" 
@@ -254,7 +254,7 @@ const TransparentHeader: React.FC = () => {
                     cx="22" 
                     cy="22" 
                     r="10" 
-                    fill="rgba(71, 85, 105, 0.2)"
+                    fill="rgba(16, 185, 129, 0.2)"
                     initial={{ opacity: 0 }}
                     animate={{ 
                       opacity: [0, 0.4, 0]
@@ -267,7 +267,7 @@ const TransparentHeader: React.FC = () => {
                     }}
                   />
 
-                  {/* Main circles on top - Enhanced like footer */}
+                  {/* Main circles on top */}
                   <motion.circle 
                     cx="10" 
                     cy="10" 
@@ -368,7 +368,7 @@ const TransparentHeader: React.FC = () => {
                 </svg>
               </motion.div>
 
-              {/* APP_NAME with white styling */}
+              {/* APP_NAME */}
               <motion.h2 
                 className="font-[900] text-3xl text-white"
                 initial={{ opacity: 0, x: -20 }}
@@ -379,11 +379,6 @@ const TransparentHeader: React.FC = () => {
               </motion.h2>
             </button>
           )}
-
-          {/* Desktop Navigation - Removed */}
-          <div className="hidden md:flex items-center space-x-6">
-            {/* Navigation links removed as requested */}
-          </div>
 
           {/* Auth Buttons */}
           <div className="flex items-center gap-3">
@@ -417,11 +412,11 @@ const TransparentHeader: React.FC = () => {
                   </span>
                 </motion.button>
 
-                {/* Enhanced User Dropdown Menu - Fixed hover backgrounds */}
+                {/* Enhanced User Dropdown Menu */}
                 <AnimatePresence>
                   {isUserMenuOpen && (
                     <motion.div
-                      className="absolute right-0 top-full mt-5 w-80 bg-white/95 backdrop-blur-xl border border-slate-200/50 rounded-3xl shadow-xl py-2 z-50 overflow-hidden"
+                      className="absolute right-0 top-full mt-6 w-96 bg-white/95 backdrop-blur-2xl border border-slate-200/40 rounded-3xl shadow-2xl shadow-slate-900/10 py-2 z-50 overflow-hidden"
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -430,96 +425,134 @@ const TransparentHeader: React.FC = () => {
                         ease: [0.22, 1, 0.36, 1] 
                       }}
                     >
+                      {/* Enhanced gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/60 to-slate-50/80 rounded-3xl pointer-events-none"></div>
+                      
                       {/* Header section */}
-                      <div className="px-4 py-3 border-b border-slate-200/50">
-                        <div className="flex items-center gap-3">
-                          {/* Enhanced avatar */}
-                          <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-semibold text-sm">
-                            {user?.user_metadata?.first_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                      <div className="relative z-10 px-6 py-4 border-b border-slate-200/40">
+                        <div className="flex items-center gap-4">
+                          {/* Enhanced avatar with glow effect */}
+                          <div className="relative">
+                            <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-blue-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                              {user?.user_metadata?.first_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                            </div>
+                            <div className="absolute -inset-1 bg-gradient-to-br from-violet-500/20 to-blue-500/20 rounded-2xl blur-sm"></div>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-slate-900 truncate">
+                            <p className="font-bold text-slate-900 text-lg truncate">
                               {user?.user_metadata?.first_name} {user?.user_metadata?.last_name}
                             </p>
-                            <p className="text-sm text-slate-600 truncate">{user?.email}</p>
+                            <p className="text-sm text-slate-600 truncate font-medium">{user?.email}</p>
                           </div>
                         </div>
                       </div>
 
-                      {/* Subscription Status */}
-                      <div className="px-4 py-3 border-b border-slate-200/50">
+                      {/* Enhanced Subscription Status */}
+                      <div className="relative z-10 px-6 py-4 border-b border-slate-200/40">
                         <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-slate-700">Subscription</span>
+                          <div>
+                            <p className="text-sm font-semibold text-slate-700 mb-1">Current Plan</p>
+                            <p className="text-xs text-slate-500">Manage your subscription</p>
                           </div>
-                          <span className={`text-xs font-medium px-2 py-1 rounded-full ${getPlanColor()}`}>
+                          <div className={`px-3 py-1.5 rounded-full border text-xs font-bold uppercase tracking-wide ${getPlanColor()}`}>
                             {getPlanDisplayName()}
-                          </span>
+                          </div>
                         </div>
                       </div>
                       
-                      {/* Account Settings button - Fixed hover background */}
+                      {/* Enhanced Account Settings button */}
                       <motion.button 
                         onClick={handleAccountClick}
-                        className="group w-full px-4 py-3 text-left transition-all duration-300 relative"
-                        whileHover={{ x: 2 }}
+                        className="relative z-10 group w-full px-6 py-4 text-left transition-all duration-300"
+                        whileHover={{ x: 4 }}
                         transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       >
                         <motion.div
-                          className="absolute inset-x-0 inset-y-0 bg-slate-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          className="absolute inset-0 bg-gradient-to-r from-slate-50/60 to-slate-100/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl mx-2"
                         />
                         
-                        <div className="relative z-10 flex items-center gap-3">
-                          <div>
-                            <span className="font-medium text-slate-700 group-hover:text-slate-800 transition-colors">
-                              Manage
-                            </span>
-                            <p className="text-xs text-slate-500">Manage your account settings</p>
+                        <div className="relative z-10">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-semibold text-slate-800 group-hover:text-slate-900 transition-colors mb-1">
+                                Account Settings
+                              </p>
+                              <p className="text-xs text-slate-500 leading-relaxed">
+                                Manage your profile and preferences
+                              </p>
+                            </div>
+                            <motion.div
+                              className="w-1.5 h-1.5 bg-slate-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-slate-600"
+                              initial={{ scale: 0.8 }}
+                              whileHover={{ scale: 1.2 }}
+                              transition={{ duration: 0.2 }}
+                            />
                           </div>
                         </div>
                       </motion.button>
 
+                      {/* Enhanced Upgrade button for free users */}
                       {subscription.tier === 'free' && (
                         <motion.button 
                           onClick={handleUpgradeClick}
-                          className="group w-full px-4 py-3 text-left transition-all duration-300 relative"
-                          whileHover={{ x: 2 }}
+                          className="relative z-10 group w-full px-6 py-4 text-left transition-all duration-300"
+                          whileHover={{ x: 4 }}
                           transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         >
                           <motion.div
-                            className="absolute inset-x-0 inset-y-0 bg-violet-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            className="absolute inset-0 bg-gradient-to-r from-violet-50/80 to-purple-50/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl mx-2"
                           />
                           
-                          <div className="relative z-10 flex items-center gap-3">
-                            <div>
-                              <span className="font-medium text-violet-600 group-hover:text-violet-700 transition-colors">
-                                Upgrade Plan
-                              </span>
-                              <p className="text-xs text-slate-500">Want to remove ads?</p>
+                          <div className="relative z-10">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-semibold text-violet-700 group-hover:text-violet-800 transition-colors mb-1">
+                                  Upgrade Plan
+                                </p>
+                                <p className="text-xs text-slate-500 leading-relaxed">
+                                  Remove ads and unlock premium features
+                                </p>
+                              </div>
+                              <div className="relative">
+                                <div className="px-2 py-1 bg-gradient-to-r from-violet-500 to-purple-500 text-white text-xs font-bold rounded-full">
+                                  PRO
+                                </div>
+                                <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500/20 to-purple-500/20 rounded-full blur-sm"></div>
+                              </div>
                             </div>
                           </div>
                         </motion.button>
                       )}
                       
                       {/* Divider */}
-                      <div className="border-t border-slate-200/50 mt-2 pt-2">
-                        {/* Enhanced Sign out button - Fixed hover background with proper rounding */}
+                      <div className="border-t border-slate-200/40 mt-2 pt-2">
+                        {/* Enhanced Sign out button */}
                         <motion.button 
                           onClick={handleLogout}
                           disabled={isLoggingOut}
-                          className="group w-full px-4 py-3 text-left transition-all duration-300 relative disabled:opacity-50 rounded-b-3xl"
-                          whileHover={{ x: 2 }}
+                          className="relative z-10 group w-full px-6 py-4 text-left transition-all duration-300 disabled:opacity-50 rounded-b-3xl"
+                          whileHover={{ x: 4 }}
                           whileTap={{ scale: 0.98 }}
                           transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         >
                           <motion.div
-                            className="absolute inset-x-0 inset-y-0 bg-red-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-3xl"
+                            className="absolute inset-0 bg-gradient-to-r from-red-50/80 to-rose-50/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl mx-2"
                           />
                           
-                          <div className="relative z-10 flex items-center gap-3">
-                            <span className="text-red-600 group-hover:text-red-700 transition-colors font-medium">
-                              {isLoggingOut ? 'Signing out...' : 'Sign out'}
-                            </span>
+                          <div className="relative z-10">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-semibold text-red-600 group-hover:text-red-700 transition-colors mb-1">
+                                  {isLoggingOut ? 'Signing out...' : 'Sign Out'}
+                                </p>
+                                <p className="text-xs text-slate-500 leading-relaxed">
+                                  {isLoggingOut ? 'Please wait...' : 'End your current session'}
+                                </p>
+                              </div>
+                              {isLoggingOut && (
+                                <div className="w-4 h-4 border-2 border-red-200 border-t-red-600 rounded-full animate-spin"></div>
+                              )}
+                            </div>
                           </div>
                         </motion.button>
                       </div>
@@ -569,7 +602,7 @@ const TransparentHeader: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Enhanced Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -589,15 +622,21 @@ const TransparentHeader: React.FC = () => {
           >
             <div className="max-w-7xl mx-auto px-6 py-6">
               {isAuthenticated && (
-                <div className="flex items-center gap-3 p-4 bg-slate-100/60 rounded-2xl mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-                    {user?.user_metadata?.first_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-slate-50/80 to-slate-100/80 backdrop-blur-sm rounded-2xl mb-6 border border-slate-200/40">
+                  <div className="relative">
+                    <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-blue-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                      {user?.user_metadata?.first_name?.charAt(0) || user?.email?.charAt(0) || 'U'}
+                    </div>
+                    <div className="absolute -inset-1 bg-gradient-to-br from-violet-500/20 to-blue-500/20 rounded-2xl blur-sm"></div>
                   </div>
-                  <div>
-                    <p className="font-medium text-slate-900">
+                  <div className="flex-1">
+                    <p className="font-bold text-slate-900 text-lg">
                       {user?.user_metadata?.first_name} {user?.user_metadata?.last_name}
                     </p>
-                    <p className="text-sm text-slate-600">{user?.email}</p>
+                    <p className="text-sm text-slate-600 font-medium">{user?.email}</p>
+                    <div className={`inline-block mt-2 px-2 py-1 rounded-full border text-xs font-bold uppercase tracking-wide ${getPlanColor()}`}>
+                      {getPlanDisplayName()}
+                    </div>
                   </div>
                 </div>
               )}
@@ -607,12 +646,12 @@ const TransparentHeader: React.FC = () => {
                   <>
                     <Link 
                       to="/account"
-                      className="flex items-center justify-between font-medium text-slate-700 hover:text-slate-900 py-4 px-4 rounded-2xl transition-all duration-300 group bg-white/60 hover:bg-white/80"
+                      className="flex items-center justify-between font-semibold text-slate-700 hover:text-slate-900 py-4 px-6 rounded-2xl transition-all duration-300 group bg-white/80 hover:bg-white border border-slate-200/40 hover:border-slate-300/60"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      <div className="flex items-center gap-3">
-                        <Settings size={18} />
-                        <span className="text-lg">Account Settings</span>
+                      <div>
+                        <p className="text-lg mb-1">Account Settings</p>
+                        <p className="text-xs text-slate-500 font-normal">Manage your profile and preferences</p>
                       </div>
                       <motion.div
                         className="w-1.5 h-1.5 bg-slate-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-slate-600"
@@ -624,31 +663,37 @@ const TransparentHeader: React.FC = () => {
 
                     <Link 
                       to="/upgrade"
-                      className="flex items-center justify-between font-medium text-violet-600 hover:text-violet-700 py-4 px-4 rounded-2xl transition-all duration-300 group bg-violet-50/60 hover:bg-violet-100/60 w-full"
+                      className="flex items-center justify-between font-semibold text-violet-600 hover:text-violet-700 py-4 px-6 rounded-2xl transition-all duration-300 group bg-gradient-to-r from-violet-50/80 to-purple-50/80 border border-violet-200/40 hover:border-violet-300/60"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      <div className="flex items-center gap-3">
-                        <Crown size={18} />
-                        <span className="text-lg">Upgrade Plan</span>
+                      <div>
+                        <p className="text-lg mb-1">Upgrade Plan</p>
+                        <p className="text-xs text-slate-500 font-normal">Remove ads and unlock premium features</p>
                       </div>
-                      <motion.div
-                        className="w-1.5 h-1.5 bg-violet-400 rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-violet-600"
-                        initial={{ scale: 0.8 }}
-                        whileHover={{ scale: 1.2 }}
-                        transition={{ duration: 0.2 }}
-                      />
+                      <div className="relative">
+                        <div className="px-2 py-1 bg-gradient-to-r from-violet-500 to-purple-500 text-white text-xs font-bold rounded-full">
+                          PRO
+                        </div>
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500/20 to-purple-500/20 rounded-full blur-sm"></div>
+                      </div>
                     </Link>
 
-                    <div className="py-4">
+                    <div className="py-2">
                       <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
                     </div>
 
                     <button 
                       onClick={handleLogout}
                       disabled={isLoggingOut}
-                      className="block w-full text-center py-4 px-6 font-medium text-red-600 hover:text-red-700 rounded-2xl transition-all duration-300 bg-white/60 hover:bg-red-50/80"
+                      className="flex items-center justify-between w-full font-semibold text-red-600 hover:text-red-700 py-4 px-6 rounded-2xl transition-all duration-300 group bg-gradient-to-r from-red-50/80 to-rose-50/80 border border-red-200/40 hover:border-red-300/60 disabled:opacity-50"
                     >
-                      {isLoggingOut ? 'Signing out...' : 'Sign out'}
+                      <div>
+                        <p className="text-lg mb-1">{isLoggingOut ? 'Signing out...' : 'Sign Out'}</p>
+                        <p className="text-xs text-slate-500 font-normal">{isLoggingOut ? 'Please wait...' : 'End your current session'}</p>
+                      </div>
+                      {isLoggingOut && (
+                        <div className="w-4 h-4 border-2 border-red-200 border-t-red-600 rounded-full animate-spin"></div>
+                      )}
                     </button>
                   </>
                 )}

@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
     { id: 'gradient1', colors: ['#8b5cf6', '#a855f7'] },
     { id: 'gradient2', colors: ['#3b82f6', '#2563eb'] },
     { id: 'gradient3', colors: ['#7c3aed', '#6d28d9'] },
-    { id: 'gradient4', colors: ['#475569', '#334155'] },
+    { id: 'gradient4', colors: ['#10b981', '#059669'] }, // Changed from slate to green
   ];
 
   const solidNavbarPages = ['/studio', '/curation', '/visionboard', '/upgrade', '/account'];
@@ -177,7 +177,7 @@ const Navbar: React.FC = () => {
               />
               <motion.circle 
                 cx="22" cy="22" r="8" 
-                fill="rgba(71, 85, 105, 0.3)"
+                fill="rgba(16, 185, 129, 0.3)"
                 animate={{ opacity: [0, 0.6, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
               />

@@ -3,6 +3,7 @@ import { Project } from '../types/studio';
 import { DeleteModalState } from '../types/studio';
 import { ProjectService } from '../services/projectService';
 import { useAuth } from '../contexts/AuthContext';
+import { LikedProductsService } from '../services/likedProductsService';
 
 export const useProjects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -15,15 +16,43 @@ export const useProjects = () => {
     projectName: '',
     isDeleting: false
   });
+  const [likedProductCounts, setLikedProductCounts] = useState<Record<string, number>>({});
   const editInputRef = useRef<HTMLInputElement>(null);
   const { isAuthenticated } = useAuth();
 
   // Load projects on component mount
   useEffect(() => {
     if (isAuthenticated) {
-      loadProjects();
+      loadProjectsAndLikedCounts();
     }
   }, [isAuthenticated]);
+
+  const loadProjectsAndLikedCounts = async () => {
+    try {
+      setIsLoadingProjects(true);
+      
+      // Load projects
+      const projectsData = await ProjectService.getProjects();
+      setProjects(projectsData);
+      
+      // Load liked products for all projects
+      const likedProducts = await LikedProductsService.getLikedProducts();
+      
+      // Calculate counts per project
+      const counts: Record<string, number> = {};
+      likedProducts.forEach(product => {
+        if (product.project_id) {
+          counts[product.project_id] = (counts[product.project_id] || 0) + 1;
+        }
+      });
+      
+      setLikedProductCounts(counts);
+    } catch (error) {
+      console.error('Error loading projects and liked counts:', error);
+    } finally {
+      setIsLoadingProjects(false);
+    }
+  };
 
   const loadProjects = async () => {
     try {
@@ -123,7 +152,9 @@ export const useProjects = () => {
     editingProjectId,
     deleteModal,
     editInputRef,
+    likedProductCounts,
     loadProjects,
+    loadProjectsAndLikedCounts,
     startEditingProject,
     handleProjectNameChange,
     handleProjectNameKeyDown,

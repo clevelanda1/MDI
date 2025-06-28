@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, RotateCcw, Save, Share2, FolderOpen, AlertCircle, Crown, Edit2 } from 'lucide-react';
+import { Eye, EyeOff, RotateCcw, Save, Share2, FolderOpen, AlertCircle, Crown, Edit2, Sparkles, Zap } from 'lucide-react';
 import SaveVisionBoardModal from './SaveVisionBoardModal';
 import LoadVisionBoardModal from './LoadVisionBoardModal';
 import ShareVisionBoardModal from './ShareVisionBoardModal';
@@ -54,16 +54,42 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState(currentBoardName);
 
-  // Check if user can save vision boards (free tier can save 1, paid tiers can save more)
-  const canSaveVisionBoards = true; // All users can save at least one board
-  
-  // Check if user can share vision boards based on subscription
+  const canSaveVisionBoards = true;
   const canShareVisionBoards = subscription.tier !== 'free';
-  
-  // Check if user has reached their saved boards limit
   const hasReachedSavedBoardsLimit = 
     (subscription.tier === 'free' && savedBoards.length >= limits.visionBoards && !currentBoardId) ||
     (subscription.tier === 'pro' && savedBoards.length >= limits.visionBoards && !currentBoardId);
+
+  const getTierConfig = (tier: string) => {
+    switch (tier) {
+      case 'studio':
+        return {
+          icon: Crown,
+          bgColor: 'bg-gradient-to-r from-blue-500/10 to-indigo-500/10',
+          borderColor: 'border-blue-500/20',
+          textColor: 'text-blue-700',
+          iconColor: 'text-blue-500'
+        };
+      case 'pro':
+        return {
+          icon: Zap,
+          bgColor: 'bg-gradient-to-r from-violet-500/10 to-purple-500/10',
+          borderColor: 'border-violet-500/20',
+          textColor: 'text-violet-700',
+          iconColor: 'text-violet-500'
+        };
+      default:
+        return {
+          icon: Sparkles,
+          bgColor: 'bg-gradient-to-r from-slate-500/10 to-gray-500/10',
+          borderColor: 'border-slate-500/20',
+          textColor: 'text-slate-700',
+          iconColor: 'text-slate-500'
+        };
+    }
+  };
+
+  const tierConfig = getTierConfig(subscription.tier);
 
   const handleSaveBoard = async (boardName: string) => {
     try {
@@ -114,7 +140,6 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
     }
     
     if (!currentBoardId) {
-      // Need to save first
       setShowUpgradeInfo(true);
       setTimeout(() => setShowUpgradeInfo(false), 3000);
       return;
@@ -124,11 +149,7 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
   };
 
   const handleEditNameClick = () => {
-    if (!currentBoardId) {
-      // Can't edit name of unsaved board
-      return;
-    }
-    
+    if (!currentBoardId) return;
     setEditedName(currentBoardName);
     setIsEditingName(true);
   };
@@ -157,27 +178,38 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
   };
 
   const hasNoBoardsToLoad = !isLoadingSavedBoards && savedBoards.length === 0;
-  
-  // Check if the current board is saved
   const isBoardSaved = !!currentBoardId;
 
   return (
-    <>
-      <div className="bg-white/90 backdrop-blur-xl border-b border-slate-200/60 relative z-10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-slate-600 font-medium">
-                {itemCount} items on board
-              </span>
-              
-              <div className="bg-slate-100/60 px-4 py-2 rounded-full">
-                <span className="text-sm text-slate-600">Total Budget: </span>
-                <span className="font-semibold text-slate-900">${totalBudget.toLocaleString()}</span>
+    <div>
+      {/* Main Controls Bar */}
+      <div className="bg-white/95 backdrop-blur-2xl border-b border-slate-200/30 relative z-10 shadow-lg">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-50/50 via-white/30 to-slate-50/50 pointer-events-none"></div>
+        
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5 relative z-10">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5">
+            
+            {/* Left Section */}
+            <div className="flex flex-wrap items-center gap-4">
+              {/* Item Count */}
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-sm"></div>
+                <span className="text-sm text-slate-700 font-semibold">
+                  {itemCount} items on board
+                </span>
+              </div>
+
+              {/* Budget Display */}
+              <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-50/80 to-teal-50/80 border border-emerald-200/30 rounded-full backdrop-blur-sm shadow-sm">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                <span className="text-sm text-emerald-700 font-medium">Total Budget:</span>
+                <span className="font-bold text-emerald-800">${totalBudget.toLocaleString()}</span>
               </div>
               
+              {/* Board Name */}
               {currentBoardId && (
-                <div className="bg-violet-100/60 px-4 py-2 rounded-full flex items-center gap-2">
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-violet-50/80 to-blue-50/80 border border-violet-200/30 rounded-full backdrop-blur-sm shadow-sm">
+                  <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
                   {isEditingName ? (
                     <input
                       type="text"
@@ -185,102 +217,94 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
                       onChange={(e) => setEditedName(e.target.value)}
                       onBlur={handleNameSave}
                       onKeyDown={handleNameKeyDown}
-                      className="bg-transparent border-b border-violet-300 focus:outline-none focus:border-violet-500 text-sm text-violet-600 font-medium px-1 py-0.5 w-40"
+                      className="bg-transparent border-b border-violet-300 focus:outline-none focus:border-violet-500 text-sm text-violet-700 font-semibold px-1 py-0.5 w-40"
                       autoFocus
                     />
                   ) : (
                     <>
-                      <span className="text-sm text-violet-600 font-medium">{currentBoardName}</span>
-                      <motion.button
+                      <span className="text-sm text-violet-700 font-semibold">{currentBoardName}</span>
+                      <button
                         onClick={handleEditNameClick}
-                        className="p-1 text-violet-400 hover:text-violet-600 hover:bg-violet-100 rounded-full transition-all duration-200"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        className="p-1 text-violet-400 hover:text-violet-600 hover:bg-violet-100/60 rounded-full transition-all duration-200"
                       >
                         <Edit2 size={12} />
-                      </motion.button>
+                      </button>
                     </>
                   )}
                 </div>
               )}
               
-              {/* Subscription Tier Badge */}
-              <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                subscription.tier === 'studio' 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : subscription.tier === 'pro'
-                  ? 'bg-violet-100 text-violet-700'
-                  : 'bg-slate-100 text-slate-700'
-              }`}>
-                {subscription.tier.charAt(0).toUpperCase() + subscription.tier.slice(1)} Plan
+              {/* Tier Badge */}
+              <div className={`flex items-center gap-2 px-4 py-2.5 ${tierConfig.bgColor} ${tierConfig.borderColor} border rounded-full backdrop-blur-sm shadow-md`}>
+                <tierConfig.icon size={16} className={tierConfig.iconColor} />
+                <span className={`text-xs font-bold ${tierConfig.textColor} uppercase tracking-wide`}>
+                  {subscription.tier.charAt(0).toUpperCase() + subscription.tier.slice(1)} Plan
+                </span>
               </div>
             </div>
             
-            <div className="flex items-center space-x-3">
-              <motion.button
+            {/* Right Section */}
+            <div className="flex items-center gap-3">
+              {/* Toggle Sidebar */}
+              <button
                 onClick={onToggleSidebar}
-                className="p-2 text-slate-600 hover:text-slate-800 hover:bg-slate-100/60 rounded-full transition-all duration-200"
+                className="p-2.5 text-slate-500 hover:text-slate-700 bg-white/60 hover:bg-white/80 border border-slate-200/40 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md"
                 title="Toggle product sidebar"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
               >
                 {showSidebar ? <EyeOff size={18} /> : <Eye size={18} />}
-              </motion.button>
+              </button>
               
-              <motion.button
+              {/* Clear Board */}
+              <button
                 onClick={onClearBoard}
-                className="p-2 text-slate-600 hover:text-slate-800 hover:bg-slate-100/60 rounded-full transition-all duration-200"
+                className="p-2.5 text-slate-500 hover:text-red-500 bg-white/60 hover:bg-red-50/80 border border-slate-200/40 hover:border-red-200/40 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md"
                 title="Clear board"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
               >
                 <RotateCcw size={18} />
-              </motion.button>
+              </button>
               
-              <motion.button 
+              {/* Load Button */}
+              <button 
                 onClick={handleLoadClick}
                 disabled={hasNoBoardsToLoad}
-                className={`flex items-center space-x-2 px-4 py-2.5 border border-slate-300/60 rounded-full text-slate-600 hover:bg-slate-50/80 transition-all duration-200 font-medium ${
-                  hasNoBoardsToLoad ? 'opacity-50 cursor-not-allowed hover:bg-transparent' : ''
+                className={`flex items-center gap-2 px-4 py-2.5 bg-white/80 hover:bg-white border border-slate-200/40 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md font-medium ${
+                  hasNoBoardsToLoad 
+                    ? 'opacity-50 cursor-not-allowed text-slate-400' 
+                    : 'text-slate-700 hover:text-slate-900'
                 }`}
-                title={hasNoBoardsToLoad 
-                  ? "No saved boards to load" 
-                  : "Load saved board"}
-                whileHover={{ scale: !hasNoBoardsToLoad ? 1.02 : 1 }}
-                whileTap={{ scale: !hasNoBoardsToLoad ? 0.98 : 1 }}
+                title={hasNoBoardsToLoad ? "No saved boards to load" : "Load saved board"}
               >
                 <FolderOpen size={16} />
                 <span>Load</span>
-              </motion.button>
+              </button>
               
-              <motion.button 
+              {/* Save Button */}
+              <button 
                 onClick={handleSaveClick}
                 disabled={itemCount === 0 || isSaving || (hasReachedSavedBoardsLimit && !currentBoardId)}
-                className={`flex items-center space-x-2 px-4 py-2.5 border border-slate-300/60 rounded-full text-slate-600 hover:bg-slate-50/80 transition-all duration-200 font-medium ${
-                  itemCount === 0 || isSaving || (hasReachedSavedBoardsLimit && !currentBoardId) 
-                    ? 'opacity-50 cursor-not-allowed hover:bg-transparent' 
-                    : ''
+                className={`flex items-center gap-2 px-4 py-2.5 bg-white/80 hover:bg-white border border-slate-200/40 rounded-xl transition-all duration-300 shadow-sm hover:shadow-md font-medium ${
+                  itemCount === 0 || isSaving || (hasReachedSavedBoardsLimit && !currentBoardId)
+                    ? 'opacity-50 cursor-not-allowed text-slate-400' 
+                    : 'text-slate-700 hover:text-slate-900'
                 }`}
                 title={itemCount === 0 
                   ? "Add items to save" 
                   : hasReachedSavedBoardsLimit && !currentBoardId
                   ? `You've reached the limit of ${limits.visionBoards} saved boards`
                   : "Save board"}
-                whileHover={{ scale: itemCount > 0 && !isSaving && !(hasReachedSavedBoardsLimit && !currentBoardId) ? 1.02 : 1 }}
-                whileTap={{ scale: itemCount > 0 && !isSaving && !(hasReachedSavedBoardsLimit && !currentBoardId) ? 0.98 : 1 }}
               >
                 <Save size={16} />
                 <span>{isSaving ? 'Saving...' : 'Save'}</span>
-              </motion.button>
+              </button>
               
-              {/* Share button - checks if board is saved and if user can share */}
-              <motion.button 
+              {/* Share Button */}
+              <button 
                 onClick={handleShareClick}
                 disabled={itemCount === 0 || !isBoardSaved || !canShareVisionBoards}
-                className={`flex items-center space-x-2 px-6 py-2.5 bg-slate-900 text-white rounded-full hover:bg-slate-800 transition-all duration-200 font-medium ${
+                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl ${
                   itemCount === 0 || !isBoardSaved || !canShareVisionBoards
-                    ? 'opacity-50 cursor-not-allowed hover:bg-slate-900' 
-                    : ''
+                    ? 'opacity-50 cursor-not-allowed bg-slate-400 text-white' 
+                    : 'bg-gradient-to-r from-slate-900 to-slate-800 text-white hover:from-slate-800 hover:to-slate-700'
                 }`}
                 title={!canShareVisionBoards 
                   ? "Upgrade to Pro or Studio to share boards" 
@@ -289,12 +313,10 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
                   : itemCount === 0
                   ? "Add items to share"
                   : "Share board"}
-                whileHover={{ scale: canShareVisionBoards && isBoardSaved && itemCount > 0 ? 1.02 : 1 }}
-                whileTap={{ scale: canShareVisionBoards && isBoardSaved && itemCount > 0 ? 0.98 : 1 }}
               >
                 <Share2 size={16} />
                 <span>Share</span>
-              </motion.button>
+              </button>
             </div>
           </div>
           
@@ -302,15 +324,17 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
           <AnimatePresence>
             {showUpgradeInfo && (
               <motion.div 
-                className="absolute left-1/2 transform -translate-x-1/2 top-full mt-4 bg-amber-50 border border-amber-200 rounded-xl p-3 shadow-lg z-50 flex items-start gap-3 max-w-md"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                className="absolute left-1/2 transform -translate-x-1/2 top-full mt-4 bg-white/95 backdrop-blur-xl border border-amber-200/40 rounded-2xl p-4 shadow-2xl z-50 flex items-start gap-4 max-w-md"
+                initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                transition={{ duration: 0.3, ease: [0.165, 0.84, 0.44, 1] }}
               >
-                <AlertCircle size={18} className="text-amber-500 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-amber-800 text-sm font-medium">
+                <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                  <AlertCircle size={18} className="text-amber-600" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-amber-800 text-sm font-semibold mb-1">
                     {itemCount === 0 
                       ? "Add Items First" 
                       : hasReachedSavedBoardsLimit && !currentBoardId
@@ -318,8 +342,8 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
                       : !isBoardSaved && canShareVisionBoards
                       ? "Save Required"
                       : "Upgrade Required"}
-                  </p>
-                  <p className="text-amber-700 text-xs">
+                  </h4>
+                  <p className="text-amber-700 text-xs leading-relaxed mb-2">
                     {itemCount === 0 
                       ? "Add some items to your vision board before saving." 
                       : hasReachedSavedBoardsLimit && !currentBoardId
@@ -330,8 +354,9 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
                   </p>
                   <a 
                     href="/upgrade" 
-                    className="text-xs text-amber-800 font-medium mt-1 inline-block hover:underline"
+                    className="inline-flex items-center gap-1 text-xs text-amber-800 font-semibold hover:text-amber-900 transition-colors"
                   >
+                    <Crown size={12} />
                     View Upgrade Options
                   </a>
                 </div>
@@ -341,41 +366,48 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
         </div>
       </div>
 
-      {/* Save Modal */}
-      <SaveVisionBoardModal
-        isOpen={showSaveModal}
-        onClose={() => setShowSaveModal(false)}
-        onSave={handleSaveBoard}
-        isLoading={isSaving}
-        initialName={currentBoardName}
-        error={saveError}
-        hasReachedLimit={hasReachedSavedBoardsLimit && !currentBoardId}
-        maxBoards={limits.visionBoards}
-      />
+      {/* Modals */}
+      {showSaveModal && (
+        <SaveVisionBoardModal
+          isOpen={showSaveModal}
+          onClose={() => {
+            setShowSaveModal(false);
+            setShowSaveError(null);
+          }}
+          onSave={handleSaveBoard}
+          isLoading={isSaving}
+          initialName={currentBoardName || ""}
+          error={saveError}
+          hasReachedLimit={hasReachedSavedBoardsLimit && !currentBoardId}
+          maxBoards={limits?.visionBoards || 1}
+        />
+      )}
 
-      {/* Load Modal */}
-      <LoadVisionBoardModal
-        isOpen={showLoadModal}
-        onClose={() => setShowLoadModal(false)}
-        onLoad={onLoadBoard}
-        onDelete={onDeleteBoard}
-        savedBoards={savedBoards}
-        isLoading={isLoadingSavedBoards}
-        onLoadSavedBoards={onLoadSavedBoards}
-      />
+      {showLoadModal && (
+        <LoadVisionBoardModal
+          isOpen={showLoadModal}
+          onClose={() => setShowLoadModal(false)}
+          onLoad={onLoadBoard}
+          onDelete={onDeleteBoard}
+          savedBoards={savedBoards || []}
+          isLoading={isLoadingSavedBoards}
+          onLoadSavedBoards={onLoadSavedBoards}
+        />
+      )}
 
-      {/* Share Modal - Pass isSaved prop */}
-      <ShareVisionBoardModal
-        isOpen={showShareModal}
-        onClose={() => setShowShareModal(false)}
-        boardName={currentBoardName || "My Vision Board"}
-        boardItems={boardItems}
-        totalBudget={totalBudget}
-        originalBoardId={currentBoardId}
-        isSaved={isBoardSaved}
-        canShare={canShareVisionBoards}
-      />
-    </>
+      {showShareModal && currentBoardId && (
+        <ShareVisionBoardModal
+          isOpen={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          boardName={currentBoardName || "My Vision Board"}
+          boardItems={boardItems || []}
+          totalBudget={totalBudget || 0}
+          originalBoardId={currentBoardId}
+          isSaved={isBoardSaved}
+          canShare={canShareVisionBoards}
+        />
+      )}
+    </div>
   );
 };
 

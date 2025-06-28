@@ -17,12 +17,12 @@ const Footer: React.FC = () => {
   const y = useTransform(scrollYProgress, [0, 1], [-30, 30]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
-  // Your original 4 color gradients
+  // Updated color gradients - changed 4th gradient from slate to green
   const colorGradients = [
     { id: 'footer-gradient1', colors: ['#8b5cf6', '#a855f7'] }, // Violet
     { id: 'footer-gradient2', colors: ['#3b82f6', '#2563eb'] }, // Blue
     { id: 'footer-gradient3', colors: ['#7c3aed', '#6d28d9'] }, // Purple
-    { id: 'footer-gradient4', colors: ['#475569', '#334155'] }, // Slate
+    { id: 'footer-gradient4', colors: ['#10b981', '#059669'] }, // Green (changed from slate)
   ];
 
   const containerVariants = {
@@ -168,7 +168,7 @@ const Footer: React.FC = () => {
                 </div>
               </motion.div>
 
-              {/* Logo with 4 dots - Enhanced */}
+              {/* Logo with 4 dots - Enhanced with green bottom-right dot */}
               <div className="flex items-center gap-4 mb-8">
                 <motion.div 
                   className="relative w-10 h-10"
@@ -178,7 +178,7 @@ const Footer: React.FC = () => {
                   }}
                 >
                   <svg width="40" height="40" viewBox="0 0 32 32" className="w-full h-full">
-                    {/* Enhanced Glow effects behind each circle */}
+                    {/* Enhanced Glow effects behind each circle - updated for green */}
                     <motion.circle 
                       cx="10" 
                       cy="10" 
@@ -231,7 +231,7 @@ const Footer: React.FC = () => {
                       cx="22" 
                       cy="22" 
                       r="10" 
-                      fill="rgba(71, 85, 105, 0.2)"
+                      fill="rgba(16, 185, 129, 0.2)"
                       initial={{ opacity: 0 }}
                       animate={{ 
                         opacity: [0, 0.4, 0]

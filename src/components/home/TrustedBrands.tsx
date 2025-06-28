@@ -284,7 +284,7 @@ const TrustedBrands: React.FC = () => {
           </motion.p>
         </motion.div>
         
-        {/* Enhanced Slideshow Container */}
+        {/* Enhanced Slideshow Container - Same max width as Vision Board */}
         <motion.div 
           className="max-w-7xl mx-auto mb-24"
           variants={container}
@@ -293,9 +293,9 @@ const TrustedBrands: React.FC = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="relative">
-            {/* Main Slideshow Card with Premium Styling */}
+            {/* Main Slideshow Card with Premium Styling - Exact border consistency */}
             <motion.div 
-              className="relative overflow-hidden bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-2xl shadow-slate-900/10"
+              className="relative overflow-hidden bg-white/60 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-2xl shadow-slate-900/10"
               variants={item}
               whileHover={{ y: -4, scale: 1.01 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -494,13 +494,13 @@ const TrustedBrands: React.FC = () => {
           </motion.button>
         </motion.div>
 
-        {/* Premium Vision Board Interface Preview - Matching Hero Design Studio */}
+        {/* Premium Vision Board Interface Preview - EXACT Hero Design Studio Match */}
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.3, ease: [0.165, 0.84, 0.44, 1] }}
           viewport={{ once: true }}
-          className="relative mx-auto max-w-6xl"
+          className="relative mx-auto max-w-7xl"
         >
           <motion.div
             style={{
@@ -508,11 +508,11 @@ const TrustedBrands: React.FC = () => {
             }}
             className="relative"
           >
-            {/* Main Vision Board Interface Card - Exact Hero Styling */}
-            <div className="bg-white/60 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-2xl shadow-slate-900/10 p-1 overflow-hidden">
+            {/* Main Vision Board Interface Card - EXACT Hero Styling */}
+            <div className="bg-white/60 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-2xl shadow-slate-900/10 p-1 overflow-hidden">
               <div className="bg-gradient-to-br from-slate-50/50 to-white/50 rounded-[20px] p-8">
                 
-                {/* Header Bar - Exact Hero Styling */}
+                {/* Header Bar - EXACT Hero Styling */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
                     <div className="flex gap-1.5">
@@ -528,12 +528,12 @@ const TrustedBrands: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Vision Board Interface Layout - Matching Hero Styling */}
+                {/* Vision Board Interface Layout - EXACT Hero Styling */}
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                   
-                  {/* Product Sidebar - Matching Hero Upload Section */}
+                  {/* Product Sidebar - EXACT Hero Upload Section Styling */}
                   <div className="lg:col-span-1">
-                    <div className="bg-white/80 rounded-2xl p-6 border border-slate-200/60">
+                    <div className="bg-white/80 rounded-2xl p-6 border border-slate-200/20">
                       <div className="flex items-center gap-2 mb-4">
                         <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
                         <h3 className="font-semibold text-slate-900 text-sm">Liked Products</h3>
@@ -544,26 +544,29 @@ const TrustedBrands: React.FC = () => {
                         <input 
                           type="text" 
                           placeholder="Search products..." 
-                          className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-slate-50 text-xs"
-                          disabled
+                          className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-slate-50 text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-300"
                         />
                         <div className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs">🔍</div>
                       </div>
 
                       {/* Project Filter */}
                       <div className="relative mb-4">
-                        <select className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-slate-50 text-xs appearance-none" disabled>
+                        <select className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-slate-50 text-xs appearance-none focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-300">
                           <option>Living Room</option>
+                          <option>Bedroom</option>
+                          <option>Kitchen</option>
+                          <option>Bathroom</option>
                         </select>
                         <div className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs">📁</div>
+                        <div className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs pointer-events-none">▼</div>
                       </div>
 
                       {/* Marketplace Toggle */}
                       <div className="flex items-center gap-1 mb-4 p-1 bg-slate-100 rounded-lg">
-                        <button className="flex-1 py-1 px-2 text-xs font-medium bg-white rounded-md shadow-sm text-slate-900">
+                        <button className="flex-1 py-1 px-2 text-xs font-medium bg-white rounded-md shadow-sm text-slate-900 transition-all duration-200">
                           Amazon
                         </button>
-                        <button className="flex-1 py-1 px-2 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                        <button className="flex-1 py-1 px-2 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors duration-200">
                           Etsy
                         </button>
                       </div>
@@ -574,19 +577,21 @@ const TrustedBrands: React.FC = () => {
                           <motion.div 
                             key={product.name}
                             className="group bg-slate-50 rounded-xl p-3 border border-slate-200/60 cursor-grab relative"
-                            whileHover={{ scale: 1.05 }}
+                            whileHover={{ scale: 1.05, y: -2 }}
                             transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                            onMouseEnter={() => setHoveredBrand(product.name)}
+                            onMouseLeave={() => setHoveredBrand(null)}
                           >
                             {/* Source indicator */}
                             <div className={`absolute top-1 right-1 w-3 h-3 rounded-full ${
                               product.source === 'amazon' ? 'bg-orange-500' : 'bg-teal-500'
-                            }`}></div>
+                            } shadow-sm`}></div>
                             
                             <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
                               <img 
                                 src={product.image}
                                 alt={product.name}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                                 onError={(e) => {
                                   e.currentTarget.style.display = 'none';
                                   const fallback = e.currentTarget.nextElementSibling as HTMLElement;
@@ -603,9 +608,19 @@ const TrustedBrands: React.FC = () => {
                             </h4>
                             <div className="flex items-center justify-between">
                               <span className="font-semibold text-slate-900 text-xs">${product.price}</span>
-                              <span className="text-xs text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">
-                                Drag
-                              </span>
+                              <AnimatePresence>
+                                {hoveredBrand === product.name && (
+                                  <motion.span 
+                                    className="text-xs text-slate-500 font-medium"
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    Drag
+                                  </motion.span>
+                                )}
+                              </AnimatePresence>
                             </div>
                           </motion.div>
                         ))}
@@ -613,10 +628,10 @@ const TrustedBrands: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* Vision Board Canvas - Matching Hero Projects Gallery */}
+                  {/* Vision Board Canvas - EXACT Hero Projects Gallery Styling */}
                   <div className="lg:col-span-3">
-                    <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-lg overflow-hidden h-full">
-                      <div className="p-6 border-b border-slate-200/60">
+                    <div className="bg-white/80 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-lg overflow-hidden h-full">
+                      <div className="p-6 border-b border-slate-200/20">
                         <div className="flex items-center justify-between">
                           <h2 className="font-semibold text-slate-900 flex items-center gap-3">
                             <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
@@ -632,33 +647,28 @@ const TrustedBrands: React.FC = () => {
                               <span className="text-xs">Etsy</span>
                             </div>
                             <span className="text-xs">📊 6 items</span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 bg-slate-200 rounded-lg flex items-center justify-center">
+                                <span className="text-xs">🔍</span>
+                              </div>
+                              <div className="w-6 h-6 bg-slate-200 rounded-lg flex items-center justify-center">
+                                <span className="text-xs">⚡</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                       
                       {/* Canvas Area */}
                       <div className="relative bg-gradient-to-br from-slate-50/50 to-white/50 overflow-hidden" style={{ height: '500px' }}>
-                        {/* Grid Pattern */}
+                        {/* Simple Dot Grid Pattern */}
                         <div 
-                          className="absolute inset-0 opacity-20"
+                          className="absolute inset-0 opacity-30"
                           style={{ 
-                            backgroundImage: `
-                              linear-gradient(rgba(148, 163, 184, 0.3) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(148, 163, 184, 0.3) 1px, transparent 1px)
-                            `,
-                            backgroundSize: '40px 40px'
+                            backgroundImage: `radial-gradient(circle, rgba(148, 163, 184, 0.4) 1px, transparent 1px)`,
+                            backgroundSize: '20px 20px'
                           }}
                         />
-                        
-                        {/* Grid squares for snapping */}
-                        <div className="absolute inset-4 grid grid-cols-12 grid-rows-10 gap-1">
-                          {Array.from({ length: 120 }).map((_, i) => (
-                            <div
-                              key={i}
-                              className="border border-slate-200/30 rounded-lg bg-white/10 hover:bg-slate-200/20 transition-colors duration-200"
-                            />
-                          ))}
-                        </div>
                         
                         {/* Vision Board Items */}
                         <div className="absolute inset-0 flex items-center justify-center">
@@ -672,7 +682,7 @@ const TrustedBrands: React.FC = () => {
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50 }}
+                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 5 }}
                               animate={{ 
                                 boxShadow: [
                                   "0 4px 6px -1px rgba(249, 115, 22, 0.2)",
@@ -696,7 +706,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
                                 <div className="w-12 h-8 bg-orange-400 rounded-lg"></div>
                               </div>
-                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
                                 ${interiorProducts[0].price}
                               </div>
                             </motion.div>
@@ -708,7 +718,7 @@ const TrustedBrands: React.FC = () => {
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50 }}
+                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: -3 }}
                               initial={{ scale: 0.8, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ delay: 0.3, duration: 0.5 }}
@@ -727,7 +737,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
                                 <div className="w-8 h-6 bg-teal-400 rounded-lg"></div>
                               </div>
-                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
                                 ${interiorProducts[1].price}
                               </div>
                             </motion.div>
@@ -739,7 +749,7 @@ const TrustedBrands: React.FC = () => {
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50 }}
+                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 2 }}
                               initial={{ scale: 0.8, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ delay: 0.6, duration: 0.5 }}
@@ -758,7 +768,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
                                 <div className="w-6 h-10 bg-orange-400 rounded-lg"></div>
                               </div>
-                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
                                 ${interiorProducts[2].price}
                               </div>
                             </motion.div>
@@ -771,7 +781,7 @@ const TrustedBrands: React.FC = () => {
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50 }}
+                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: -2 }}
                               initial={{ scale: 0.8, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ delay: 0.9, duration: 0.5 }}
@@ -790,7 +800,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
                                 <div className="w-8 h-10 bg-teal-400 rounded-lg"></div>
                               </div>
-                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
                                 ${interiorProducts[3].price}
                               </div>
                             </motion.div>
@@ -802,7 +812,7 @@ const TrustedBrands: React.FC = () => {
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50 }}
+                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 4 }}
                               initial={{ scale: 0.8, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ delay: 1.2, duration: 0.5 }}
@@ -821,7 +831,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
                                 <div className="w-10 h-6 bg-orange-400 rounded-lg"></div>
                               </div>
-                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
                                 ${interiorProducts[4].price}
                               </div>
                             </motion.div>
@@ -833,7 +843,7 @@ const TrustedBrands: React.FC = () => {
                               drag
                               dragMomentum={false}
                               dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50 }}
+                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: -5 }}
                               initial={{ scale: 0.8, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ delay: 1.5, duration: 0.5 }}
@@ -852,7 +862,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
                                 <div className="w-6 h-8 bg-teal-400 rounded-lg"></div>
                               </div>
-                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap">
+                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
                                 ${interiorProducts[5].price}
                               </div>
                             </motion.div>
@@ -864,21 +874,21 @@ const TrustedBrands: React.FC = () => {
                           <div className="flex items-center gap-2">
                             <span>🖱️ Drag items to rearrange</span>
                             <span className="w-1 h-1 bg-slate-400 rounded-full"></span>
-                            <span>Grid snapping enabled</span>
+                            <span>Dot grid snapping enabled</span>
                           </div>
                         </div>
 
                         {/* Grid info in corner */}
                         <div className="absolute top-4 right-4 text-slate-400 text-xs bg-white/60 px-2 py-1 rounded-md">
-                          12×10 Grid
+                          Dot Grid
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Bottom Action Bar - Exact Hero Styling */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/60">
+                {/* Bottom Action Bar - EXACT Hero Styling */}
+                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/20">
                   <div className="flex items-center gap-3 text-slate-600">
                     <div className="w-8 h-8 bg-slate-200/60 rounded-full flex items-center justify-center">
                       <span className="text-sm">👤</span>

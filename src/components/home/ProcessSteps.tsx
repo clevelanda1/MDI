@@ -229,7 +229,7 @@ const ProcessSteps: React.FC = () => {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 {/* Premium Glass Card Background */}
-                <div className="absolute inset-0 bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-xl group-hover:shadow-2xl group-hover:shadow-slate-900/10 transition-all duration-700" />
+                <div className="absolute inset-0 bg-white/80 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-xl group-hover:shadow-2xl group-hover:shadow-slate-900/10 transition-all duration-700" />
                 
                 {/* Premium Gradient Overlay on Hover */}
                 <motion.div
@@ -363,7 +363,7 @@ const ProcessSteps: React.FC = () => {
           </motion.button>
         </motion.div>
 
-        {/* Premium Curation Interface Preview - Matching Hero Design Studio */}
+        {/* Premium Curation Interface Preview - EXACT Hero Design Studio Match */}
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -377,11 +377,11 @@ const ProcessSteps: React.FC = () => {
             }}
             className="relative"
           >
-            {/* Main Curation Interface Card - Exact Hero Styling */}
-            <div className="bg-white/60 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-2xl shadow-slate-900/10 p-1 overflow-hidden">
+            {/* Main Curation Interface Card - EXACT Hero Styling */}
+            <div className="bg-white/60 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-2xl shadow-slate-900/10 p-1 overflow-hidden">
               <div className="bg-gradient-to-br from-slate-50/50 to-white/50 rounded-[20px] p-8">
                 
-                {/* Header Bar - Exact Hero Styling */}
+                {/* Header Bar - EXACT Hero Styling */}
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
                     <div className="flex gap-1.5">
@@ -397,12 +397,12 @@ const ProcessSteps: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Curation Interface Layout - Exact Hero Styling */}
+                {/* Curation Interface Layout - EXACT Hero Styling */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   
-                  {/* Filters Sidebar - Matching Hero Upload Section */}
+                  {/* Filters Sidebar - EXACT Hero Upload Section Styling */}
                   <div className="lg:col-span-1">
-                    <div className="bg-white/80 rounded-2xl p-6 border border-slate-200/60">
+                    <div className="bg-white/80 rounded-2xl p-6 border border-slate-200/20">
                       <div className="flex items-center gap-2 mb-4">
                         <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
                         <h3 className="font-semibold text-slate-900 text-sm">Smart Filters</h3>
@@ -453,7 +453,7 @@ const ProcessSteps: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* Product Grid - Matching Hero Projects Gallery */}
+                  {/* Product Grid - EXACT Hero Projects Gallery Styling */}
                   <div className="lg:col-span-2">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-semibold text-slate-900 text-sm">Curated Products</h3>
@@ -467,9 +467,9 @@ const ProcessSteps: React.FC = () => {
                       </div>
                     </div>
                     
-                    {/* Product Cards Grid - Exact Hero Card Styling */}
+                    {/* Product Cards Grid - EXACT Hero Card Styling */}
                     <div className="grid grid-cols-2 gap-4">
-                      {/* Product 1 - Modern Sofa with Hero Card Styling */}
+                      {/* Product 1 - Modern Sofa with EXACT Hero Card Styling */}
                       <motion.div 
                         className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60 shadow-sm"
                         animate={{ 
@@ -511,8 +511,8 @@ const ProcessSteps: React.FC = () => {
                         </div>
                       </motion.div>
                       
-                      {/* Product 2 - Coffee Table with Hero Card Styling */}
-                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
+                      {/* Product 2 - Coffee Table with EXACT Hero Card Styling */}
+                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/20">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
                             src="/images/glass-table.jpg" 
@@ -536,8 +536,8 @@ const ProcessSteps: React.FC = () => {
                         </div>
                       </div>
                       
-                      {/* Product 3 - Sectional Sofa with Hero Card Styling */}
-                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
+                      {/* Product 3 - Sectional Sofa with EXACT Hero Card Styling */}
+                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-white/20">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
                             src="/images/sectional-sofa.jpg" 
@@ -561,8 +561,8 @@ const ProcessSteps: React.FC = () => {
                         </div>
                       </div>
                       
-                      {/* Product 4 - Round Coffee Table with Hero Card Styling */}
-                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/60">
+                      {/* Product 4 - Round Coffee Table with EXACT Hero Card Styling */}
+                      <div className="bg-white/80 rounded-2xl overflow-hidden border border-slate-200/20">
                         <div className="aspect-video relative overflow-hidden">
                           <img 
                             src="/images/round-table.jpg" 
@@ -589,8 +589,8 @@ const ProcessSteps: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Bottom Action Bar - Exact Hero Styling */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/60">
+                {/* Bottom Action Bar - EXACT Hero Styling */}
+                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/20">
                   <div className="flex items-center gap-3 text-slate-600">
                     <div className="w-8 h-8 bg-slate-200/60 rounded-full flex items-center justify-center">
                       <span className="text-sm">👤</span>
