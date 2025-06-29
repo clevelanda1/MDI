@@ -287,7 +287,7 @@ const ProjectsSection: React.FC<ProjectsSectionProps & { projectsSectionRef: Rea
                         >
                           <motion.button
                             onClick={() => window.location.href = `/curation?project=${project.id}`}
-                            className="flex items-center gap-2 px-6 py-3 bg-white/95 text-slate-900 hover:bg-white font-semibold rounded-2xl shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-200"
+                            className="flex items-center gap-2 px-6 py-3 bg-white text-slate-900 hover:bg-white font-semibold rounded-2xl shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-200"
                             whileHover={{ scale: 1.05, y: -2 }}
                             whileTap={{ scale: 0.95 }}
                           >
@@ -456,27 +456,37 @@ const ProjectsSection: React.FC<ProjectsSectionProps & { projectsSectionRef: Rea
         </motion.div>
       )}
 
-      {/* Enhanced AdSense Advertisement */}
+      {/* Enhanced AdSense Advertisement with Sponsored Links Label */}
       <motion.div 
         className="mt-20 mb-8 w-full flex justify-center"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.6 }}
       >
-        <div className="w-full max-w-4xl bg-white/50 backdrop-blur-sm rounded-3xl p-1 border border-slate-200/50 shadow-lg">
-          <ins 
-            className="adsbygoogle"
-            style={{ 
-              display: 'block',
-              minHeight: '120px',
-              width: '100%',
-              borderRadius: '1.5rem'
-            }}
-            data-ad-client="ca-pub-8497089190565366"
-            data-ad-slot="5620786867"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          />
+        <div className="w-full max-w-4xl">
+          {/* Sponsored Links Label */}
+          <div className="mb-4 px-4">
+            <h3 className="text-slate-700 font-bold text-sm tracking-wide uppercase">
+              SPONSORED LINKS
+            </h3>
+          </div>
+          
+          {/* Ad Container - White/Clear like original */}
+          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-1 border border-slate-200/50 shadow-lg">
+            <ins 
+              className="adsbygoogle"
+              style={{ 
+                display: 'block',
+                minHeight: '200px',
+                width: '100%',
+                borderRadius: '1.5rem'
+              }}
+              data-ad-client="ca-pub-8497089190565366"
+              data-ad-slot="5620786867"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+          </div>
         </div>
       </motion.div>
     </motion.div>

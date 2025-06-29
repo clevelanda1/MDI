@@ -162,7 +162,7 @@ const VisionBoardHero: React.FC = () => {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Enhanced Main Content - Left Side */}
           <motion.div 
@@ -276,7 +276,7 @@ const VisionBoardHero: React.FC = () => {
               <div className="relative z-10 h-full flex flex-col">
                 {/* Ad Header */}
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-semibold text-white/80 uppercase tracking-wide">Sponsored Links</span>
+                  <span className="text-white font-bold text-sm tracking-wide uppercase">Sponsored Links</span>
                 </div>
                 
                 {/* AdSense Container */}

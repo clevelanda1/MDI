@@ -180,7 +180,7 @@ const StudioHero: React.FC = () => {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-16 relative z-10">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Enhanced Main Content - Left Side */}
           <motion.div 
@@ -272,7 +272,7 @@ const StudioHero: React.FC = () => {
               className="text-lg md:text-xl text-white/90 leading-relaxed max-w-4xl font-light mb-10"
             >
               Upload any interior design and receive intelligent, curated recommendations from Amazon and Etsy. 
-              Our AI analyzes your space and suggests perfect products to bring your vision to life.
+              My Design Index analyzes your space and suggests perfect products to bring your vision to life.
             </motion.p>
           </motion.div>
 
@@ -292,9 +292,11 @@ const StudioHero: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5 rounded-3xl pointer-events-none"></div>
               
               <div className="relative z-10 h-full flex flex-col">
-                {/* Ad Header */}
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xs font-semibold text-white/80 uppercase tracking-wide">Sponsored Links</span>
+                {/* Ad Header - Using ProjectsSection styling */}
+                <div className="mb-4 px-0">
+                  <h3 className="text-white font-bold text-sm tracking-wide uppercase">
+                    SPONSORED LINKS
+                  </h3>
                 </div>
                 
                 {/* AdSense Container */}

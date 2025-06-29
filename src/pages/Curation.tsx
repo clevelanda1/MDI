@@ -99,7 +99,7 @@ const Curation: React.FC = () => {
   return (
     <div 
       ref={containerRef}
-      className="pt-16 relative overflow-hidden bg-gradient-to-b from-white via-slate-50/30 to-white min-h-screen"
+      className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/30 to-white min-h-screen"
       onMouseMove={handleMouseMove}
     >
       {/* Subtle Background Elements */}

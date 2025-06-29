@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, ImageIcon, Trash2, ChevronDown, Sparkles, CheckCircle2, XCircle, Loader2, Crown, Edit2, RefreshCw, Zap, Plus, Star } from 'lucide-react';
+import { Upload, ImageIcon, Trash2, ChevronDown, CheckCircle2, XCircle, Loader2, Crown, Edit2, RefreshCw, Plus, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { UploadState, DetectedElement } from '../../types/studio';
 import Button from '../common/Button';
@@ -135,8 +135,8 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
         border: 'border-violet-200/60'
       },
       analyzing: {
-        icon: <Sparkles className="animate-pulse text-amber-600" size={20} />,
-        text: 'AI analyzing design...',
+        icon: <Loader2 className="animate-spin text-amber-600" size={20} />,
+        text: 'Analyzing design...',
         color: 'text-amber-700',
         bg: 'bg-amber-50/80',
         border: 'border-amber-200/60'
@@ -335,16 +335,6 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
               <div className="absolute -inset-1 bg-gradient-to-r from-violet-500/20 to-blue-500/20 rounded-full blur-sm animate-pulse"></div>
             </div>
             New Project
-            {uploadState.status === 'complete' && (
-              <motion.div
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ delay: 0.5, type: "spring", stiffness: 400, damping: 17 }}
-                className="text-emerald-500"
-              >
-                <Sparkles size={20} />
-              </motion.div>
-            )}
           </motion.h2>
           
           <motion.div 
@@ -532,10 +522,10 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
           >
-            {/* Enhanced Header */}
-            <div className="flex justify-between items-center">
-              <motion.h3 
-                className="font-bold text-xl text-slate-900 flex items-center gap-4"
+            {/* Enhanced Header with Stacked Layout */}
+            <div className="space-y-4">
+              <motion.div 
+                className="flex items-center gap-4"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
@@ -544,44 +534,45 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                   <div className="w-3 h-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"></div>
                   <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-full blur-sm animate-pulse"></div>
                 </div>
-                Detected Elements
-                <span className="text-sm font-medium px-3 py-1 bg-emerald-100/80 text-emerald-700 rounded-full border border-emerald-200/60">
-                  {uploadState.detectedElements.length}
-                </span>
-              </motion.h3>
+                <h3 className="font-bold text-xl text-slate-900">Detected Elements</h3>
+              </motion.div>
               
-              <motion.button
-                onClick={onSelectAllElements}
-                className="group flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 font-semibold px-4 py-2 rounded-xl hover:bg-violet-50/80 transition-all duration-200 border border-transparent hover:border-violet-200/60"
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.98 }}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <Plus size={16} className="group-hover:rotate-90 transition-transform duration-200" />
-                Select All
-              </motion.button>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                <motion.span 
+                  className="text-base font-bold px-8 py-2 bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200 w-fit"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  {uploadState.detectedElements.length} 
+                </motion.span>
+                
+                <motion.button
+                  onClick={onSelectAllElements}
+                  className="w-full sm:w-auto px-16 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-all duration-200 flex items-center justify-center gap-2"
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  {/*<Plus size={16} />*/}
+                  Select All
+                </motion.button>
+              </div>
             </div>
             
-            {/* Enhanced Platform Info */}
+            {/* Enhanced Platform Info without icon */}
             <motion.div 
-              className="p-5 bg-gradient-to-r from-blue-50/80 to-indigo-50/60 rounded-2xl border border-blue-200/40"
+              className="p-6 bg-blue-50 rounded-2xl border border-blue-200"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Zap size={14} className="text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-blue-800 font-semibold text-sm mb-1">Dual Marketplace Search</p>
-                  <p className="text-blue-700 text-xs leading-relaxed">
-                    Select one search query from each marketplace (Amazon and Etsy) for each design element.
-                  </p>
-                </div>
-              </div>
+              <h4 className="font-bold text-blue-800 mb-2">How it Works</h4>
+              <p className="text-blue-700 text-sm leading-relaxed">
+                Select one search query from each marketplace (Amazon and Etsy) for each design element to get the best product recommendations.
+              </p>
             </motion.div>
             
             {/* Enhanced Elements List */}
@@ -928,7 +919,6 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                     </>
                   ) : (
                     <>
-                      <Sparkles size={20} />
                       <span className="text-lg">Search Recommendations</span>
                     </>
                   )}
