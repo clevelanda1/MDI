@@ -6,6 +6,12 @@ const TrustedBrands: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredBrand, setHoveredBrand] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [visionBoardItems, setVisionBoardItems] = useState([
+    { id: 1, name: 'HULALA HOME 127" Modular Sect...', price: 1069.90, image: '/images/leather-sofa.jpg', x: 50, y: 20, width: 200, height: 150 },
+    { id: 2, name: 'Leather Sectional Couch', image: '/images/sectional-sofa.jpg', x: 280, y: 20, width: 180, height: 140 },
+    { id: 3, name: 'Modern Living Room Cushion', image: '/images/front-table.jpg', x: 50, y: 200, width: 160, height: 120 },
+    { id: 4, name: 'Mid Century Three Piece Sectional', image: '/images/plant-hanger.jpg', x: 240, y: 200, width: 180, height: 130 }
+  ]);
   const navigate = useNavigate();
   
   const { scrollYProgress } = useScroll({
@@ -90,49 +96,53 @@ const TrustedBrands: React.FC = () => {
     navigate('/signup');
   };
 
-  // Interior design products with proper imagery - updated for Amazon + Etsy
+  // Remove item from vision board
+  const removeVisionBoardItem = (itemId: number) => {
+    setVisionBoardItems(items => items.filter(item => item.id !== itemId));
+  };
+
+  // Update item position
+  const updateItemPosition = (itemId: number, x: number, y: number) => {
+    setVisionBoardItems(items => 
+      items.map(item => 
+        item.id === itemId ? { ...item, x, y } : item
+      )
+    );
+  };
+
+  // Interior design products - using original data and images with realistic pricing
   const interiorProducts = [
     { 
-      name: 'Modern Sectional Sofa', 
-      price: 1299, 
-      image: '/images/leather-sofa.jpg',
-      source: 'amazon',
-      category: 'seating'
-    },
-    { 
-      name: 'Handwoven Boho Wall Art', 
-      price: 89, 
-      image: '/images/wall-art.jpg',
-      source: 'etsy',
-      category: 'art' 
-    },
-    { 
-      name: 'Mid-Century Floor Lamp', 
+      name: 'Modern Living Room Cushion, Velvet Cou...', 
       price: 189, 
-      image: '/images/floor-lamp.jpg',
-      source: 'amazon',
-      category: 'lighting' 
-    },
-    { 
-      name: 'Vintage Ceramic Vase', 
-      price: 45, 
-      image: '/images/ceramic-vase.jpg',
-      source: 'etsy',
-      category: 'decor' 
-    },
-    { 
-      name: 'Walnut Console Table', 
-      price: 599, 
       image: '/images/front-table.jpg',
       source: 'amazon',
-      category: 'storage' 
+      category: 'seating',
+      project: 'Design Project 2'
     },
     { 
-      name: 'Macrame Plant Hanger', 
-      price: 28, 
+      name: 'Mid Century Three Piece Sectional Sofa', 
+      price: 1299, 
       image: '/images/plant-hanger.jpg',
       source: 'etsy',
-      category: 'decor' 
+      category: 'furniture',
+      project: 'Design Project 2'
+    },
+    { 
+      name: 'Leather Sectional Couch with Ottoman...', 
+      price: 899, 
+      image: '/images/sectional-sofa.jpg',
+      source: 'amazon',
+      category: 'seating',
+      project: 'Design Project 2'
+    },
+    { 
+      name: 'HULALA HOME 127" Modular Sectional...', 
+      price: 1569, 
+      image: '/images/leather-sofa.jpg',
+      source: 'etsy',
+      category: 'furniture',
+      project: 'Design Project 2'
     }
   ];
 
@@ -284,7 +294,7 @@ const TrustedBrands: React.FC = () => {
           </motion.p>
         </motion.div>
         
-        {/* Enhanced Slideshow Container - Same max width as Vision Board */}
+        {/* Enhanced Slideshow Container */}
         <motion.div 
           className="max-w-7xl mx-auto mb-24"
           variants={container}
@@ -293,7 +303,7 @@ const TrustedBrands: React.FC = () => {
           viewport={{ once: true, amount: 0.2 }}
         >
           <div className="relative">
-            {/* Main Slideshow Card with Premium Styling - Exact border consistency */}
+            {/* Main Slideshow Card */}
             <motion.div 
               className="relative overflow-hidden bg-white/60 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-2xl shadow-slate-900/10"
               variants={item}
@@ -326,7 +336,6 @@ const TrustedBrands: React.FC = () => {
                         alt={`${currentPartner.name} marketplace`}
                         className="w-full h-full object-cover"
                         onError={(e) => {
-                          // Fallback if image doesn't exist
                           e.currentTarget.style.display = 'none';
                           const fallback = e.currentTarget.nextElementSibling as HTMLElement;
                           if (fallback) fallback.style.display = 'flex';
@@ -494,7 +503,7 @@ const TrustedBrands: React.FC = () => {
           </motion.button>
         </motion.div>
 
-        {/* Premium Vision Board Interface Preview - EXACT Hero Design Studio Match */}
+        {/* Updated Vision Board Interface Preview */}
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -508,400 +517,333 @@ const TrustedBrands: React.FC = () => {
             }}
             className="relative"
           >
-            {/* Main Vision Board Interface Card - EXACT Hero Styling */}
+            {/* Main Vision Board Interface Card */}
             <div className="bg-white/60 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-2xl shadow-slate-900/10 p-1 overflow-hidden">
               <div className="bg-gradient-to-br from-slate-50/50 to-white/50 rounded-[20px] p-8">
-                
-                {/* Header Bar - EXACT Hero Styling */}
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400/60"></div>
-                      <div className="w-3 h-3 rounded-full bg-yellow-400/60"></div>
-                      <div className="w-3 h-3 rounded-full bg-green-400/60"></div>
-                    </div>
-                    <span className="text-slate-600 text-sm font-medium ml-4">Vision Board Studio</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-500">
-                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs font-medium">Live</span>
-                  </div>
-                </div>
 
-                {/* Vision Board Interface Layout - EXACT Hero Styling */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                {/* Vision Board Interface Layout */}
+                <div className="grid grid-cols-1 lg:grid-cols-7 gap-8">
                   
-                  {/* Product Sidebar - EXACT Hero Upload Section Styling */}
-                  <div className="lg:col-span-1">
-                    <div className="bg-white/80 rounded-2xl p-6 border border-slate-200/20">
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
-                        <h3 className="font-semibold text-slate-900 text-sm">Liked Products</h3>
+                  {/* Updated Sidebar - Moderately wider for better text fitting */}
+                  <div className="lg:col-span-2">
+                    <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-3xl p-6 shadow-xl shadow-slate-900/5">
+                      {/* Header with heart icon - exact match */}
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            <div className="w-5 h-5 text-red-500">
+                              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                              </svg>
+                            </div>
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
+                          </div>
+                          <h2 className="font-bold text-xl text-slate-900">Liked Products</h2>
+                          <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold border border-red-200">5</span>
+                        </div>
+                      </div>
+
+                      {/* Search - exact match */}
+                      <div className="relative mb-4">
+                        <div className="relative group">
+                          <input 
+                            type="text" 
+                            placeholder="Search your liked products..." 
+                            className="w-full pl-10 pr-10 py-3 border border-slate-300/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-slate-500/50 focus:border-slate-500 bg-white/80 backdrop-blur-sm transition-all duration-300 text-sm"
+                          />
+                          <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                        </div>
+                      </div>
+
+                      {/* All Projects Dropdown - exact match */}
+                      <div className="relative mb-6">
+                        <div className="relative group">
+                          <select className="w-full pl-10 pr-8 py-3 border border-slate-300/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-slate-500/50 focus:border-slate-500 bg-white/80 backdrop-blur-sm transition-all duration-300 text-sm appearance-none cursor-pointer">
+                            <option>All Projects</option>
+                            <option>Living Room</option>
+                            <option>Bedroom</option>
+                            <option>Kitchen</option>
+                          </select>
+                          <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
+                          </svg>
+                          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Products Count - exact match */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                          <span className="text-sm text-slate-700 font-medium">5 products</span>
+                        </div>
+                      </div>
+
+                      {/* Your Collection Header - exact match */}
+                      <div className="mb-4 text-sm font-medium text-slate-900 border-l-2 border-slate-400 pl-3">
+                        Your Collection
                       </div>
                       
-                      {/* Search */}
-                      <div className="relative mb-4">
-                        <input 
-                          type="text" 
-                          placeholder="Search products..." 
-                          className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-slate-50 text-xs focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-300"
-                        />
-                        <div className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs">🔍</div>
+                      {/* Product Grid - exact layout */}
+                      <div className="grid grid-cols-2 gap-3 mb-6">
+                        {/* Product 1 - Modern Living Room */}
+                        <div className="group bg-white rounded-xl p-3 border border-slate-200/60 cursor-grab relative">
+                          <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
+                            <img 
+                              src="/images/front-table.jpg"
+                              alt="Modern Living Room Cushion"
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                          </div>
+                          <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
+                            Modern Living Room Cushion, Velvet Cou...
+                          </h4>
+                          <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-slate-900 text-xs">$189</span>
+                          </div>
+                        </div>
+
+                        {/* Product 2 - Mid Century Three Piece */}
+                        <div className="group bg-white rounded-xl p-3 border border-slate-200/60 cursor-grab relative">
+                          <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
+                            <img 
+                              src="/images/plant-hanger.jpg"
+                              alt="Mid Century Three Piece Sectional Sofa"
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                          </div>
+                          <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
+                            Mid Century Three Piece Sectional Sofa
+                          </h4>
+                          <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-slate-900 text-xs">$1,299</span>
+                          </div>
+                        </div>
+
+                        {/* Product 3 - Leather Sectional */}
+                        <div className="group bg-white rounded-xl p-3 border border-slate-200/60 cursor-grab relative">
+                          <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
+                            <img 
+                              src="/images/sectional-sofa.jpg"
+                              alt="Leather Sectional Couch"
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                          </div>
+                          <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
+                            Leather Sectional Couch with Ottoman...
+                          </h4>
+                          <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-slate-900 text-xs">$899</span>
+                          </div>
+                        </div>
+
+                        {/* Product 4 - HULALA HOME */}
+                        <div className="group bg-white rounded-xl p-3 border border-slate-200/60 cursor-grab relative">
+                          <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
+                            <img 
+                              src="/images/leather-sofa.jpg"
+                              alt="HULALA HOME Modular Sectional"
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                          </div>
+                          <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
+                            HULALA HOME 127" Modular Sectional...
+                          </h4>
+                          <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-slate-900 text-xs">$1,569</span>
+                          </div>
+                        </div>
                       </div>
 
-                      {/* Project Filter */}
-                      <div className="relative mb-4">
-                        <select className="w-full pl-8 pr-3 py-2 border border-slate-300/60 rounded-xl bg-slate-50 text-xs appearance-none focus:outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-300">
-                          <option>Living Room</option>
-                          <option>Bedroom</option>
-                          <option>Kitchen</option>
-                          <option>Bathroom</option>
-                        </select>
-                        <div className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs">📁</div>
-                        <div className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs pointer-events-none">▼</div>
-                      </div>
-
-                      {/* Marketplace Toggle */}
-                      <div className="flex items-center gap-1 mb-4 p-1 bg-slate-100 rounded-lg">
-                        <button className="flex-1 py-1 px-2 text-xs font-medium bg-white rounded-md shadow-sm text-slate-900 transition-all duration-200">
-                          Amazon
-                        </button>
-                        <button className="flex-1 py-1 px-2 text-xs font-medium text-slate-600 hover:text-slate-900 transition-colors duration-200">
-                          Etsy
-                        </button>
-                      </div>
-                      
-                      {/* Product Grid */}
-                      <div className="grid grid-cols-2 gap-3">
-                        {interiorProducts.slice(0, 4).map((product, i) => (
-                          <motion.div 
-                            key={product.name}
-                            className="group bg-slate-50 rounded-xl p-3 border border-slate-200/60 cursor-grab relative"
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                            onMouseEnter={() => setHoveredBrand(product.name)}
-                            onMouseLeave={() => setHoveredBrand(null)}
-                          >
-                            {/* Source indicator */}
-                            <div className={`absolute top-1 right-1 w-3 h-3 rounded-full ${
-                              product.source === 'amazon' ? 'bg-orange-500' : 'bg-teal-500'
-                            } shadow-sm`}></div>
-                            
-                            <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
-                              <img 
-                                src={product.image}
-                                alt={product.name}
-                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (fallback) fallback.style.display = 'flex';
-                                }}
-                              />
-                              {/* Fallback */}
-                              <div className="hidden w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 items-center justify-center">
-                                <div className="w-8 h-6 bg-slate-400 rounded"></div>
-                              </div>
-                            </div>
-                            <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
-                              {product.name}
-                            </h4>
-                            <div className="flex items-center justify-between">
-                              <span className="font-semibold text-slate-900 text-xs">${product.price}</span>
-                              <AnimatePresence>
-                                {hoveredBrand === product.name && (
-                                  <motion.span 
-                                    className="text-xs text-slate-500 font-medium"
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -10 }}
-                                    transition={{ duration: 0.2 }}
-                                  >
-                                    Drag
-                                  </motion.span>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
+                      {/* Select More Favorites Button - exact match */}
+                      <button className="w-full flex items-center justify-center gap-2 py-2 text-sm text-slate-600 hover:text-slate-800 transition-colors duration-200">
+                        <div className="w-4 h-4 text-red-500">
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                          </svg>
+                        </div>
+                        <span>Select more favorites</span>
+                      </button>
                     </div>
                   </div>
                   
-                  {/* Vision Board Canvas - EXACT Hero Projects Gallery Styling */}
-                  <div className="lg:col-span-3">
-                    <div className="bg-white/80 backdrop-blur-xl border border-slate-200/20 rounded-3xl shadow-lg overflow-hidden h-full">
-                      <div className="p-6 border-b border-slate-200/20">
+                  {/* Vision Board Canvas - Adjusted for moderately wider sidebar */}
+                  <div className="lg:col-span-5">
+                    <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-xl shadow-slate-900/5 overflow-hidden h-full">
+                      <div className="p-6 border-b border-slate-200/60">
                         <div className="flex items-center justify-between">
-                          <h2 className="font-semibold text-slate-900 flex items-center gap-3">
-                            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                          <h2 className="font-semibold text-2xl text-slate-900 flex items-center gap-3">
+                            <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
                             Your Vision Board
                           </h2>
-                          <div className="flex items-center gap-4 text-sm text-slate-600">
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                              <span className="text-xs">Amazon</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                              <span className="text-xs">Etsy</span>
-                            </div>
-                            <span className="text-xs">📊 6 items</span>
-                            <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 bg-slate-200 rounded-lg flex items-center justify-center">
-                                <span className="text-xs">🔍</span>
-                              </div>
-                              <div className="w-6 h-6 bg-slate-200 rounded-lg flex items-center justify-center">
-                                <span className="text-xs">⚡</span>
-                              </div>
-                            </div>
+                          <div className="flex items-center gap-2 text-sm text-slate-600">
+                            <span>4 items</span>
                           </div>
                         </div>
                       </div>
                       
-                      {/* Canvas Area */}
-                      <div className="relative bg-gradient-to-br from-slate-50/50 to-white/50 overflow-hidden" style={{ height: '500px' }}>
-                        {/* Simple Dot Grid Pattern */}
-                        <div 
-                          className="absolute inset-0 opacity-30"
-                          style={{ 
-                            backgroundImage: `radial-gradient(circle, rgba(148, 163, 184, 0.4) 1px, transparent 1px)`,
-                            backgroundSize: '20px 20px'
-                          }}
-                        />
-                        
-                        {/* Vision Board Items */}
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="relative">
+                      {/* Canvas Area - Extended height to accommodate moved items */}
+                      <div className="relative bg-gradient-to-br from-slate-50/50 to-white/50 overflow-hidden flex items-center justify-center" style={{ height: '600px' }}>
+                        {/* Vision Board Items - Moved down for better positioning */}
+                        <div className="relative" style={{ width: '450px', height: '340px', marginTop: '40px' }}>
+                          {/* Top row - 2 items */}
+                          
+                          {/* HULALA HOME - Top Left with purple price tag */}
+                          <motion.div 
+                            className="absolute bg-white/95 rounded-xl shadow-lg overflow-hidden border border-slate-200 cursor-grab active:cursor-grabbing group"
+                            style={{ 
+                              left: '5px', 
+                              top: '10px',
+                              width: '190px',
+                              height: '140px'
+                            }}
+                            drag
+                            dragMomentum={false}
+                            dragElastic={0.1}
+                            whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 2 }}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0, duration: 0.5 }}
+                          >
+                            {/* Purple price tag */}
+                            <div className="absolute -top-8 left-0 bg-purple-500 text-white text-xs px-3 py-1 rounded-md whitespace-nowrap shadow-lg">
+                              HULALA HOME 127" Modular Sect... - $1,569
+                            </div>
                             
-                            {/* Row 1 - Top row */}
-                            {/* Modern Sectional Sofa - Top Left (Amazon) */}
-                            <motion.div 
-                              className="absolute w-40 h-32 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-orange-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '-160px', top: '-100px' }}
-                              drag
-                              dragMomentum={false}
-                              dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 5 }}
-                              animate={{ 
-                                boxShadow: [
-                                  "0 4px 6px -1px rgba(249, 115, 22, 0.2)",
-                                  "0 10px 15px -3px rgba(249, 115, 22, 0.4)",
-                                  "0 4px 6px -1px rgba(249, 115, 22, 0.2)"
-                                ]
-                              }}
-                              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            {/* Close button - only visible on hover */}
+                            <button 
+                              onClick={() => removeVisionBoardItem(1)}
+                              className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-all duration-200 opacity-0 group-hover:opacity-100 z-10"
                             >
-                              <img 
-                                src={interiorProducts[0].image}
-                                alt={interiorProducts[0].name}
-                                className="w-full h-full object-cover pointer-events-none"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (fallback) fallback.style.display = 'flex';
-                                }}
-                              />
-                              {/* Fallback */}
-                              <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
-                                <div className="w-12 h-8 bg-orange-400 rounded-lg"></div>
-                              </div>
-                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
-                                ${interiorProducts[0].price}
-                              </div>
-                            </motion.div>
+                              ×
+                            </button>
                             
-                            {/* Handwoven Wall Art - Top Center (Etsy) */}
-                            <motion.div 
-                              className="absolute w-32 h-28 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-teal-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '-56px', top: '-100px' }}
-                              drag
-                              dragMomentum={false}
-                              dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: -3 }}
-                              initial={{ scale: 0.8, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ delay: 0.3, duration: 0.5 }}
+                            <img 
+                              src="/images/leather-sofa.jpg"
+                              alt="HULALA HOME Modular Sectional"
+                              className="w-full h-full object-cover pointer-events-none"
+                            />
+                          </motion.div>
+                          
+                          {/* Leather Sectional - Top Right */}
+                          <motion.div 
+                            className="absolute bg-white/95 rounded-xl shadow-lg overflow-hidden border border-slate-200 cursor-grab active:cursor-grabbing group"
+                            style={{ 
+                              left: '255px', 
+                              top: '10px',
+                              width: '190px',
+                              height: '140px'
+                            }}
+                            drag
+                            dragMomentum={false}
+                            dragElastic={0.1}
+                            whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 2 }}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.2, duration: 0.5 }}
+                          >
+                            {/* Close button - only visible on hover */}
+                            <button 
+                              onClick={() => removeVisionBoardItem(2)}
+                              className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-all duration-200 opacity-0 group-hover:opacity-100 z-10"
                             >
-                              <img 
-                                src={interiorProducts[1].image}
-                                alt={interiorProducts[1].name}
-                                className="w-full h-full object-cover pointer-events-none"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (fallback) fallback.style.display = 'flex';
-                                }}
-                              />
-                              {/* Fallback */}
-                              <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
-                                <div className="w-8 h-6 bg-teal-400 rounded-lg"></div>
-                              </div>
-                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
-                                ${interiorProducts[1].price}
-                              </div>
-                            </motion.div>
+                              ×
+                            </button>
                             
-                            {/* Floor Lamp - Top Right (Amazon) */}
-                            <motion.div 
-                              className="absolute w-28 h-36 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-orange-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '48px', top: '-100px' }}
-                              drag
-                              dragMomentum={false}
-                              dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 2 }}
-                              initial={{ scale: 0.8, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ delay: 0.6, duration: 0.5 }}
-                            >
-                              <img 
-                                src={interiorProducts[2].image}
-                                alt={interiorProducts[2].name}
-                                className="w-full h-full object-cover pointer-events-none"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (fallback) fallback.style.display = 'flex';
-                                }}
-                              />
-                              {/* Fallback */}
-                              <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
-                                <div className="w-6 h-10 bg-orange-400 rounded-lg"></div>
-                              </div>
-                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
-                                ${interiorProducts[2].price}
-                              </div>
-                            </motion.div>
+                            <img 
+                              src="/images/sectional-sofa.jpg"
+                              alt="Leather Sectional Couch"
+                              className="w-full h-full object-cover pointer-events-none"
+                            />
+                          </motion.div>
 
-                            {/* Row 2 - Bottom row */}
-                            {/* Vintage Ceramic Vase - Bottom Left (Etsy) */}
-                            <motion.div 
-                              className="absolute w-44 h-32 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-teal-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '-182px', top: '10px' }}
-                              drag
-                              dragMomentum={false}
-                              dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: -2 }}
-                              initial={{ scale: 0.8, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ delay: 0.9, duration: 0.5 }}
+                          {/* Bottom row - 2 items */}
+                          
+                          {/* Modern Living Room - Bottom Left */}
+                          <motion.div 
+                            className="absolute bg-white/95 rounded-xl shadow-lg overflow-hidden border border-slate-200 cursor-grab active:cursor-grabbing group"
+                            style={{ 
+                              left: '5px', 
+                              top: '190px',
+                              width: '190px',
+                              height: '140px'
+                            }}
+                            drag
+                            dragMomentum={false}
+                            dragElastic={0.1}
+                            whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 2 }}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.4, duration: 0.5 }}
+                          >
+                            {/* Close button - only visible on hover */}
+                            <button 
+                              onClick={() => removeVisionBoardItem(3)}
+                              className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-all duration-200 opacity-0 group-hover:opacity-100 z-10"
                             >
-                              <img 
-                                src={interiorProducts[3].image}
-                                alt={interiorProducts[3].name}
-                                className="w-full h-full object-cover pointer-events-none"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (fallback) fallback.style.display = 'flex';
-                                }}
-                              />
-                              {/* Fallback */}
-                              <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
-                                <div className="w-8 h-10 bg-teal-400 rounded-lg"></div>
-                              </div>
-                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
-                                ${interiorProducts[3].price}
-                              </div>
-                            </motion.div>
-
-                            {/* Console Table - Bottom Center (Amazon) */}
-                            <motion.div 
-                              className="absolute w-36 h-28 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-orange-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '-58px', top: '10px' }}
-                              drag
-                              dragMomentum={false}
-                              dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 4 }}
-                              initial={{ scale: 0.8, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ delay: 1.2, duration: 0.5 }}
+                              ×
+                            </button>
+                            
+                            <img 
+                              src="/images/front-table.jpg"
+                              alt="Modern Living Room Cushion"
+                              className="w-full h-full object-cover pointer-events-none"
+                            />
+                          </motion.div>
+                          
+                          {/* Mid Century Three Piece - Bottom Right */}
+                          <motion.div 
+                            className="absolute bg-white/95 rounded-xl shadow-lg overflow-hidden border border-slate-200 cursor-grab active:cursor-grabbing group"
+                            style={{ 
+                              left: '255px', 
+                              top: '190px',
+                              width: '190px',
+                              height: '140px'
+                            }}
+                            drag
+                            dragMomentum={false}
+                            dragElastic={0.1}
+                            whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: 2 }}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.6, duration: 0.5 }}
+                          >
+                            {/* Close button - only visible on hover */}
+                            <button 
+                              onClick={() => removeVisionBoardItem(4)}
+                              className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-all duration-200 opacity-0 group-hover:opacity-100 z-10"
                             >
-                              <img 
-                                src={interiorProducts[4].image}
-                                alt={interiorProducts[4].name}
-                                className="w-full h-full object-cover pointer-events-none"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (fallback) fallback.style.display = 'flex';
-                                }}
-                              />
-                              {/* Fallback */}
-                              <div className="hidden w-full h-full bg-gradient-to-br from-orange-100 to-amber-100 items-center justify-center">
-                                <div className="w-10 h-6 bg-orange-400 rounded-lg"></div>
-                              </div>
-                              <div className="absolute -top-8 left-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
-                                ${interiorProducts[4].price}
-                              </div>
-                            </motion.div>
-
-                            {/* Macrame Plant Hanger - Bottom Right (Etsy) */}
-                            <motion.div 
-                              className="absolute w-28 h-32 bg-white/95 rounded-xl shadow-lg overflow-hidden border-2 border-teal-500 cursor-grab active:cursor-grabbing"
-                              style={{ left: '48px', top: '10px' }}
-                              drag
-                              dragMomentum={false}
-                              dragElastic={0.1}
-                              whileDrag={{ scale: 1.05, zIndex: 50, rotateZ: -5 }}
-                              initial={{ scale: 0.8, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ delay: 1.5, duration: 0.5 }}
-                            >
-                              <img 
-                                src={interiorProducts[5].image}
-                                alt={interiorProducts[5].name}
-                                className="w-full h-full object-cover pointer-events-none"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (fallback) fallback.style.display = 'flex';
-                                }}
-                              />
-                              {/* Fallback */}
-                              <div className="hidden w-full h-full bg-gradient-to-br from-teal-100 to-cyan-100 items-center justify-center">
-                                <div className="w-6 h-8 bg-teal-400 rounded-lg"></div>
-                              </div>
-                              <div className="absolute -top-8 left-0 bg-teal-500 text-white text-xs px-2 py-1 rounded-md whitespace-nowrap shadow-lg">
-                                ${interiorProducts[5].price}
-                              </div>
-                            </motion.div>
-                          </div>
+                              ×
+                            </button>
+                            
+                            <img 
+                              src="/images/plant-hanger.jpg"
+                              alt="Mid Century Three Piece Sectional"
+                              className="w-full h-full object-cover pointer-events-none"
+                            />
+                          </motion.div>
                         </div>
 
-                        {/* Interactive helper text */}
-                        <div className="absolute bottom-4 left-4 text-slate-500 text-xs bg-white/80 px-3 py-2 rounded-lg backdrop-blur-sm border border-slate-200/60">
+                        {/* Interactive helper text - moved to bottom center */}
+                        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-slate-500 text-xs bg-white/80 px-3 py-2 rounded-lg backdrop-blur-sm border border-slate-200/60">
                           <div className="flex items-center gap-2">
                             <span>🖱️ Drag items to rearrange</span>
                             <span className="w-1 h-1 bg-slate-400 rounded-full"></span>
                             <span>Dot grid snapping enabled</span>
                           </div>
                         </div>
-
-                        {/* Grid info in corner */}
-                        <div className="absolute top-4 right-4 text-slate-400 text-xs bg-white/60 px-2 py-1 rounded-md">
-                          Dot Grid
-                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                {/* Bottom Action Bar - EXACT Hero Styling */}
-                <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200/20">
-                  <div className="flex items-center gap-3 text-slate-600">
-                    <div className="w-8 h-8 bg-slate-200/60 rounded-full flex items-center justify-center">
-                      <span className="text-sm">👤</span>
-                    </div>
-                    <span className="text-sm font-medium">AI Curated</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <button className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 transition-colors duration-200 rounded-lg hover:bg-slate-100/60">
-                      Clear Board
-                    </button>
-                    <button className="px-6 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors duration-200">
-                      Share Vision
-                    </button>
                   </div>
                 </div>
               </div>
