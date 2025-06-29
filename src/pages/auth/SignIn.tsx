@@ -327,7 +327,7 @@ const SignIn: React.FC = () => {
             className="mb-8"
           >
             <div className="flex items-center gap-3 mb-4">
-              <Sparkles className="text-violet-400" size={20} />
+              {/*<Sparkles className="text-violet-400" size={20} />*/}
               <span className="text-sm font-semibold text-white/80 uppercase tracking-wide">Featured Capabilities</span>
             </div>
             
