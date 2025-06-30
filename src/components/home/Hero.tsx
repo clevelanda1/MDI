@@ -735,9 +735,9 @@ const Hero: React.FC = () => {
           className="text-center pb-20 px-8"
         >
           <p className="text-slate-500 text-sm font-bold mb-8 tracking-wide uppercase">
-            Trusted by design professionals worldwide
+            Trusted by home owners & design professionals
           </p>
-          <div className="flex items-center justify-center gap-16 text-slate-400">
+          {/*<div className="flex items-center justify-center gap-16 text-slate-400">
             <div className="flex items-center gap-2">
               <span className="text-3xl font-black text-slate-700">10K+</span>
               <span className="text-sm font-medium">Inspirations Uploaded</span>
@@ -752,7 +752,7 @@ const Hero: React.FC = () => {
               <div className="text-amber-500 text-xl">★★★★★</div>
               <span className="text-sm text-slate-700 font-bold">4.9/5</span>
             </div>
-          </div>
+          </div>*/}
         </motion.div>
       </div>
     </div>

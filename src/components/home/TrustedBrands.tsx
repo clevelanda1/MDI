@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const TrustedBrands: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const visionBoardRef = useRef<HTMLDivElement>(null);
   const [hoveredBrand, setHoveredBrand] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visionBoardItems, setVisionBoardItems] = useState([
@@ -22,6 +23,29 @@ const TrustedBrands: React.FC = () => {
   // Enhanced scroll transforms
   const y = useTransform(scrollYProgress, [0, 1], [-30, 30]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
+  // Vision Board mouse tracking animation (same as Hero)
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [2, -2]));
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-2, 2]));
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!visionBoardRef.current) return;
+      const rect = visionBoardRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    const visionBoard = visionBoardRef.current;
+    if (visionBoard) {
+      visionBoard.addEventListener('mousemove', handleMouseMove);
+      return () => visionBoard.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [mouseX, mouseY]);
 
   // Primary marketplace partners
   const primaryPartners = [
@@ -503,8 +527,9 @@ const TrustedBrands: React.FC = () => {
           </motion.button>
         </motion.div>
 
-        {/* Updated Vision Board Interface Preview */}
+        {/* Updated Vision Board Interface Preview with Mouse Tracking Animation */}
         <motion.div
+          ref={visionBoardRef}
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.3, ease: [0.165, 0.84, 0.44, 1] }}
@@ -513,6 +538,8 @@ const TrustedBrands: React.FC = () => {
         >
           <motion.div
             style={{
+              rotateX,
+              rotateY,
               transformPerspective: 1200,
             }}
             className="relative"

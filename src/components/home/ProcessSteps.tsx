@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Search, ShoppingCart } from 'lucide-react';
@@ -6,6 +6,7 @@ import { PROCESS_STEPS } from '../../utils/constants';
 
 const ProcessSteps: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const curationRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
@@ -16,6 +17,29 @@ const ProcessSteps: React.FC = () => {
   // Enhanced scroll transforms
   const y = useTransform(scrollYProgress, [0, 1], [-30, 30]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+
+  // Curation interface mouse tracking animation (same as Hero and TrustedBrands)
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [2, -2]));
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-2, 2]));
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!curationRef.current) return;
+      const rect = curationRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      mouseX.set(x);
+      mouseY.set(y);
+    };
+
+    const curationInterface = curationRef.current;
+    if (curationInterface) {
+      curationInterface.addEventListener('mousemove', handleMouseMove);
+      return () => curationInterface.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [mouseX, mouseY]);
 
   const iconComponents: Record<string, React.ReactNode> = {
     Upload: <Upload size={28} className="text-white" />,
@@ -363,8 +387,9 @@ const ProcessSteps: React.FC = () => {
           </motion.button>
         </motion.div>
 
-        {/* Updated Curation Interface Preview - Matching Actual Curation Page */}
+        {/* Updated Curation Interface Preview with Mouse Tracking Animation */}
         <motion.div
+          ref={curationRef}
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.2, delay: 0.3, ease: [0.165, 0.84, 0.44, 1] }}
@@ -373,6 +398,8 @@ const ProcessSteps: React.FC = () => {
         >
           <motion.div
             style={{
+              rotateX,
+              rotateY,
               transformPerspective: 1200,
             }}
             className="relative"
@@ -535,7 +562,7 @@ const ProcessSteps: React.FC = () => {
                         </div>
 
                         <div className="flex justify-between items-end">
-                          <span className="font-bold text-2xl text-slate-900">$1,059.99</span>
+                          <span className="font-bold text-2xl text-slate-900">$1,060.00</span>
                           
                           <button className="px-6 py-2 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
                             View Product
@@ -631,7 +658,7 @@ const ProcessSteps: React.FC = () => {
                         </div>
 
                         <div className="flex justify-between items-end">
-                          <span className="font-bold text-2xl text-slate-900">$629.17</span>
+                          <span className="font-bold text-2xl text-slate-900">$629.99</span>
                           
                           <button className="px-6 py-2 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
                           View Product
@@ -679,7 +706,7 @@ const ProcessSteps: React.FC = () => {
                         </div>
 
                         <div className="flex justify-between items-end">
-                          <span className="font-bold text-2xl text-slate-900">$1,569.00</span>
+                          <span className="font-bold text-2xl text-slate-900">$569.00</span>
                           
                           <button className="px-6 py-2 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
                           View Product
