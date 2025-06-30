@@ -606,7 +606,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="flex items-center justify-between">
                                 <span className="font-bold text-slate-900 text-sm">$189</span>
                                 <button className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
-                                  View
+                                  Add Product
                                 </button>
                               </div>
                             </div>
@@ -634,7 +634,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="flex items-center justify-between">
                                 <span className="font-bold text-slate-900 text-sm">$1,299</span>
                                 <button className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
-                                  View
+                                  Add Product
                                 </button>
                               </div>
                             </div>
@@ -662,7 +662,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="flex items-center justify-between">
                                 <span className="font-bold text-slate-900 text-sm">$899</span>
                                 <button className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
-                                  View
+                                  Add Product
                                 </button>
                               </div>
                             </div>
@@ -690,7 +690,7 @@ const TrustedBrands: React.FC = () => {
                               <div className="flex items-center justify-between">
                                 <span className="font-bold text-slate-900 text-sm">$1,569</span>
                                 <button className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
-                                  View
+                                  Add Product
                                 </button>
                               </div>
                             </div>
