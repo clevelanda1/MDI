@@ -527,20 +527,11 @@ const TrustedBrands: React.FC = () => {
                   {/* Updated Sidebar - Moderately wider for better text fitting */}
                   <div className="lg:col-span-2">
                     <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-3xl p-6 shadow-xl shadow-slate-900/5">
-                      {/* Header with heart icon - exact match */}
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-3">
-                          <div className="relative">
-                            <div className="w-5 h-5 text-red-500">
-                              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                              </svg>
-                            </div>
-                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
-                          </div>
-                          <h2 className="font-bold text-xl text-slate-900">Liked Products</h2>
-                          <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold border border-red-200">5</span>
-                        </div>
+                      {/* Header with heart icon - updated to match Filters styling */}
+                      <div className="flex items-center gap-2 mb-6">
+                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        <h3 className="font-semibold text-slate-900 text-base">Liked Products</h3>
+                        <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-semibold border border-red-200">4</span>
                       </div>
 
                       {/* Search - exact match */}
@@ -581,7 +572,7 @@ const TrustedBrands: React.FC = () => {
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                          <span className="text-sm text-slate-700 font-medium">5 products</span>
+                          <span className="text-sm text-slate-700 font-medium">4 products</span>
                         </div>
                       </div>
 
@@ -590,83 +581,125 @@ const TrustedBrands: React.FC = () => {
                         Your Collection
                       </div>
                       
-                      {/* Product Grid - exact layout */}
-                      <div className="grid grid-cols-2 gap-3 mb-6">
-                        {/* Product 1 - Modern Living Room */}
-                        <div className="group bg-white rounded-xl p-3 border border-slate-200/60 cursor-grab relative">
-                          <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
-                            <img 
-                              src="/images/front-table.jpg"
-                              alt="Modern Living Room Cushion"
-                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                            />
+                      {/* Product Grid - constrained to show exactly 2 products */}
+                      <div className="max-h-[32rem] overflow-hidden mb-6">
+                        <div className="grid grid-cols-1 gap-4 hide-scrollbar">
+                          {/* Product 1 - Modern Living Room Cushion (original data) */}
+                          <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
+                            <div className="relative h-32 overflow-hidden">
+                              <img 
+                                src="/images/front-table.jpg"
+                                alt="Modern Living Room Cushion"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              />
+                              <div className="absolute top-2 right-2 w-6 h-6 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm border border-white/20">
+                                <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="p-3">
+                              <h4 className="font-medium text-slate-900 text-sm mb-1 line-clamp-2">
+                                Modern Living Room Cushion, Velvet Cou...
+                              </h4>
+                              <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
+                              <div className="flex items-center justify-between">
+                                <span className="font-bold text-slate-900 text-sm">$189</span>
+                                <button className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
+                                  View
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                          <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
-                            Modern Living Room Cushion, Velvet Cou...
-                          </h4>
-                          <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-semibold text-slate-900 text-xs">$189</span>
-                          </div>
-                        </div>
 
-                        {/* Product 2 - Mid Century Three Piece */}
-                        <div className="group bg-white rounded-xl p-3 border border-slate-200/60 cursor-grab relative">
-                          <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
-                            <img 
-                              src="/images/plant-hanger.jpg"
-                              alt="Mid Century Three Piece Sectional Sofa"
-                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                            />
+                          {/* Product 2 - Mid Century Three Piece Sectional (original data) */}
+                          <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
+                            <div className="relative h-32 overflow-hidden">
+                              <img 
+                                src="/images/plant-hanger.jpg"
+                                alt="Mid Century Three Piece Sectional Sofa"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              />
+                              <div className="absolute top-2 right-2 w-6 h-6 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm border border-white/20">
+                                <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="p-3">
+                              <h4 className="font-medium text-slate-900 text-sm mb-1 line-clamp-2">
+                                Mid Century Three Piece Sectional Sofa
+                              </h4>
+                              <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
+                              <div className="flex items-center justify-between">
+                                <span className="font-bold text-slate-900 text-sm">$1,299</span>
+                                <button className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
+                                  View
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                          <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
-                            Mid Century Three Piece Sectional Sofa
-                          </h4>
-                          <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-semibold text-slate-900 text-xs">$1,299</span>
-                          </div>
-                        </div>
 
-                        {/* Product 3 - Leather Sectional */}
-                        <div className="group bg-white rounded-xl p-3 border border-slate-200/60 cursor-grab relative">
-                          <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
-                            <img 
-                              src="/images/sectional-sofa.jpg"
-                              alt="Leather Sectional Couch"
-                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                            />
+                          {/* Product 3 - Leather Sectional Couch (original data) */}
+                          <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
+                            <div className="relative h-32 overflow-hidden">
+                              <img 
+                                src="/images/sectional-sofa.jpg"
+                                alt="Leather Sectional Couch"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              />
+                              <div className="absolute top-2 right-2 w-6 h-6 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm border border-white/20">
+                                <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="p-3">
+                              <h4 className="font-medium text-slate-900 text-sm mb-1 line-clamp-2">
+                                Leather Sectional Couch with Ottoman...
+                              </h4>
+                              <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
+                              <div className="flex items-center justify-between">
+                                <span className="font-bold text-slate-900 text-sm">$899</span>
+                                <button className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
+                                  View
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                          <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
-                            Leather Sectional Couch with Ottoman...
-                          </h4>
-                          <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-semibold text-slate-900 text-xs">$899</span>
-                          </div>
-                        </div>
 
-                        {/* Product 4 - HULALA HOME */}
-                        <div className="group bg-white rounded-xl p-3 border border-slate-200/60 cursor-grab relative">
-                          <div className="aspect-square bg-slate-100 rounded-lg mb-2 overflow-hidden">
-                            <img 
-                              src="/images/leather-sofa.jpg"
-                              alt="HULALA HOME Modular Sectional"
-                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                            />
-                          </div>
-                          <h4 className="font-medium text-slate-900 text-xs line-clamp-2 mb-1">
-                            HULALA HOME 127" Modular Sectional...
-                          </h4>
-                          <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
-                          <div className="flex items-center justify-between">
-                            <span className="font-semibold text-slate-900 text-xs">$1,569</span>
+                          {/* Product 4 - HULALA HOME Modular Sectional (original data) */}
+                          <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
+                            <div className="relative h-32 overflow-hidden">
+                              <img 
+                                src="/images/leather-sofa.jpg"
+                                alt="HULALA HOME Modular Sectional"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              />
+                              <div className="absolute top-2 right-2 w-6 h-6 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm border border-white/20">
+                                <svg className="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                              </div>
+                            </div>
+                            <div className="p-3">
+                              <h4 className="font-medium text-slate-900 text-sm mb-1 line-clamp-2">
+                                HULALA HOME 127" Modular Sectional...
+                              </h4>
+                              <div className="text-xs text-slate-500 mb-1">Design Project 2</div>
+                              <div className="flex items-center justify-between">
+                                <span className="font-bold text-slate-900 text-sm">$1,569</span>
+                                <button className="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
+                                  View
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
 
-                      {/* Select More Favorites Button - exact match */}
-                      <button className="w-full flex items-center justify-center gap-2 py-2 text-sm text-slate-600 hover:text-slate-800 transition-colors duration-200">
+                      {/* Select More Favorites Button - updated styling */}
+                      <button className="w-full flex items-center justify-center gap-2 py-3 text-sm text-slate-600 hover:text-slate-800 transition-colors duration-200 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200">
                         <div className="w-4 h-4 text-red-500">
                           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
@@ -681,20 +714,20 @@ const TrustedBrands: React.FC = () => {
                   <div className="lg:col-span-5">
                     <div className="bg-white/80 backdrop-blur-xl border border-slate-200/60 rounded-3xl shadow-xl shadow-slate-900/5 overflow-hidden h-full">
                       <div className="p-6 border-b border-slate-200/60">
-                        <div className="flex items-center justify-between">
-                          <h2 className="font-semibold text-2xl text-slate-900 flex items-center gap-3">
-                            <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
-                            Your Vision Board
-                          </h2>
-                          <div className="flex items-center gap-2 text-sm text-slate-600">
-                            <span>4 items</span>
-                          </div>
+                        <div className="flex items-center gap-4">
+                          <div className="w-1 h-8 bg-gradient-to-b from-violet-500 to-blue-500 rounded-full"></div>
+                          <h3 className="font-light text-3xl text-slate-900">
+                            Your <span className="font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">Vision Board</span>
+                          </h3>
+                          <span className="px-3 py-1.5 bg-violet-100 text-violet-700 rounded-full text-sm font-semibold border border-violet-200">
+                            4
+                          </span>
                         </div>
                       </div>
                       
                       {/* Canvas Area - Extended height to accommodate moved items */}
-                      <div className="relative bg-gradient-to-br from-slate-50/50 to-white/50 overflow-hidden flex items-center justify-center" style={{ height: '600px' }}>
-                        {/* Vision Board Items - Moved down for better positioning */}
+                      <div className="relative bg-gradient-to-br from-slate-50/50 to-white/50 overflow-hidden flex items-center justify-center" style={{ height: '780px' }}>
+                        {/* Vision Board Items - All 4 items restored */}
                         <div className="relative" style={{ width: '450px', height: '340px', marginTop: '40px' }}>
                           {/* Top row - 2 items */}
                           
@@ -703,7 +736,7 @@ const TrustedBrands: React.FC = () => {
                             className="absolute bg-white/95 rounded-xl shadow-lg overflow-hidden border border-slate-200 cursor-grab active:cursor-grabbing group"
                             style={{ 
                               left: '5px', 
-                              top: '10px',
+                              top: '-10px',
                               width: '190px',
                               height: '140px'
                             }}
@@ -740,7 +773,7 @@ const TrustedBrands: React.FC = () => {
                             className="absolute bg-white/95 rounded-xl shadow-lg overflow-hidden border border-slate-200 cursor-grab active:cursor-grabbing group"
                             style={{ 
                               left: '255px', 
-                              top: '10px',
+                              top: '-10px',
                               width: '190px',
                               height: '140px'
                             }}
@@ -774,7 +807,7 @@ const TrustedBrands: React.FC = () => {
                             className="absolute bg-white/95 rounded-xl shadow-lg overflow-hidden border border-slate-200 cursor-grab active:cursor-grabbing group"
                             style={{ 
                               left: '5px', 
-                              top: '190px',
+                              top: '170px',
                               width: '190px',
                               height: '140px'
                             }}
@@ -806,7 +839,7 @@ const TrustedBrands: React.FC = () => {
                             className="absolute bg-white/95 rounded-xl shadow-lg overflow-hidden border border-slate-200 cursor-grab active:cursor-grabbing group"
                             style={{ 
                               left: '255px', 
-                              top: '190px',
+                              top: '170px',
                               width: '190px',
                               height: '140px'
                             }}

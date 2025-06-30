@@ -463,7 +463,7 @@ const ProcessSteps: React.FC = () => {
                     {/* Price Range - Updated to match actual design */}
                     <div className="mb-6">
                       <h4 className="text-sm font-medium text-slate-700 mb-3">Price Range</h4>
-                      <div className="space-y-2">
+                      <div className="space-y-5">
                         {[
                           { label: 'Under $100', checked: false },
                           { label: '$100 - $250', checked: false },
@@ -484,148 +484,205 @@ const ProcessSteps: React.FC = () => {
                 
                 {/* Product Grid - Updated to match actual page layout */}
                 <div className="lg:col-span-3">
-                  <div className="flex items-center justify-between mb-6">
-                    <h3 className="font-semibold text-slate-900 text-lg">Product <span className="font-bold">Selections</span></h3>
-                    <span className="text-sm text-slate-500">Showing 1-24 of 48 products</span>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-1 h-8 bg-gradient-to-b from-violet-500 to-blue-500 rounded-full"></div>
+                    <h3 className="font-light text-3xl text-slate-900">
+                      Product <span className="font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">Selections</span>
+                    </h3>
+                    <span className="px-3 py-1.5 bg-violet-100 text-violet-700 rounded-full text-sm font-semibold border border-violet-200">
+                      4
+                    </span>
                   </div>
                   
-                  {/* Product Cards Grid - Updated to match actual card design */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Product Cards Grid - Updated to match project card design */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Product 1 - L-Shape Sofa */}
-                    <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="relative">
+                    <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-900/10 transition-all duration-500 group">
+                      <div className="relative h-56 overflow-hidden">
                         <img 
                           src="/images/l-shape-sofa.jpg" 
                           alt="Brown Leather Sectional Couch"
-                          className="w-full h-48 object-cover"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                           onError={(e) => {
-                            e.currentTarget.src = '/api/placeholder/400/200';
+                            e.currentTarget.src = '/api/placeholder/400/280';
                           }}
                         />
-                        <div className="absolute top-3 left-3 bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded font-medium">
-                          Amazon
+                        <div className="absolute top-4 left-4 bg-teal-100 text-teal-600 text-xs px-3 py-1 rounded-full font-semibold border border-teal-200">
+                          Etsy
                         </div>
-                        <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm">
-                          <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/20">
+                          <svg className="w-4 h-4 text-slate-400 hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                           </svg>
                         </div>
-                      </div>
-                      <div className="p-4">
-                        <h4 className="font-medium text-slate-900 text-sm mb-1">Brown Leather Sectional Couch for Living Room Set Sectional Couch L-Shape Couch with Stora...</h4>
-                        <div className="flex items-center gap-1 mb-2">
-                          <div className="flex text-yellow-400 text-xs">★★★★☆</div>
-                          <span className="text-xs text-slate-500">4.2 (1)</span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                          <div className="flex items-center gap-4">
+                            {/*<button className="flex items-center gap-2 px-6 py-3 bg-white/95 text-slate-900 hover:bg-white font-semibold rounded-2xl shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-200">
+                              View Product
+                        </button>*/}
+                          </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-slate-900">$1059.99</span>
-                          <button className="px-4 py-2 bg-blue-600 text-white text-xs rounded-lg font-medium hover:bg-blue-700">
-                            View
+                      </div>
+                      
+                      <div className="p-6">
+                        <div className="flex items-center justify-between mb-1">
+                          <h4 className="font-bold text-xl text-slate-900 leading-tight">Brown Leather Sectional Couch for Living Room Set</h4>
+                        </div>
+                        
+                        <div className="flex items-center gap-1 mb-3">
+                          <div className="flex text-yellow-400 text-sm">★★★★☆</div>
+                          <span className="text-sm text-slate-500 ml-1">4.2 (1)</span>
+                        </div>
+
+                        <div className="flex justify-between items-end">
+                          <span className="font-bold text-2xl text-slate-900">$1,059.99</span>
+                          
+                          <button className="px-6 py-2 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
+                            View Product
                           </button>
                         </div>
                       </div>
                     </div>
 
                     {/* Product 2 - HULALA HOME Modular Sectional */}
-                    <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="relative">
+                    <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-900/10 transition-all duration-500 group">
+                      <div className="relative h-56 overflow-hidden">
                         <img 
                           src="/images/glass-table.jpg" 
                           alt="HULALA HOME Modular Sectional Sofa"
-                          className="w-full h-48 object-cover"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                           onError={(e) => {
-                            e.currentTarget.src = '/api/placeholder/400/200';
+                            e.currentTarget.src = '/api/placeholder/400/280';
                           }}
                         />
-                        <div className="absolute top-3 left-3 bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded font-medium">
-                          Amazon
+                        <div className="absolute top-4 left-4 bg-teal-100 text-teal-600 text-xs px-3 py-1 rounded-full font-semibold border border-teal-200">
+                          Etsy
                         </div>
-                        <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm">
+                        <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/20">
                           <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                           </svg>
                         </div>
-                      </div>
-                      <div className="p-4">
-                        <h4 className="font-medium text-slate-900 text-sm mb-1">HULALA HOME 127" Modular Sectional Sofa, 5-seat Sectional Couch with Storage...</h4>
-                        <div className="flex items-center gap-1 mb-2">
-                          <div className="flex text-yellow-400 text-xs">★★★★★</div>
-                          <span className="text-xs text-slate-500">4.5 (1)</span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                          <div className="flex items-center gap-4">
+                            {/*<button className="flex items-center gap-2 px-6 py-3 bg-white/95 text-slate-900 hover:bg-white font-semibold rounded-2xl shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-200">
+                              View Product
+                        </button>*/}
+                          </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-slate-900">$768.00</span>
-                          <button className="px-4 py-2 bg-blue-600 text-white text-xs rounded-lg font-medium hover:bg-blue-700">
-                            View
+                      </div>
+                      
+                      <div className="p-6">
+                        <div className="flex items-center justify-between mb-1">
+                          <h4 className="font-bold text-xl text-slate-900 leading-tight">HULALA HOME 127" Modular Sectional Sofa</h4>
+                        </div>
+                        
+                        <div className="flex items-center gap-1 mb-3">
+                          <div className="flex text-yellow-400 text-sm">★★★★★</div>
+                          <span className="text-sm text-slate-500 ml-1">4.5 (1)</span>
+                        </div>
+
+                        <div className="flex justify-between items-end">
+                          <span className="font-bold text-2xl text-slate-900">$768.00</span>
+                          
+                          <button className="px-6 py-2 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
+                          View Product
                           </button>
                         </div>
                       </div>
                     </div>
 
                     {/* Product 3 - Sectional Sofa */}
-                    <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="relative">
+                    <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-900/10 transition-all duration-500 group">
+                      <div className="relative h-56 overflow-hidden">
                         <img 
                           src="/images/sectional-sofa.jpg" 
                           alt="Leather Sectional Couch with Ottoman"
-                          className="w-full h-48 object-cover"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                           onError={(e) => {
-                            e.currentTarget.src = '/api/placeholder/400/200';
+                            e.currentTarget.src = '/api/placeholder/400/280';
                           }}
                         />
-                        <div className="absolute top-3 left-3 bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded font-medium">
+                        <div className="absolute top-4 left-4 bg-orange-100 text-orange-600 text-xs px-3 py-1 rounded-full font-semibold border border-orange-200">
                           Amazon
                         </div>
-                        <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm">
-                          <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/20">
+                          <svg className="w-4 h-4 text-slate-400 hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                           </svg>
                         </div>
-                      </div>
-                      <div className="p-4">
-                        <h4 className="font-medium text-slate-900 text-sm mb-1">Leather Sectional Couch with Ottoman, 97" L Shaped Couch Sectional Sofa for Living Roo...</h4>
-                        <div className="flex items-center gap-1 mb-2">
-                          <div className="flex text-yellow-400 text-xs">★★★☆☆</div>
-                          <span className="text-xs text-slate-500">3.9 (1)</span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                          <div className="flex items-center gap-4">
+                            {/*<button className="flex items-center gap-2 px-6 py-3 bg-white/95 text-slate-900 hover:bg-white font-semibold rounded-2xl shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-200">
+                              View Product
+                        </button>*/}
+                          </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-slate-900">$629.17</span>
-                          <button className="px-4 py-2 bg-blue-600 text-white text-xs rounded-lg font-medium hover:bg-blue-700">
-                            View
+                      </div>
+                      
+                      <div className="p-6">
+                        <div className="flex items-center justify-between mb-1">
+                          <h4 className="font-bold text-xl text-slate-900 leading-tight">Leather Sectional Couch with Ottoman</h4>
+                        </div>
+                        
+                        <div className="flex items-center gap-1 mb-3">
+                          <div className="flex text-yellow-400 text-sm">★★★☆☆</div>
+                          <span className="text-sm text-slate-500 ml-1">3.9 (1)</span>
+                        </div>
+
+                        <div className="flex justify-between items-end">
+                          <span className="font-bold text-2xl text-slate-900">$629.17</span>
+                          
+                          <button className="px-6 py-2 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
+                          View Product
                           </button>
                         </div>
                       </div>
                     </div>
 
                     {/* Product 4 - Modular Sectional */}
-                    <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="relative">
+                    <div className="bg-white/90 backdrop-blur-2xl border border-slate-200/50 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-900/10 transition-all duration-500 group">
+                      <div className="relative h-56 overflow-hidden">
                         <img 
                           src="/images/round-table.jpg" 
                           alt="Modular Sectional Sofa L-Shaped"
-                          className="w-full h-48 object-cover"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                           onError={(e) => {
-                            e.currentTarget.src = '/api/placeholder/400/200';
+                            e.currentTarget.src = '/api/placeholder/400/280';
                           }}
                         />
-                        <div className="absolute top-3 left-3 bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded font-medium">
+                        <div className="absolute top-4 left-4 bg-orange-100 text-orange-600 text-xs px-3 py-1 rounded-full font-semibold border border-orange-200">
                           Amazon
                         </div>
-                        <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm">
-                          <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/20">
+                          <svg className="w-4 h-4 text-slate-400 hover:text-red-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                           </svg>
                         </div>
-                      </div>
-                      <div className="p-4">
-                        <h4 className="font-medium text-slate-900 text-sm mb-1">Modular Sectional Sofa L-Shaped PU Leather Sofa Sets Manual Recliner Sectional Couches...</h4>
-                        <div className="flex items-center gap-1 mb-2">
-                          <div className="flex text-yellow-400 text-xs">★★★★☆</div>
-                          <span className="text-xs text-slate-500">4.2 (1)</span>
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                          <div className="flex items-center gap-4">
+                            {/*<button className="flex items-center gap-2 px-6 py-3 bg-white/95 text-slate-900 hover:bg-white font-semibold rounded-2xl shadow-xl backdrop-blur-sm border border-white/20 transition-all duration-200">
+                              View Product
+                        </button>*/}
+                          </div>
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold text-slate-900">$1569.00</span>
-                          <button className="px-4 py-2 bg-blue-600 text-white text-xs rounded-lg font-medium hover:bg-blue-700">
-                            View
+                      </div>
+                      
+                      <div className="p-6">
+                        <div className="flex items-center justify-between mb-1">
+                          <h4 className="font-bold text-xl text-slate-900 leading-tight">Modular Sectional Sofa L-Shaped PU Leather</h4>
+                        </div>
+                        
+                        <div className="flex items-center gap-1 mb-3">
+                          <div className="flex text-yellow-400 text-sm">★★★★☆</div>
+                          <span className="text-sm text-slate-500 ml-1">4.2 (1)</span>
+                        </div>
+
+                        <div className="flex justify-between items-end">
+                          <span className="font-bold text-2xl text-slate-900">$1,569.00</span>
+                          
+                          <button className="px-6 py-2 bg-blue-100 text-blue-700 text-xs rounded-full font-semibold border border-blue-200 hover:bg-blue-200 transition-colors duration-200">
+                          View Product
                           </button>
                         </div>
                       </div>
