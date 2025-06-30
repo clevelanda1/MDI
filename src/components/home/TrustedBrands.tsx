@@ -737,8 +737,8 @@ const TrustedBrands: React.FC = () => {
                             style={{ 
                               left: '5px', 
                               top: '-10px',
-                              width: '190px',
-                              height: '140px'
+                              width: '230px',
+                              height: '165px'
                             }}
                             drag
                             dragMomentum={false}
@@ -774,8 +774,8 @@ const TrustedBrands: React.FC = () => {
                             style={{ 
                               left: '255px', 
                               top: '-10px',
-                              width: '190px',
-                              height: '140px'
+                              width: '230px',
+                              height: '165px'
                             }}
                             drag
                             dragMomentum={false}
@@ -808,8 +808,8 @@ const TrustedBrands: React.FC = () => {
                             style={{ 
                               left: '5px', 
                               top: '170px',
-                              width: '190px',
-                              height: '140px'
+                              width: '230px',
+                              height: '165px'
                             }}
                             drag
                             dragMomentum={false}
@@ -840,8 +840,8 @@ const TrustedBrands: React.FC = () => {
                             style={{ 
                               left: '255px', 
                               top: '170px',
-                              width: '190px',
-                              height: '140px'
+                              width: '230px',
+                              height: '165px'
                             }}
                             drag
                             dragMomentum={false}
