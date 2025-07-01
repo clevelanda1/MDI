@@ -490,7 +490,7 @@ const ProcessSteps: React.FC = () => {
                     {/* Price Range - Updated to match actual design */}
                     <div className="mb-6">
                       <h4 className="text-sm font-medium text-slate-700 mb-3">Price Range</h4>
-                      <div className="space-y-5">
+                      <div className="space-y-6">
                         {[
                           { label: 'Under $100', checked: false },
                           { label: '$100 - $250', checked: false },
