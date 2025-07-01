@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Sparkles } from 'lucide-react';
+import { Heart, Grid2x2 } from 'lucide-react';
 
 interface EmptyStatesProps {
   hasLikedProducts: boolean;
@@ -31,7 +31,7 @@ const EmptyStates: React.FC<EmptyStatesProps> = ({ hasLikedProducts, type }) => 
     >
       <div className="text-center">
         <div className="w-20 h-20 bg-white rounded-2xl shadow-sm border-2 border-dashed border-slate-300 flex items-center justify-center mx-auto mb-6">
-          <Sparkles className="w-8 h-8 text-slate-400" />
+          <Grid2x2 className="w-8 h-8 text-slate-400" />
         </div>
         <p className="text-slate-600 font-medium text-lg mb-2">Create your vision board</p>
         <p className="text-slate-500 text-sm max-w-xs">

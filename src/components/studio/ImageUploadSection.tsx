@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, ImageIcon, Trash2, ChevronDown, CheckCircle2, XCircle, Loader2, Crown, Edit2, RefreshCw, Plus, Star } from 'lucide-react';
+import { Upload, ImageIcon, Trash2, ChevronDown, CheckCircle2, XCircle, Loader2, Crown, Edit2, RefreshCw, Plus, Star, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { UploadState, DetectedElement } from '../../types/studio';
 import Button from '../common/Button';
@@ -525,58 +525,87 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
             {/* Enhanced Header with Stacked Layout */}
             <div className="space-y-4">
               <motion.div 
-                className="flex items-center gap-4"
+                className="flex items-center justify-between"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <div className="relative">
-                  <div className="w-3 h-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"></div>
-                  <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-full blur-sm animate-pulse"></div>
+                {/* Left side - Title */}
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <div className="w-3 h-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"></div>
+                    <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-full blur-sm animate-pulse"></div>
+                  </div>
+                  <h3 className="font-bold text-xl text-slate-900">Detected Elements</h3>
                 </div>
-                <h3 className="font-bold text-xl text-slate-900">Detected Elements</h3>
-              </motion.div>
-              
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                
+                {/* Right side - Number */}
                 <motion.span 
-                  className="text-base font-bold px-8 py-2 bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200 w-fit"
+                  className="text-base font-bold px-4 py-2 bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                 >
                   {uploadState.detectedElements.length} 
                 </motion.span>
-                
-                <motion.button
-                  onClick={onSelectAllElements}
-                  className="w-full sm:w-auto px-16 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-all duration-200 flex items-center justify-center gap-2"
-                  whileHover={{ scale: 1.02, y: -1 }}
-                  whileTap={{ scale: 0.98 }}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  {/*<Plus size={16} />*/}
-                  Select All
-                </motion.button>
-              </div>
+              </motion.div>
+              
+              {/* Select All button underneath */}
+              <motion.button
+                onClick={onSelectAllElements}
+                className="w-full px-16 py-3 bg-violet-600 text-white rounded-xl font-semibold hover:bg-violet-700 transition-all duration-200 flex items-center justify-center gap-2"
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                Select All
+              </motion.button>
             </div>
             
-            {/* Enhanced Platform Info without icon */}
+            {/* Enhanced Platform Info with hover expansion */}
             <motion.div 
-              className="p-6 bg-blue-50 rounded-2xl border border-blue-200"
+              className="group p-6 bg-blue-50 rounded-2xl border border-blue-200 cursor-pointer overflow-hidden"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4 }}
+              whileHover={{ scale: 1.01 }}
             >
-              <h4 className="font-bold text-blue-800 mb-2">How it Works</h4>
-              <p className="text-blue-700 text-sm leading-relaxed">
-                Select one search query from each marketplace (Amazon and Etsy) for each design element to get the best product recommendations.
-              </p>
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-blue-800">How it Works</h4>
+                <Info size={18} className="text-blue-600 flex-shrink-0" />
+              </div>
+              
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ 
+                  height: "auto", 
+                  opacity: 1 
+                }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
+                className="overflow-hidden group-hover:block hidden"
+              >
+                <p className="text-blue-700 text-sm leading-relaxed mt-2">
+                  Select one search query from each marketplace (Amazon and Etsy) for each design element to get the best product recommendations.
+                </p>
+              </motion.div>
             </motion.div>
             
-            {/* Enhanced Elements List */}
-            <div className="space-y-4">
+            {/* Enhanced Elements List with 4 item scroll limit - hidden scrollbar */}
+            <div className="max-h-[430px] overflow-y-auto space-y-4 scrollbar-hide">
+              <style jsx>{`
+                .scrollbar-hide {
+                  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                  scrollbar-width: none;  /* Firefox */
+                }
+                .scrollbar-hide::-webkit-scrollbar {
+                  display: none;  /* Safari and Chrome */
+                }
+              `}</style>
               <AnimatePresence>
                 {uploadState.detectedElements.map((element, index) => (
                   <motion.div
@@ -689,7 +718,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                                                 'amazon'
                                               );
                                             }}
-                                            className="form-checkbox h-5 w-5 text-orange-600 border-2 border-orange-300 focus:ring-orange-500 focus:ring-2 rounded-md transition-all duration-200"
+                                            className="form-checkbox h-5 w-5 text-orange-600 border-2 border-orange-300 focus:ring-0 focus:ring-offset-0 rounded-md transition-all duration-200"
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                           />
@@ -750,7 +779,7 @@ const ImageUploadSection: React.FC<ImageUploadSectionProps> = ({
                                                 'etsy'
                                               );
                                             }}
-                                            className="form-checkbox h-5 w-5 text-teal-600 border-2 border-teal-300 focus:ring-teal-500 focus:ring-2 rounded-md transition-all duration-200"
+                                            className="form-checkbox h-5 w-5 text-teal-600 border-2 border-teal-300 focus:ring-0 focus:ring-offset-0 rounded-md transition-all duration-200"
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                           />

@@ -44,10 +44,12 @@ const VisionBoardCanvas: React.FC<VisionBoardCanvasProps> = ({
     >
       <div className="p-6 border-b border-slate-200/60">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-2xl text-slate-900 flex items-center gap-3">
-            <div className="w-2 h-2 bg-violet-500 rounded-full"></div>
-            Your Vision Board
-          </h2>
+          <div className="flex items-center gap-4">
+            <div className="w-1 h-8 bg-gradient-to-b from-violet-500 to-blue-500 rounded-full"></div>
+            <h2 className="font-light text-3xl text-slate-900">
+              Your <span className="font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">Vision Board</span>
+            </h2>
+          </div>
           <div className="flex items-center gap-2 text-sm text-slate-600">
             <span>{boardItems.length} items</span>
           </div>

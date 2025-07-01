@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Search, Filter, X, Sparkles, Layers, MousePointer } from 'lucide-react';
+import { Heart, Search, Filter, X, Sparkles, Layers, MousePointer, Info } from 'lucide-react';
 import { ProductFilterState } from '../../types/visionboard';
 import { LikedProduct, Project } from '../../lib/supabase';
 import ProductGrid from './ProductGrid';
@@ -119,18 +119,11 @@ const ProductSidebar: React.FC<ProductSidebarProps> = ({
               variants={itemVariants}
             >
               <div className="flex items-center gap-3">
-                <div className="relative">
-                  <Heart className="w-5 h-5 text-red-500" />
-                  <motion.div
-                    className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-                <h2 className="font-bold text-xl text-slate-900">Liked Products</h2>
+                <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                <h2 className="font-semibold text-slate-900 text-base">Liked Products</h2>
                 {likedProducts.length > 0 && (
                   <motion.span 
-                    className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold border border-red-200"
+                    className="px-2 py-0.5 bg-red-100 text-red-700 rounded-xl text-xs font-semibold"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.3, type: "spring" }}
@@ -141,30 +134,36 @@ const ProductSidebar: React.FC<ProductSidebarProps> = ({
               </div>
             </motion.div>
 
-            {/* Enhanced Instructions */}
+            {/* Enhanced Instructions with Hover Effect */}
             <motion.div 
-              className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-4 mb-6 border border-blue-200/50"
+              className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl mb-6 border border-blue-200/50 group cursor-pointer overflow-hidden"
               variants={itemVariants}
             >
-              <div className="flex items-start gap-3 mb-3">
+              {/* Header - Always visible */}
+              <div className="flex items-center justify-between p-4">
                 <h3 className="font-semibold text-blue-900 text-sm">Quick Actions</h3>
+                <Info className="w-4 h-4 text-blue-600 group-hover:text-blue-700 transition-colors" />
               </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <MousePointer className="w-3 h-3 text-blue-600" />
+              
+              {/* Details - Show on hover */}
+              <div className="px-4 pb-0 max-h-0 group-hover:max-h-24 group-hover:pb-4 transition-all duration-300 overflow-hidden">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <MousePointer className="w-3 h-3 text-blue-600" />
+                    </div>
+                    <span className="text-xs text-blue-700">
+                      <strong>Drag & Drop:</strong> Move items to board
+                    </span>
                   </div>
-                  <span className="text-xs text-blue-700">
-                    <strong>Drag & Drop:</strong> Move items to board
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Layers className="w-3 h-3 text-blue-600" />
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Layers className="w-3 h-3 text-blue-600" />
+                    </div>
+                    <span className="text-xs text-blue-700">
+                      <strong>Double-Click:</strong> Add to center
+                    </span>
                   </div>
-                  <span className="text-xs text-blue-700">
-                    <strong>Double-Click:</strong> Add to center
-                  </span>
                 </div>
               </div>
             </motion.div>

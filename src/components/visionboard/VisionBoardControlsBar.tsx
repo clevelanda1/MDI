@@ -236,7 +236,7 @@ const VisionBoardControlsBar: React.FC<VisionBoardControlsBarProps> = ({
               
               {/* Tier Badge */}
               <div className={`flex items-center gap-2 px-4 py-2.5 ${tierConfig.bgColor} ${tierConfig.borderColor} border rounded-full backdrop-blur-sm shadow-md`}>
-                <tierConfig.icon size={16} className={tierConfig.iconColor} />
+                {/*<tierConfig.icon size={16} className={tierConfig.iconColor} />*/}
                 <span className={`text-xs font-bold ${tierConfig.textColor} uppercase tracking-wide`}>
                   {subscription.tier.charAt(0).toUpperCase() + subscription.tier.slice(1)} Plan
                 </span>

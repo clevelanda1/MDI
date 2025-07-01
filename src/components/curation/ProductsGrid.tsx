@@ -50,7 +50,7 @@ const ProductsGrid: React.FC<ProductsGridProps> = ({
       data-products-section
     >
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-6">
-        <h2 className="font-light text-3xl text-slate-900">Product <span className="font-semibold">Selections</span></h2>
+        <h2 className="font-light text-3xl text-slate-900">Product <span className="font-bold bg-gradient-to-r from-violet-600 to-blue-600 bg-clip-text text-transparent">Selections</span></h2>
         
         {/* Pagination Info */}
         {paginationState.totalProducts > 24 && (

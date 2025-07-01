@@ -159,7 +159,7 @@ const LoadVisionBoardModal: React.FC<LoadVisionBoardModalProps> = ({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.3 }}
               >
-                <div className="h-96 overflow-y-auto rounded-2xl border border-slate-200/60 bg-slate-50/30 p-4">
+                <div className="h-[290px] overflow-y-auto rounded-2xl border border-slate-200/60 bg-slate-50/30 p-4">
                   <AnimatePresence mode="wait">
                     {effectiveIsLoading ? (
                       // Loading State
